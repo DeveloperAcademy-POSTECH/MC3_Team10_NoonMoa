@@ -29,6 +29,14 @@ struct SceneButtons: View {
             switch roomUser.userState {
             case "sleep":
                 Button(action: {
+                    //TODO: 더미데이터일 경우 실행하지않기_임시로 분기처리
+                    if roomUser.token.count > 1 {
+                        DispatchQueue.main.async {
+                            print("SceneButtons | roomUser \(roomUser)")
+                            pushNotiController.requestPushNotification(to: roomUser.id!)
+                        }
+                    }
+                    
                     buttonText = "\(roomUser.roomId ?? "")\nsleep"
                     lastActiveToggle = true
                 }) {
