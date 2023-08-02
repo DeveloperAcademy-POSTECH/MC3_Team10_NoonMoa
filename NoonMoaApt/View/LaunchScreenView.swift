@@ -77,7 +77,7 @@ struct launchScreenView: View {
                     }
                 }
                 
-                LottieView(name: "Splash", animationSpeed: 5)
+                LottieView(name: "Splash", animationSpeed: 0.2)
                     }
             .ignoresSafeArea()
                 }
