@@ -12,6 +12,7 @@ struct FunctionTestView: View {
     @EnvironmentObject var environmentModel: EnvironmentModel
     @EnvironmentObject var weatherKitManager: WeatherKitManager
     @EnvironmentObject var locationManager: LocationManager
+    @EnvironmentObject var aptModel: AptModel
     
     @State private var indexTime: Int = 0
     @State private var indexWeather: Int = 0
@@ -107,17 +108,6 @@ struct FunctionTestView: View {
                         )
                         .opacity(0.3)
                 }
-                
-                RoundedRectangle(cornerRadius: 8)
-                    .fill(.white)
-                    .frame(width: 80, height: 48)
-                    .overlay(
-                        Text(buttonText)
-                            .foregroundColor(.black)
-                            .font(.caption)
-                    )
-                    .opacity(0.3)
-                
                 Button(action: {
                     viewRouter.currentView = .onBoarding
                     UIImpactFeedbackGenerator(style: .medium).impactOccurred()
@@ -142,6 +132,21 @@ struct FunctionTestView: View {
                         .frame(width: 80, height: 48)
                         .overlay(
                             Text("Attendance\nView")
+                                .foregroundColor(.black)
+                                .font(.caption)
+                        )
+                        .opacity(0.3)
+                }
+                Button(action: {
+                    DispatchQueue.global().async {
+                        aptModel.fetchCurrentUserApt()
+                    }
+                }) {
+                    RoundedRectangle(cornerRadius: 8)
+                        .fill(.white)
+                        .frame(width: 80, height: 48)
+                        .overlay(
+                            Text("Update\nAptView")
                                 .foregroundColor(.black)
                                 .font(.caption)
                         )
