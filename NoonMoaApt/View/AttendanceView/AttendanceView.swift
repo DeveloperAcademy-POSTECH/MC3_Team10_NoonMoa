@@ -9,6 +9,8 @@ import SwiftUI
 import Firebase
 import FirebaseFirestore
 import FirebaseAuth
+import AVFoundation
+
 
 struct AttendanceView: View {
     private let currentUser = Auth.auth().currentUser
@@ -29,6 +31,8 @@ struct AttendanceView: View {
     @State private var isColorPickerAppeared: Bool = false
     @State private var isStartButtonActive: Bool = false
     
+    @State var player: AVAudioPlayer!
+
     private var firestoreManager: FirestoreManager {
         FirestoreManager.shared
     }
@@ -36,6 +40,14 @@ struct AttendanceView: View {
         firestoreManager.db
     }
     
+    //중복호출
+    func playSound(soundName: String) {
+        let url = Bundle.main.url(forResource: soundName, withExtension: "mp3")
+        player = try! AVAudioPlayer(contentsOf: url!)
+        //player.numberOfLoops = 1
+        player.play()
+    }
+
     var body: some View {
         ZStack {
             GeometryReader { geo in
@@ -109,6 +121,7 @@ struct AttendanceView: View {
                         // 눈도장 찍기 버튼
                         Button (action: {
                             //사용자 색상 최초 지정(default값)
+                            self.playSound(soundName: Text.sounds.shutter)
                             customViewModel.pickerValueToCharacterColor(value: customViewModel.pickerValue)
                             //날씨 받아오기
                             weatherKitManager.getWeather(latitude: locationManager.latitude, longitude: locationManager.longitude)

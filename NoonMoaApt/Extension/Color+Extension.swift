@@ -278,6 +278,19 @@ struct Lottie {
 }
 
 extension Text {
+    
+    struct sounds {
+        static let clear = "clear"
+        static let cloudy = "cloudy"
+        static let rainy = "rainy"
+        static let snowy = "snowy"
+        static let sunrise = "sunrise"
+        static let sunset = "sunset"
+        static let thunder = "thunder"
+        static let windy = "windy"
+        static let shutter = "focus_shutter"
+
+    }
     struct broadcast{
         struct attendanceIncompleteTitle {
             static let clearSunrise = "일찍 일어나는 새가 피곤하다죠"

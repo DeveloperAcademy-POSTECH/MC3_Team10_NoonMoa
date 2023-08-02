@@ -12,6 +12,7 @@ import FirebaseCore
 import FirebaseMessaging
 import AuthenticationServices
 import FirebaseAuth
+import AVFoundation
 
 
 @main
@@ -208,6 +209,8 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         print("AppDelegate: ScenePhase: unexpected state")
         // ... do something when in unexpected state
     }
+    
+    
 }
 
 extension AppDelegate: MessagingDelegate {
