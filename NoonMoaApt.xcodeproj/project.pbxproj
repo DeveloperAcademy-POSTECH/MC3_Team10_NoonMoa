@@ -17,7 +17,6 @@
 		8A2724EF2A79200D00A8D970 /* CharacterColorPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2724EE2A79200D00A8D970 /* CharacterColorPickerView.swift */; };
 		8A65D3F12A7A27B400CFB1B5 /* snowyDN.json in Resources */ = {isa = PBXBuildFile; fileRef = 8A65D3F02A7A27B400CFB1B5 /* snowyDN.json */; };
 		8A65D3F52A7A280600CFB1B5 /* thunderDN.json in Resources */ = {isa = PBXBuildFile; fileRef = 8A65D3F42A7A280600CFB1B5 /* thunderDN.json */; };
-		8A65D3F82A7A75AD00CFB1B5 /* (null) in Resources */ = {isa = PBXBuildFile; };
 		8A7FF49A2A77A8470075BA78 /* (null) in Resources */ = {isa = PBXBuildFile; };
 		8A7FF4A02A77ABEC0075BA78 /* CharacterModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7FF49F2A77ABEC0075BA78 /* CharacterModel.swift */; };
 		8A7FF4A22A77ABF90075BA78 /* EnvironmentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7FF4A12A77ABF90075BA78 /* EnvironmentModel.swift */; };
@@ -40,7 +39,6 @@
 		8AD2ECC32A6E163E0063D9ED /* EyeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD2ECC02A6E163E0063D9ED /* EyeView.swift */; };
 		8AD2ECC42A6E163E0063D9ED /* EyeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD2ECC12A6E163E0063D9ED /* EyeViewController.swift */; };
 		8ADF14492A7974BA00A09057 /* ParticleEffectViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADF14482A7974BA00A09057 /* ParticleEffectViewModel.swift */; };
-		8ADF144B2A79764E00A09057 /* ParticleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADF144A2A79764E00A09057 /* ParticleView.swift */; };
 		8ADF14512A79780E00A09057 /* (null) in Resources */ = {isa = PBXBuildFile; };
 		DA5563C02A7ADEF10066D589 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DA5563BF2A7ADEF00066D589 /* GoogleService-Info.plist */; };
 		DA5563C22A7AF06B0066D589 /* Splash.json in Resources */ = {isa = PBXBuildFile; fileRef = DA5563C12A7AF06B0066D589 /* Splash.json */; };
@@ -129,7 +127,6 @@
 		8A84C29E2A6ED2DF001A9094 /* SceneMyEye.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneMyEye.swift; sourceTree = "<group>"; };
 		8A84C2A02A6ED2E9001A9094 /* SceneNeighborEye.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneNeighborEye.swift; sourceTree = "<group>"; };
 		8A87D2442A7AC499009D8220 /* NoonMoaAptUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NoonMoaAptUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		8A87D2452A7AC535009D8220 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8A9910812A789F8F0083602F /* WeatherModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherModel.swift; sourceTree = "<group>"; };
 		8A9910832A78A03B0083602F /* WeatherTestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherTestView.swift; sourceTree = "<group>"; };
 		8A9910852A78A3A20083602F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -146,10 +143,8 @@
 		8AD2ECC12A6E163E0063D9ED /* EyeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EyeViewController.swift; sourceTree = "<group>"; };
 		8ADF14482A7974BA00A09057 /* ParticleEffectViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticleEffectViewModel.swift; sourceTree = "<group>"; };
 		DA10AFFD2A79783E00D20C1C /* NoonMoaApt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NoonMoaApt.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		DA10AFFE2A79783E00D20C1C /* NoonMoaAptTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NoonMoaAptTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		DA10AFFF2A79783E00D20C1C /* NoonMoaAptUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NoonMoaAptUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA5563BF2A7ADEF00066D589 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		DA5563C12A7AF06B0066D589 /* Splash.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Splash.json; path = "../../../../Image Assets/splash_lottie/Splash.json"; sourceTree = "<group>"; };
+		DA5563C12A7AF06B0066D589 /* Splash.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Splash.json; sourceTree = "<group>"; };
 		DA904E312A6A361700CC14D9 /* StampLargeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StampLargeView.swift; sourceTree = "<group>"; };
 		DA904E322A6A361700CC14D9 /* StampButtonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StampButtonView.swift; sourceTree = "<group>"; };
 		E3025D792A702C15000BB6E9 /* LaunchScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreenView.swift; sourceTree = "<group>"; };
@@ -560,7 +555,6 @@
 				8A2724EB2A7905E100A8D970 /* clearD.json in Resources */,
 				8A65D3F52A7A280600CFB1B5 /* thunderDN.json in Resources */,
 				8A65D3F12A7A27B400CFB1B5 /* snowyDN.json in Resources */,
-				8A87D2462A7AC535009D8220 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -140,11 +140,11 @@ extension AptModel {
                 print("User document missing roomId.")
                 return
             }
-            print("AptModel | generateUserLayout | userRoomId: \(userRoomId)")
+//            print("AptModel | generateUserLayout | userRoomId: \(userRoomId)")
             
             // User의 현재 아파트에서 상대적인 순서 계산하기 -> 0 ~ 11
             let currentUserIndex = (Int(userRoomId) ?? 0) % 12 - 1
-            print("AptModel | generateUserLayout | currentUserIndex \(currentUserIndex)")
+//            print("AptModel | generateUserLayout | currentUserIndex \(currentUserIndex)")
             
             let aptDocRef = self.db.collection("Apt").document(aptId)
             aptDocRef.getDocument { (aptDocument, aptError) in
@@ -153,7 +153,7 @@ extension AptModel {
                     print("Apt document not available or missing aptUsers.")
                     return
                 }
-                print("AptModel | generateUserLayout | userRoomId \(userRoomId)")
+//                print("AptModel | generateUserLayout | userRoomId \(userRoomId)")
                 
                 
                 
@@ -163,7 +163,7 @@ extension AptModel {
                 while userIds.count < 12 {
                     userIds.append(dummyUserId)
                 }
-                print("AptModel | generateUserLayout | userIds \(userIds)")
+//                print("AptModel | generateUserLayout | userIds \(userIds)")
                 
                 // Step 3: Use getIndexShaker() to create a 4x3 array
                 let shakedIndices = self.getIndexShaker(userIndex: currentUserIndex)
@@ -184,7 +184,7 @@ extension AptModel {
                         dispatchGroup.enter() // Enter the group before starting the async call
                         
                         self.fetchUser(userId: userId) { user in
-                            print("self.fetchUser | user: \(String(describing: user))")
+//                            print("self.fetchUser | user: \(String(describing: user))")
                             if let user = user {
                                 userLayout[row][col] = user // Update with fetched user
                             }
@@ -195,7 +195,7 @@ extension AptModel {
                 
                 dispatchGroup.notify(queue: .main) { // This block will be called when all async calls are finished
                     self.user2DLayout = userLayout.compactMap { $0.compactMap { $0 } } // Handle nil values if necessary
-                    print("AptModel | generateUserLayout | self.user2DLayout \(self.user2DLayout)")
+//                    print("AptModel | generateUserLayout | self.user2DLayout \(self.user2DLayout)")
                 }
             }
         }
