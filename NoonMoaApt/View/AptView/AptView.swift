@@ -233,7 +233,9 @@ struct AptView: View {
             // 현재 아파트 정보 받아오기
             aptModel.fetchCurrentUserApt()
             Timer.scheduledTimer(withTimeInterval: 3.0, repeats: true) { timer in
-                aptModel.fetchCurrentUserApt()
+                DispatchQueue.global().async {
+                    aptModel.fetchCurrentUserApt()
+                }
             }
             attendanceModel.downloadAttendanceRecords(for: Date())
         }

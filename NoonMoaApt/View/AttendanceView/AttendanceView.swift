@@ -195,10 +195,9 @@ struct AttendanceView: View {
                             }
                             // 시작하기 버튼
                             Button (action: {
+                                characterModel.rawCharacterColor = customViewModel.currentCharacterColor.toArray
                                 viewRouter.currentView = .apt
                                 attendanceModel.uploadAttendanceRecord()
-                                //                                attendanceModel.uploadAttendanceRecord()
-                                //                                attendanceCompletedViewModel.updateUserLastActiveDate()
                                 UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
                             }) {
                                 RoundedRectangle(cornerRadius: 16)

@@ -18,45 +18,39 @@ struct EyeNeighborViewModel {
     var eyeColor: LinearGradient = .eyeBlue
     var cheekColor: LinearGradient = .cheekRed
     
-    mutating func update(roomUser: User) {
-        switch roomUser.characterColor {
-        case "blue" :
+    mutating func updateColors(roomUser: User) {
+        //TODO: 여기 조건문이 약간 어색함
+        if let colorArray = roomUser.characterColor, colorArray.count >= 3 {
+            let r = Double(roomUser.characterColor?[0] ?? 0)
+            let g = Double(roomUser.characterColor?[1] ?? 0)
+            let b = Double(roomUser.characterColor?[2] ?? 0)
+            
+            characterColor = Color(red: r, green: g, blue: b)
+            bodyColor = LinearGradient(colors: [Color(red: min(max(((r * 255 + 50) / 255), 0), 1), green: min(max(((g * 255 + 50) / 255), 0), 1), blue: min(max(((b * 255 + 50) / 255), 0), 1)), Color(red: r, green: g, blue: b)], startPoint: .top, endPoint: .bottom)
+            eyeColor = LinearGradient(colors: [Color(red: min(max(((r * 255 + 50) / 255), 0), 1), green: min(max(((g * 255 + 50) / 255), 0), 1), blue: min(max(((b * 255 + 50) / 255), 0), 1)), Color(red: r, green: g, blue: b)], startPoint: .top, endPoint: .bottom)
+        } else {
             characterColor = .userBlue
             bodyColor = .userBlue
             eyeColor = .eyeBlue
-        case "cyan" :
-            characterColor = .userCyan
-            bodyColor = .userCyan
-            eyeColor = .eyeCyan
-        case "pink" :
-            characterColor = .userPink
-            bodyColor = .userPink
-            eyeColor = .eyePink
-        case "yellow" :
-            characterColor = .userYellow
-            bodyColor = .userYellow
-            eyeColor = .eyeYellow
-        default:
-            break
         }
     }
     
     //이웃 눈의 랜덤한 움직임 함수
     mutating func randomEyeMove(roomUser: User) {
-            
-            switch roomUser.roomId {
-            case "1", "3", "5", "8", "11":
-                faceOrientation = SIMD3<Float>(Float(Double.random(in: -1.0...1.0)), Float(Double.random(in: -1.0...1.0)), 0.0)
-                lookAtPoint = SIMD3<Float>(Float(Double.random(in: -1.0...1.0)), Float(Double.random(in: -1.0...1.0)), 0.0)
-            case "2", "4", "9":
-                faceOrientation = SIMD3<Float>(Float(Double.random(in: -1.0...1.0)), Float(Double.random(in: -1.0...1.0)), 0.0)
-                lookAtPoint = SIMD3<Float>(Float(Double.random(in: -1.0...1.0)), Float(Double.random(in: -1.0...1.0)), 0.0)
-            case "6", "7", "10", "12":
-                faceOrientation = SIMD3<Float>(Float(Double.random(in: -1.0...1.0)), Float(Double.random(in: -1.0...1.0)), 0.0)
-                lookAtPoint = SIMD3<Float>(Float(Double.random(in: -1.0...1.0)), Float(Double.random(in: -1.0...1.0)), 0.0)
-            default:
-                break
-            }
-
+        
+        switch roomUser.roomId {
+        case "1", "3", "5", "8", "11":
+            faceOrientation = SIMD3<Float>(Float(Double.random(in: -1.0...1.0)), Float(Double.random(in: -1.0...1.0)), 0.0)
+            lookAtPoint = SIMD3<Float>(Float(Double.random(in: -1.0...1.0)), Float(Double.random(in: -1.0...1.0)), 0.0)
+        case "2", "4", "9":
+            faceOrientation = SIMD3<Float>(Float(Double.random(in: -1.0...1.0)), Float(Double.random(in: -1.0...1.0)), 0.0)
+            lookAtPoint = SIMD3<Float>(Float(Double.random(in: -1.0...1.0)), Float(Double.random(in: -1.0...1.0)), 0.0)
+        case "6", "7", "10", "12":
+            faceOrientation = SIMD3<Float>(Float(Double.random(in: -1.0...1.0)), Float(Double.random(in: -1.0...1.0)), 0.0)
+            lookAtPoint = SIMD3<Float>(Float(Double.random(in: -1.0...1.0)), Float(Double.random(in: -1.0...1.0)), 0.0)
+        default:
+            break
         }
+        
+    }
 }
