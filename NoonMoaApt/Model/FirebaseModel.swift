@@ -8,6 +8,7 @@
 import Foundation
 import Firebase
 import FirebaseFirestoreSwift
+import SwiftUI
 
 struct User: Codable, Identifiable, Equatable {
     @DocumentID var id: String?
@@ -15,7 +16,7 @@ struct User: Codable, Identifiable, Equatable {
     var aptId: String?
     var userState: String
     var lastActiveDate: Date?
-    var characterColor: String
+    var characterColor: [Float]?
     var token: String
     var requestedBy: [String]
     var clicked: Bool = false
@@ -26,10 +27,10 @@ struct User: Codable, Identifiable, Equatable {
         set { userState = newValue.rawValue }
     }
     
-    var characterColorEnum: CharacterColor {
-        get { return CharacterColor(rawValue: characterColor) ?? .blue }
-        set { characterColor = newValue.rawValue }
-    }
+//    var characterColorEnum: CharacterColor {
+//        get { return CharacterColor(rawValue: characterColor) ?? Color.userBlue.toArray }
+//        set { characterColor = newValue.rawValue }
+//    }
 }
 
 extension User {
@@ -44,7 +45,7 @@ extension User {
         self.aptId = dictionary["aptId"] as? String
         self.userState = userState
         self.lastActiveDate = dictionary["lastActiveDate"] as? Date
-        self.characterColor = dictionary["characterColor"] as? String ?? "blue"
+        self.characterColor = dictionary["characterColor"] as? [Float] ?? Color.userBlue.toArray
         self.token = token
         self.requestedBy = requestedBy
         self.clicked = false
@@ -129,29 +130,29 @@ enum UserState: String, Codable {
     case inactive = "inactive"
 }
 
-enum CharacterColor: String, Codable {
-    case pink = "pink"
-    case cyan = "cyan"
-    case yellow = "yellow"
-    case blue = "blue"
-    
-    init(from decoder: Decoder) throws {
-        let label = try decoder.singleValueContainer().decode(String.self)
-        switch label {
-        case "pink":
-            self = .pink
-        case "cyan":
-            self = .cyan
-        case "yellow":
-            self = .yellow
-        case "blue":
-            self = .blue
-        // Add more cases as needed
-        default:
-            throw DecodingError.dataCorruptedError(in: try! decoder.singleValueContainer(), debugDescription: "Unable to decode eye color")
-        }
-    }
-}
+//enum CharacterColor: [Float], Codable {
+//    case pink = "pink"
+//    case cyan = "cyan"
+//    case yellow = "yellow"
+//    case blue = "blue"
+//    
+//    init(from decoder: Decoder) throws {
+//        let label = try decoder.singleValueContainer().decode(String.self)
+//        switch label {
+//        case "pink":
+//            self = .pink
+//        case "cyan":
+//            self = .cyan
+//        case "yellow":
+//            self = .yellow
+//        case "blue":
+//            self = .blue
+//        // Add more cases as needed
+//        default:
+//            throw DecodingError.dataCorruptedError(in: try! decoder.singleValueContainer(), debugDescription: "Unable to decode eye color")
+//        }
+//    }
+//}
 
 enum WeatherCondition: String, Codable {
     case clear = "clear"
@@ -176,17 +177,17 @@ extension User {
 
     static let UTData: [[User]] =
     [
-        [User(roomId: "1", aptId: "1", userState: "active", lastActiveDate: Date(), characterColor: "yellow", token: "a",requestedBy: []),
-         User(roomId: "2", aptId: "1", userState: "active", lastActiveDate: Date(), characterColor: "blue", token: "b",requestedBy: []),
-         User(roomId: "3", aptId: "1", userState: "vacant", lastActiveDate: Date(), characterColor: "cyan", token: "c",requestedBy: [])],
-        [User(roomId: "4", aptId: "1", userState: "active", lastActiveDate: Date(), characterColor: "pink", token: "d",requestedBy: []),
-         User(roomId: "5", aptId: "1", userState: "active", lastActiveDate: Date(), characterColor: "blue", token: "e",requestedBy: []),
-         User(roomId: "6", aptId: "1", userState: "sleep", lastActiveDate: Date(), characterColor: "cyan", token: "f",requestedBy: [])],
-        [User(roomId: "7", aptId: "1", userState: "inactive", lastActiveDate: Date(), characterColor: "yellow", token: "g",requestedBy: []),
-         User(roomId: "8", aptId: "1", userState: "sleep", lastActiveDate: Date(), characterColor: "blue", token: "h",requestedBy: []),
-         User(roomId: "9", aptId: "1", userState: "active", lastActiveDate: Date(), characterColor: "pink", token: "i",requestedBy: [])],
-        [User(roomId: "10", aptId: "1", userState: "vacant", lastActiveDate: Date(), characterColor: "yellow", token: "j",requestedBy: []),
-         User(roomId: "11", aptId: "1", userState: "active", lastActiveDate: Date(), characterColor: "blue", token: "k",requestedBy: []),
-         User(roomId: "12", aptId: "1", userState: "inactive", lastActiveDate: Date(), characterColor: "cyan", token: "l",requestedBy: [])]
+        [User(roomId: "1", aptId: "1", userState: "active", lastActiveDate: Date(), characterColor: [212/255, 218/255, 151/255], token: "a",requestedBy: []),
+         User(roomId: "2", aptId: "1", userState: "active", lastActiveDate: Date(), characterColor: [138/255, 141/255, 197/255], token: "b",requestedBy: []),
+         User(roomId: "3", aptId: "1", userState: "active", lastActiveDate: Date(), characterColor: [177/255, 203/255, 182/255], token: "c",requestedBy: [])],
+        [User(roomId: "4", aptId: "1", userState: "active", lastActiveDate: Date(), characterColor: [220/255, 126/225, 126/255], token: "d",requestedBy: []),
+         User(roomId: "5", aptId: "1", userState: "active", lastActiveDate: Date(), characterColor: [220/255, 126/225, 126/255], token: "e",requestedBy: []),
+         User(roomId: "6", aptId: "1", userState: "sleep", lastActiveDate: Date(), characterColor: [177/255, 203/255, 182/255], token: "f",requestedBy: [])],
+        [User(roomId: "7", aptId: "1", userState: "inactive", lastActiveDate: Date(), characterColor: [230/255, 170/255, 150/255], token: "g",requestedBy: []),
+         User(roomId: "8", aptId: "1", userState: "sleep", lastActiveDate: Date(), characterColor: [138/255,141/255,197/255], token: "h",requestedBy: []),
+         User(roomId: "9", aptId: "1", userState: "active", lastActiveDate: Date(), characterColor: [177/255, 203/255, 182/255], token: "i",requestedBy: [])],
+        [User(roomId: "10", aptId: "1", userState: "active", lastActiveDate: Date(), characterColor: [212/255, 218/255, 151/255], token: "j",requestedBy: []),
+         User(roomId: "11", aptId: "1", userState: "active", lastActiveDate: Date(), characterColor: [220/255, 126/225, 126/255], token: "k",requestedBy: []),
+         User(roomId: "12", aptId: "1", userState: "inactive", lastActiveDate: Date(), characterColor: [], token: "l",requestedBy: [])]
     ]
 }

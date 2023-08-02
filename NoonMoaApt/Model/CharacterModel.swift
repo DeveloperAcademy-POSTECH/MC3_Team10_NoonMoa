@@ -61,7 +61,7 @@ class CharacterModel: ObservableObject {
         rawIsBlinkingRight = isBlinkingRight
         rawLookAtPoint = [Float(lookAtPoint.x), Float(lookAtPoint.y), Float(lookAtPoint.z)]
         rawFaceOrientation = [Float(faceOrientation.x), Float(faceOrientation.y), Float(faceOrientation.z)]
-        rawCharacterColor = [Float(characterColor.rgba.red), Float(characterColor.rgba.green), Float(characterColor.rgba.blue)]
+        rawCharacterColor = [Float(characterColor.toArray[0]), Float(characterColor.toArray[1]), Float(characterColor.toArray[2])]
     }
     
     // 서버에 저장하기 위해, Attendance 모델을 업데이트 할 때 사용
@@ -78,12 +78,13 @@ class CharacterModel: ObservableObject {
             return
         }
         
-        newAttendanceRecord?.rawIsSmiling = rawIsSmiling
-        newAttendanceRecord?.rawIsBlinkingLeft = rawIsBlinkingLeft
-        newAttendanceRecord?.rawIsBlinkingRight = rawIsBlinkingRight
-        newAttendanceRecord?.rawLookAtPoint = rawLookAtPoint
-        newAttendanceRecord?.rawFaceOrientation = rawFaceOrientation
-        newAttendanceRecord?.rawCharacterColor = rawCharacterColor
+//        newAttendanceRecord?.rawIsSmiling = rawIsSmiling
+//        newAttendanceRecord?.rawIsBlinkingLeft = rawIsBlinkingLeft
+//        newAttendanceRecord?.rawIsBlinkingRight = rawIsBlinkingRight
+//        newAttendanceRecord?.rawLookAtPoint = rawLookAtPoint
+//        newAttendanceRecord?.rawFaceOrientation = rawFaceOrientation
+//        newAttendanceRecord?.rawCharacterColor = rawCharacterColor
+        newAttendanceRecord?.rawCharacterColor = CharacterModel().rawCharacterColor
         // Update other recorded character-related properties as needed
     }
 

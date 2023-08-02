@@ -151,17 +151,10 @@ struct SceneButtons: View {
                             .particleEffect(systemImage: "suit.heart.fill",
                                             font: .title3,
                                             status: roomUser.clicked,
-                                            tint:   {switch roomUser.characterColor {
-                                            case "blue": return Color.userBlue
-                                            case "pink": return Color.userPink
-                                            case "cyan": return Color.userCyan
-                                            case "yellow": return Color.userYellow
-                                            default: return Color.userBlue
-                                            }//임시로 처리
-                            }()
-                        )
+                                            tint:   roomUser.characterColor?.toColor ?? Color.pink)
+                            }
                     }
-                }
+                
                 case "inactive":
                     Button(action: {
                         buttonText = "\(roomUser.roomId ?? "")\ninactive"

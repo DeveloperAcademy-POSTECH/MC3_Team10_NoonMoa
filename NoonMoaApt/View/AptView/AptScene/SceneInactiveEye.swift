@@ -23,7 +23,7 @@ struct SceneInactiveEye: View {
                 eyeColor: eyeNeighborViewModel.eyeColor,
                 cheekColor: eyeNeighborViewModel.cheekColor, isInactiveOrSleep: roomUser.userState == "inactive" || roomUser.userState == "sleep", isJumping: false)
         .onAppear {
-            eyeNeighborViewModel.update(roomUser: roomUser)
+            eyeNeighborViewModel.updateColors(roomUser: roomUser)
         }
     }
 }
