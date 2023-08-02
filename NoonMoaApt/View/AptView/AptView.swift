@@ -9,6 +9,7 @@ import SwiftUI
 import Firebase
 import FirebaseFirestore
 import FirebaseAuth
+import AVFoundation
 
 struct AptView: View {
     @EnvironmentObject var viewRouter: ViewRouter
@@ -26,6 +27,8 @@ struct AptView: View {
     @State private var isSettingOpen: Bool = false
     @State private var announcement: Bool = false
     
+    @State var player: AVAudioPlayer!
+
     //아파트 등장 애니메이션
     @State private var isAptEffectPlayed: Bool = false
     
@@ -39,6 +42,13 @@ struct AptView: View {
     private var db: Firestore {
         firestoreManager.db
     }
+
+        func playSound(soundName: String) {
+            let url = Bundle.main.url(forResource: soundName, withExtension: "mp3")
+            player = try! AVAudioPlayer(contentsOf: url!)
+            //player.numberOfLoops = 1
+            player.play()
+        }
     
     var body: some View {
         ZStack{
@@ -233,7 +243,7 @@ struct AptView: View {
             
             // 현재 아파트 정보 받아오기
             aptModel.fetchCurrentUserApt()
-            
+            playSound(soundName: Text.sounds.clear)
             Timer.scheduledTimer(withTimeInterval: 4.0, repeats: true) { timer in
                 DispatchQueue.global().async {
                     aptModel.fetchCurrentUserApt()
