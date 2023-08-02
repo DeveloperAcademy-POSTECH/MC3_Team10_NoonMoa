@@ -163,6 +163,7 @@
 		8ADF14482A7974BA00A09057 /* ParticleEffectViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticleEffectViewModel.swift; sourceTree = "<group>"; };
 		DA10AFFD2A79783E00D20C1C /* NoonMoaApt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NoonMoaApt.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA5563BF2A7ADEF00066D589 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		DA5563C12A7AF06B0066D589 /* Splash.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Splash.json; sourceTree = "<group>"; };
 		DA904E312A6A361700CC14D9 /* StampLargeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StampLargeView.swift; sourceTree = "<group>"; };
 		DA904E322A6A361700CC14D9 /* StampButtonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StampButtonView.swift; sourceTree = "<group>"; };
 		E3025D792A702C15000BB6E9 /* LaunchScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreenView.swift; sourceTree = "<group>"; };

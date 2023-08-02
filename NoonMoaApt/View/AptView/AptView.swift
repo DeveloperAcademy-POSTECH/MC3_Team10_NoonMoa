@@ -240,10 +240,35 @@ struct AptView: View {
             environmentModel.getCurrentEnvironment()
             print("at aptView, weather:\(environmentModel.currentWeather)")
             print("at aptView, time:\(environmentModel.currentTime)")
+            
             // 현재 아파트 정보 받아오기
             aptModel.fetchCurrentUserApt()
+            
+            Timer.scheduledTimer(withTimeInterval: 4.0, repeats: true) { timer in
+                DispatchQueue.global().async {
+                    aptModel.fetchCurrentUserApt()
+                }
+            }
+            
             attendanceModel.downloadAttendanceRecords(for: Date())
-            self.playSound(soundName: Text.sounds.clear)
+            
+            // When the app is active, update the user's state to .active
+            if let user = Auth.auth().currentUser {
+                firestoreManager.syncDB()
+                let userRef = db.collection("User").document(user.uid)
+                
+                userRef.getDocument { (document, error) in
+                    if let document = document, document.exists {
+                        if let userData = document.data(), let userState = userData["userState"] as? String {
+                            self.db.collection("User").document(user.uid).updateData([
+                                "userState": UserState.active.rawValue
+                            ])
+                        }
+                    } else {
+                        print("No user is signed in.")
+                    }
+                }
+            }
         }
     }
 }
