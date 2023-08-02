@@ -243,7 +243,7 @@ struct AptView: View {
             
             // 현재 아파트 정보 받아오기
             aptModel.fetchCurrentUserApt()
-            
+            playSound(soundName: Text.sounds.clear)
             Timer.scheduledTimer(withTimeInterval: 4.0, repeats: true) { timer in
                 DispatchQueue.global().async {
                     aptModel.fetchCurrentUserApt()
