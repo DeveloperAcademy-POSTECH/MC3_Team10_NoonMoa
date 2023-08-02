@@ -233,11 +233,13 @@ struct AptView: View {
             
             // 현재 아파트 정보 받아오기
             aptModel.fetchCurrentUserApt()
-            Timer.scheduledTimer(withTimeInterval: 3.0, repeats: true) { timer in
+            
+            Timer.scheduledTimer(withTimeInterval: 4.0, repeats: true) { timer in
                 DispatchQueue.global().async {
                     aptModel.fetchCurrentUserApt()
                 }
             }
+            
             attendanceModel.downloadAttendanceRecords(for: Date())
             
             // When the app is active, update the user's state to .active
@@ -248,14 +250,9 @@ struct AptView: View {
                 userRef.getDocument { (document, error) in
                     if let document = document, document.exists {
                         if let userData = document.data(), let userState = userData["userState"] as? String {
-                            print("AppDelegate | handleSceneActive | userState: \(userState)")
-                            if userState == UserState.sleep.rawValue {
-                                _ = 0
-                            } else {
-                                self.db.collection("User").document(user.uid).updateData([
-                                    "userState": UserState.active.rawValue
-                                ])
-                            }
+                            self.db.collection("User").document(user.uid).updateData([
+                                "userState": UserState.active.rawValue
+                            ])
                         }
                     } else {
                         print("No user is signed in.")
