@@ -13,6 +13,7 @@ import FirebaseMessaging
 import AuthenticationServices
 import FirebaseAuth
 import AVFoundation
+import UserNotifications
 
 
 @main
@@ -166,7 +167,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
                             }
                         }
                     } else {
-                        print("No user is signed in.")
+                        print("NoonMoaAptApp | handleSceneActive | No user is signed in.")
                     }
                 }
             }
@@ -194,7 +195,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
                         }
                     }
                 } else {
-                    print("No user is signed in.")
+                    print("NoonMoaAptAPP | handleSceneBackground | No user is signed in.")
                 }
             }
         }
@@ -235,7 +236,6 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         if let messageID = userInfo[gcmMessageIDKey] {
             print("Message ID: \(messageID)")
         }
-        print(userInfo)
         completionHandler([[.banner, .badge, .sound]])
     }
     

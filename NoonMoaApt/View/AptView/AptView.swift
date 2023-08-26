@@ -245,11 +245,13 @@ struct AptView: View {
             aptModel.fetchCurrentUserApt()
             
             playSound(soundName: Text.sounds.clear)
-//            Timer.scheduledTimer(withTimeInterval: 4.0, repeats: true) { timer in
-//                DispatchQueue.global().async {
-//                    aptModel.fetchCurrentUserApt()
-//                }
-//            }
+            
+            // 3초마다 화면 다시 그리기
+            Timer.scheduledTimer(withTimeInterval: 4.0, repeats: true) { timer in
+                DispatchQueue.global(qos: .utility).async {
+                    aptModel.fetchCurrentUserApt()
+                }
+            }
             
             attendanceModel.downloadAttendanceRecords(for: Date())
             
@@ -266,7 +268,7 @@ struct AptView: View {
                             ])
                         }
                     } else {
-                        print("No user is signed in.")
+                        print("AptView | No user is signed in.")
                     }
                 }
             }

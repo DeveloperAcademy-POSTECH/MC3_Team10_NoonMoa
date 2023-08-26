@@ -31,7 +31,9 @@ struct SceneButtons: View {
                 Button(action: {
                     //TODO: 더미데이터일 경우 실행하지않기_임시로 분기처리
                     if roomUser.token.count > 1 {
-                        DispatchQueue.main.async {
+                        
+                        // push 알림 보내기
+                        DispatchQueue.global(qos: .userInteractive).async {
                             print("SceneButtons | roomUser \(roomUser)")
                             pushNotiController.requestPushNotification(to: roomUser.id!)
                         }
@@ -66,9 +68,10 @@ struct SceneButtons: View {
                             lastWakenTimeToggle = true
                             buttonText = "\(roomUser.roomId ?? "")\n깨우는 중"
                             
-                            // push 알림 보내기
                             if roomUser.token.count > 1 {
-                                DispatchQueue.main.async {
+                                
+                                // push 알림 보내기
+                                DispatchQueue.global(qos: .userInteractive).async {
                                     print("SceneButtons | roomUser \(roomUser)")
                                     pushNotiController.requestPushNotification(to: roomUser.id!)
                                 }
@@ -130,7 +133,9 @@ struct SceneButtons: View {
                     buttonText = "\(roomUser.roomId ?? "")\nactive"
                     //TODO: 더미데이터일 경우 실행하지않기_임시로 분기처리
                     if roomUser.token.count > 1 {
-                        DispatchQueue.main.async {
+                        
+                        // push 알림 보내기
+                        DispatchQueue.global(qos: .userInteractive).async {
                             print("SceneButtons | roomUser \(roomUser)")
                             pushNotiController.requestPushNotification(to: roomUser.id!)
                         }
@@ -174,7 +179,9 @@ struct SceneButtons: View {
                 case "inactive":
                     Button(action: {
                         if roomUser.token.count > 1 {
-                            DispatchQueue.main.async {
+                            
+                            // push 알림 보내기
+                            DispatchQueue.global(qos: .userInteractive).async {
                                 print("SceneButtons | roomUser \(roomUser)")
                                 pushNotiController.requestPushNotification(to: roomUser.id!)
                             }
