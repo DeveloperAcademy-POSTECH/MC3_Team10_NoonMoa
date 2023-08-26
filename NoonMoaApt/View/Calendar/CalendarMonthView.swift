@@ -88,7 +88,6 @@ struct CalendarMonthView: View {
                                         selectedDate = value
                                         isDayClicked = true
                                     }
-                                
                             }
                         }
                     }
@@ -114,7 +113,8 @@ struct CalendarMonthView: View {
                 let comparisonResult = Calendar.current.compare(value.date, to: Date(), toGranularity: .day)
                 
                 Circle()
-                    .stroke(style: StrokeStyle(lineWidth: 1, dash: [3, 3]))
+                    .strokeBorder(style: StrokeStyle(lineWidth: 1, dash: [3, 3]))
+                    .frame(width: 36, height: 36)
                     .foregroundColor(isToday ? .black : comparisonResult == .orderedAscending ? .calendarGray : .calendarGray)
                 Text("\(value.day)")
                     .font(.title3)
@@ -123,21 +123,10 @@ struct CalendarMonthView: View {
                     .foregroundColor(isToday ? .black : comparisonResult == .orderedAscending ? .calendarGray : .calendarGray)
                 
                 
-                //만약 해당날짜에 attendance가 찍혀있다면_으로 로직 변경
+                //만약 attendance에 있는 날짜와 비교해서, 해당 일이 동일하다면 찾아낸 그 값의 스탬프 정보를 받아와서 그린다는 로직으로 변경
                 if Calendar.current.isDateInToday(value.date) {
-                    Circle()
-                        .background(LinearGradient.sky.clearNight)
-                        .foregroundColor(.clear)
-                        .clipShape(Circle())
-                    
-                    Image.assets.stampSmall.clearNight
-                        .resizable()
-                        .scaledToFill()
-                        .clipShape(Circle())
-                    Circle()
-                        .stroke(lineWidth: 1)
-                        .foregroundColor(Color.stampBorder.clearNight)
-                    EyeView(isSmiling: true, isBlinkingLeft: true, isBlinkingRight: false, lookAtPoint: SIMD3(0,0,0), faceOrientation: SIMD3(0,0,0), bodyColor: LinearGradient.userCyan, eyeColor: LinearGradient.eyeCyan, cheekColor: LinearGradient.cheekRed, isInactiveOrSleep: false, isJumping: false)
+                    StampButtonView(skyColor: LinearGradient.sky.clearNight, skyImage: Image.assets.stampSmall.clearNight, isSmiling: true, isBlinkingLeft: true, isBlinkingRight: false, lookAtPoint: SIMD3(0,0,0), faceOrientation: SIMD3(0,0,0), bodyColor: LinearGradient.userCyan, eyeColor: LinearGradient.eyeCyan, cheekColor: LinearGradient.cheekRed, borderColor: Color.stampBorder.clearNight)
+                        .frame(width: 36, height: 36)
                 }
             }
         }
