@@ -14,7 +14,7 @@ struct WeatherTestView: View {
                 Label(weatherKitManager.symbol, systemImage: weatherKitManager.symbol)
                 Text(weatherKitManager.condition)
                 Text(weatherKitManager.temp)
-                Button(action: {  weatherKitManager.getWeather(latitude: locationManager.latitude, longitude: locationManager.longitude)
+                Button(action: {  weatherKitManager.getWeather(latitude: 4, longitude: 45)
                     environmentModel.rawWeather = weatherKitManager.condition
                     print("hello")
 

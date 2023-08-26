@@ -31,6 +31,8 @@ struct AttendanceView: View {
     @State private var isColorPickerAppeared: Bool = false
     @State private var isStartButtonActive: Bool = false
     
+    @State private var isSettingOpen: Bool = false
+
     @State var player: AVAudioPlayer!
 
     private var firestoreManager: FirestoreManager {
@@ -230,6 +232,29 @@ struct AttendanceView: View {
                 }//VStack
             }//GeometryReader
             .padding(24)
+            
+            if isSettingOpen {
+                AttendanceTestView()
+            }
+            
+            VStack {
+                Button { // 설정 버튼
+                    isSettingOpen.toggle()
+                } label: {
+                    if isSettingOpen {
+                        Image.assets.buttons.settingSelected
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 50)
+                    } else {
+                        Image.assets.buttons.settingUnSelected
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 50)
+                    }
+                }
+                Spacer()
+            }
         }//ZStack
                 .onAppear {
                     //테스트용 날씨 보기위해 임시로 아래 함수만 실행

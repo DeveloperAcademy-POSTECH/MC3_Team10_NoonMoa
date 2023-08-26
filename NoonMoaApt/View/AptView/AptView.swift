@@ -245,11 +245,11 @@ struct AptView: View {
             aptModel.fetchCurrentUserApt()
             
             playSound(soundName: Text.sounds.clear)
-            Timer.scheduledTimer(withTimeInterval: 4.0, repeats: true) { timer in
-                DispatchQueue.global().async {
-                    aptModel.fetchCurrentUserApt()
-                }
-            }
+//            Timer.scheduledTimer(withTimeInterval: 4.0, repeats: true) { timer in
+//                DispatchQueue.global().async {
+//                    aptModel.fetchCurrentUserApt()
+//                }
+//            }
             
             attendanceModel.downloadAttendanceRecords(for: Date())
             

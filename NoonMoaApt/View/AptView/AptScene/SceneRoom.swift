@@ -71,8 +71,8 @@ struct SceneRoom: View {
                                     isBlindUp = true
                                 }
                             }
-                        } else if roomUser.userState == "vacant" {
-                            isBlindUp = true
+                        } else if roomUser.userState == "sleep" {
+                            isBlindUp = false
                         }
                     }
                 Image.assets.room.windowBorder
