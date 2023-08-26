@@ -128,13 +128,13 @@ struct SceneButtons: View {
             case "active":
                 Button(action: {
                     buttonText = "\(roomUser.roomId ?? "")\nactive"
-//                    //TODO: 더미데이터일 경우 실행하지않기_임시로 분기처리
-//                    if roomUser.token.count > 1 {
-//                        DispatchQueue.main.async {
-//                            print("SceneButtons | roomUser \(roomUser)")
-//                            pushNotiController.requestPushNotification(to: roomUser.id!)
-//                        }
-//                    }
+                    //TODO: 더미데이터일 경우 실행하지않기_임시로 분기처리
+                    if roomUser.token.count > 1 {
+                        DispatchQueue.main.async {
+                            print("SceneButtons | roomUser \(roomUser)")
+                            pushNotiController.requestPushNotification(to: roomUser.id!)
+                        }
+                    }
                     //인터랙션 실행문
                     DispatchQueue.main.async {
                         withAnimation(.easeOut(duration: 0.2)) {
@@ -173,6 +173,12 @@ struct SceneButtons: View {
                 
                 case "inactive":
                     Button(action: {
+                        if roomUser.token.count > 1 {
+                            DispatchQueue.main.async {
+                                print("SceneButtons | roomUser \(roomUser)")
+                                pushNotiController.requestPushNotification(to: roomUser.id!)
+                            }
+                        }
                         buttonText = "\(roomUser.roomId ?? "")\ninactive"
                     }) {
                         Color.clear
