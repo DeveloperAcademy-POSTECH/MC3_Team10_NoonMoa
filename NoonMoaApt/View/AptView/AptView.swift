@@ -130,75 +130,23 @@ struct AptView: View {
                 .environmentObject(weatherKitManager)
                 .opacity(isSettingOpen ? 1 : 0)
             
-            //임시코드
-            Image("CalendarMonth_Temp")
-                .resizable()
-                .ignoresSafeArea()
-                .onTapGesture {
-                    isCalendarMonthOpen = false
-                    isCalendarDayOpen = true
+            //캘린더뷰
+            if isCalendarOpen {
+                VStack {
+                    CalendarMonthView()
+                        .frame(height: UIScreen.main.bounds.width * 1.03)
+                        .padding()
+                    Spacer()
                 }
-                .overlay( // 외부 공간 눌렀을 때 캘린더 닫힘
-                    Color.white
-                        .frame(height: 400)
-                        .offset(y: 270)
-                        .opacity(0.01)
-                        .onTapGesture {
-                            isCalendarMonthOpen = false
-                            isCalendarDayOpen = false
-                            isCalendarOpen = false
-                        }
-                )
-                .opacity(isCalendarMonthOpen ? 1 : 0)
-            
-            Image("CalendarDay_Temp")
-                .resizable()
-                .ignoresSafeArea()
-                .onTapGesture {
-                    isCalendarMonthOpen = true
-                    isCalendarDayOpen = false
-                }
-                .overlay( // 외부 공간 눌렀을 때 캘린더 닫힘
-                    Color.white
-                        .frame(height: 400)
-                        .offset(y: 270)
-                        .opacity(0.01)
-                        .onTapGesture {
-                            isCalendarMonthOpen = false
-                            isCalendarDayOpen = false
-                            isCalendarOpen = false
-                        }
-                )
-                .opacity(isCalendarDayOpen ? 1 : 0)
-            
+                .offset(y: 40)
+            }
             // 상단 캘린더 & 설정 버튼
             GeometryReader { proxy in
                 HStack (spacing: 16) {
-                    Button {
-                        
-                    } label: {
-                        if announcement {
-                            Image("announcementOn")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: proxy.size.width * 0.08)
-                        } else {
-                          
-                        }
-                    }
-                    
                     Spacer()
                     
                     Button { // 캘린더 버튼
-                        if isCalendarOpen {
-                            isCalendarOpen = false
-                            isCalendarMonthOpen = false
-                            isCalendarDayOpen = false
-                        } else {
-                            isCalendarOpen = true
-                            isCalendarMonthOpen = true
-                            isCalendarDayOpen = false
-                        }
+                        isCalendarOpen.toggle()
                     } label: {
                         if isCalendarOpen {
                             Image.assets.buttons.calendarSelected
@@ -227,7 +175,6 @@ struct AptView: View {
                                 .scaledToFit()
                                 .frame(width: proxy.size.width * 0.08)
                         }
-                            
                     }
                 }
                 .padding(.horizontal, proxy.size.width * 0.06)
@@ -297,6 +244,8 @@ struct AptView_Previews: PreviewProvider {
             .environmentObject(AttendanceModel(newAttendanceRecord: newAttendanceRecord))
             .environmentObject(CharacterModel())
             .environmentObject(EnvironmentModel())
+            .environmentObject(WeatherKitManager())
+            .environmentObject(LocationManager())
         
     }
 }
