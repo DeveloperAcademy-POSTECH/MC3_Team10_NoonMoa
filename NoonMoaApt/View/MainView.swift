@@ -14,8 +14,6 @@ struct MainView: View {
     @StateObject var characterModel: CharacterModel
     @StateObject var environmentModel: EnvironmentModel
     @StateObject var customViewModel: CustomViewModel
-    @StateObject var calendarFullViewModel: CalendarFullViewModel
-    @StateObject var calendarSingleController: CalendarSingleController
     @StateObject var loginViewModel: LoginViewModel
     @StateObject var weatherKitManager: WeatherKitManager
     @StateObject var locationManager: LocationManager
@@ -59,13 +57,7 @@ struct MainView: View {
                 .environmentObject(customViewModel)
                 .environmentObject(weatherKitManager)
                 .environmentObject(locationManager)
-            
-        case .CalendarFull:
-            CalendarFullView()
-                .environmentObject(CalendarFullViewModel())
-        case .CalendarSingle:
-            CalendarSingleView()
-                .environmentObject(calendarSingleController)
+                
         default:
             LoginView()
                 .environmentObject(LoginViewModel(viewRouter: ViewRouter()))
