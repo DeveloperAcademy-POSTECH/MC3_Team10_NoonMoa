@@ -16,6 +16,11 @@ class CustomViewModel: ObservableObject {
     @Published var currentEyeColor: LinearGradient = LinearGradient.eyePink
     @Published var currentCheekColor: LinearGradient = LinearGradient.cheekRed
     
+    @Published var recordedCharacterColor: Color = Color.userPink
+    @Published var recordedBodyColor: LinearGradient = LinearGradient.userPink
+    @Published var recordedEyeColor: LinearGradient = LinearGradient.eyePink
+    @Published var recordedCheekColor: LinearGradient = LinearGradient.cheekRed
+    
     //테마컬러 4개 넣으면 변수 자동 업데이트
     let color1: Color = Color.userBlue
     let color2: Color = Color.userPink
@@ -61,7 +66,20 @@ class CustomViewModel: ObservableObject {
         
         return [Float(yR), Float(yG), Float(yB)]
     }
-    //TODO: 저장된 값을 불러올 때 변환하는거는 안넣은듯?
+    
+    //TODO: AttendanceRecord에 저장하는 것도 넣어야함
+    
+    
+    func convertRawColorToCharacterColor(record: AttendanceRecord) {
+        let yR = Double(record.rawCharacterColor[0])
+        let yG = Double(record.rawCharacterColor[1])
+        let yB = Double(record.rawCharacterColor[2])
+
+        self.recordedCharacterColor =  Color(red: yR, green: yG, blue: yB)
+        self.recordedBodyColor = LinearGradient(colors: [Color(red: min(max(((yR * 255 + 50) / 255), 0), 1), green: min(max(((yG * 255 + 50) / 255), 0), 1), blue: min(max(((yB * 255 + 50) / 255), 0), 1)), Color(red: yR, green: yG, blue: yB)], startPoint: .top, endPoint: .bottom)
+        self.recordedEyeColor = LinearGradient(colors: [Color(red: min(max(((yR * 255 + 50) / 255), 0), 1), green: min(max(((yG * 255 + 50) / 255), 0), 1), blue: min(max(((yB * 255 + 50) / 255), 0), 1)), Color(red: yR, green: yG, blue: yB)], startPoint: .top, endPoint: .bottom)
+    }
+    
 }
 
 extension Color {

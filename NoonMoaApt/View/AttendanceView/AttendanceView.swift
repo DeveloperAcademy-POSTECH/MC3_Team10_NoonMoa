@@ -158,8 +158,7 @@ struct AttendanceView: View {
                                 characterModel.currentIsBlinkingRight = eyeViewController.eyeMyViewModel.isBlinkingRight
                                 characterModel.currentLookAtPoint = eyeViewController.eyeMyViewModel.lookAtPoint
                                 characterModel.currentFaceOrientation = eyeViewController.eyeMyViewModel.faceOrientation
-                                
-                                characterModel.getCurrentCharacter()
+                                characterModel.currentCharacterColor = customViewModel.currentCharacterColor
                             }
                             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                                 withAnimation(.spring(response: 0.5, dampingFraction: 0.3).speed(1)) {
