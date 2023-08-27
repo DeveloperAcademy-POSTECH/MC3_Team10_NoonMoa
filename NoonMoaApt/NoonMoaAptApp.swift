@@ -52,8 +52,6 @@ struct NoonMoaAptApp: App {
                      characterModel: CharacterModel(),
                      environmentModel: EnvironmentModel(),
                      customViewModel: CustomViewModel(),
-                     calendarFullViewModel: CalendarFullViewModel(),
-                     calendarSingleController: CalendarSingleController(viewModel: CalendarFullViewModel()),
                      loginViewModel: LoginViewModel(viewRouter: ViewRouter()),
                      weatherKitManager: WeatherKitManager(),
                      locationManager: LocationManager()

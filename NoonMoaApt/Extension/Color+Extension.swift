@@ -28,33 +28,35 @@ extension Color {
     static let userThemeYellow1 = Color(hex: 0xDAD56C)
     
     static let announcementGray = Color(hex:0x5F5F5F)
+    
+    static let calendarGray = Color(hex: 0x808080)
    
     struct stampBorder {
         static let clearSunrise = Color(hex: 0xABD5ED)
         static let clearMorning = Color(hex: 0xABD5ED)
         static let clearAfternoon = Color(hex: 0xABD5ED)
-        static let clearSunset = Color(hex: 0x3A4C8B)
+        static let clearSunset = Color(hex: 0xC5C5C5)
         static let clearEvening = Color(hex: 0x3A4C8B)
         static let clearNight = Color(hex: 0x3A4C8B)
         
         static let cloudySunrise = Color(hex: 0xB3B4B4)
         static let cloudyMorning = Color(hex: 0xB3B4B4)
         static let cloudyAfternoon = Color(hex: 0xB3B4B4)
-        static let cloudySunset = Color(hex: 0x5A6384)
+        static let cloudySunset = Color(hex: 0xC5C5C5)
         static let cloudyEvening = Color(hex: 0x5A6384)
         static let cloudyNight = Color(hex: 0x5A6384)
         
         static let rainySunrise = Color(hex: 0xB3B4B4)
         static let rainyMorning = Color(hex: 0xB3B4B4)
         static let rainyAfternoon = Color(hex: 0xB3B4B4)
-        static let rainySunset = Color(hex: 0x5A6384)
+        static let rainySunset = Color(hex: 0xC5C5C5)
         static let rainyEvening = Color(hex: 0x5A6384)
         static let rainyNight = Color(hex: 0x5A6384)
         
         static let snowySunrise = Color(hex: 0xB8CBEE)
         static let snowyMorning = Color(hex: 0xB8CBEE)
         static let snowyAfternoon = Color(hex: 0xB8CBEE)
-        static let snowySunset = Color(hex: 0x56509A)
+        static let snowySunset = Color(hex: 0xC5C5C5)
         static let snowyEvening = Color(hex: 0x56509A)
         static let snowyNight = Color(hex: 0x56509A)
     }
@@ -88,17 +90,17 @@ extension LinearGradient {
         static let clearEvening = LinearGradient(colors: [Color(hex: 0x26537D), Color(hex: 0xA8CAE9)], startPoint: .top, endPoint: .bottom)
         static let clearNight = LinearGradient(colors: [Color(hex: 0x232F5A), Color(hex: 0xADB8E0)], startPoint: .top, endPoint: .bottom)
         
-        static let cloudySunrise = LinearGradient(colors: [Color(hex: 0xBCD8E9), Color(hex: 0xFFD9D9)], startPoint: .top, endPoint: .bottom)
+        static let cloudySunrise = LinearGradient(colors: [Color(hex: 0xB1B1B1), Color(hex: 0xE4EDF5)], startPoint: .top, endPoint: .bottom)
         static let cloudyMorning = LinearGradient(colors: [Color(hex: 0xB1B1B1), Color(hex: 0xE4EDF5)], startPoint: .top, endPoint: .bottom)
         static let cloudyAfternoon = LinearGradient(colors: [Color(hex: 0xB1B1B1), Color(hex: 0xE4EDF5)], startPoint: .top, endPoint: .bottom)
-        static let cloudySunset = LinearGradient(gradient: Gradient(colors: [Color(hex: 0xC4DCE1), Color(hex: 0xDAC1AF), Color(hex: 0xF2A482)]), startPoint: .top, endPoint: .bottom)
+        static let cloudySunset = LinearGradient(colors: [Color(hex: 0xB1B1B1), Color(hex: 0xE4EDF5)], startPoint: .top, endPoint: .bottom)
         static let cloudyEvening = LinearGradient(colors: [Color(hex: 0x565F81), Color(hex: 0xB3B9CD)], startPoint: .top, endPoint: .bottom)
         static let cloudyNight = LinearGradient(colors: [Color(hex: 0x565F81), Color(hex: 0xB3B9CD)], startPoint: .top, endPoint: .bottom)
         
         static let rainySunrise = LinearGradient(colors: [Color(hex: 0xBCD8E9), Color(hex: 0xFFD9D9)], startPoint: .top, endPoint: .bottom)
         static let rainyMorning = LinearGradient(colors: [Color(hex: 0xB1B1B1), Color(hex: 0xE4EDF5)], startPoint: .top, endPoint: .bottom)
         static let rainyAfternoon = LinearGradient(colors: [Color(hex: 0xB1B1B1), Color(hex: 0xE4EDF5)], startPoint: .top, endPoint: .bottom)
-        static let rainySunset = LinearGradient(gradient: Gradient(colors: [Color(hex: 0xC4DCE1), Color(hex: 0xDAC1AF), Color(hex: 0xF2A482)]), startPoint: .top, endPoint: .bottom)
+        static let rainySunset = LinearGradient(colors: [Color(hex: 0xB1B1B1), Color(hex: 0xE4EDF5)], startPoint: .top, endPoint: .bottom)
         static let rainyEvening = LinearGradient(colors: [Color(hex: 0x565F81), Color(hex: 0xB3B9CD)], startPoint: .top, endPoint: .bottom)
         static let rainyNight = LinearGradient(colors: [Color(hex: 0x565F81), Color(hex: 0xB3B9CD)], startPoint: .top, endPoint: .bottom)
         

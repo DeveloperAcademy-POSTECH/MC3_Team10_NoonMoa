@@ -11,7 +11,7 @@ import FirebaseFirestore
 import FirebaseAuth
 import AVFoundation
 
-struct AptView: View {
+struct FixAptView: View {
     @EnvironmentObject var viewRouter: ViewRouter
     @EnvironmentObject var aptModel: AptModel
     @EnvironmentObject var attendanceModel: AttendanceModel
@@ -65,11 +65,10 @@ struct AptView: View {
                             ForEach(users.indices, id: \.self) { rowIndex in
                                 HStack(spacing: 12) {
                                     ForEach(users[rowIndex].indices, id: \.self) { colIndex in
-                                        if rowIndex < aptModel.user2DLayout.count && colIndex < aptModel.user2DLayout[rowIndex].count {
-                                            SceneRoom(roomUser: $aptModel.user2DLayout[rowIndex][colIndex])
+                                                                                 SceneRoom(roomUser: $users[rowIndex][colIndex])
                                                 .environmentObject(customViewModel)
                                                 .frame(width: (geo.size.width - 48) / 3, height: ((geo.size.width - 48) / 3) / 1.2)
-                                        }
+                                        
                                     }
                                 }
                             }
@@ -102,10 +101,10 @@ struct AptView: View {
                 ZStack {
                     GeometryReader { geo in
                         VStack(spacing: 16) {
-                            ForEach(aptModel.user2DLayout.indices, id: \.self) { rowIndex in
+                            ForEach(users.indices, id: \.self) { rowIndex in
                                 HStack(spacing: 12) {
-                                    ForEach(aptModel.user2DLayout[rowIndex].indices, id: \.self) { colIndex in
-                                        SceneButtons(roomUser: $aptModel.user2DLayout[rowIndex][colIndex])
+                                    ForEach(users[rowIndex].indices, id: \.self) { colIndex in
+                                        SceneButtons(roomUser: $users[rowIndex][colIndex])
                                             .environmentObject(customViewModel)
                                             .frame(width: (geo.size.width - 48) / 3, height: ((geo.size.width - 48) / 3) / 1.2)
                                         //방 이미지 자체의 비율 1:1.2 통한 높이 산정
@@ -199,13 +198,11 @@ struct AptView: View {
             aptModel.fetchCurrentUserApt()
             
             playSound(soundName: Text.sounds.clear)
-            
-            // 3초마다 화면 다시 그리기
-            Timer.scheduledTimer(withTimeInterval: 4.0, repeats: true) { timer in
-                DispatchQueue.global(qos: .utility).async {
-                    aptModel.fetchCurrentUserApt()
-                }
-            }
+//            Timer.scheduledTimer(withTimeInterval: 4.0, repeats: true) { timer in
+//                DispatchQueue.global().async {
+//                    aptModel.fetchCurrentUserApt()
+//                }
+//            }
             
             attendanceModel.downloadAttendanceRecords(for: Date())
             
@@ -222,7 +219,7 @@ struct AptView: View {
                             ])
                         }
                     } else {
-                        print("AptView | No user is signed in.")
+                        print("No user is signed in.")
                     }
                 }
             }
@@ -230,7 +227,7 @@ struct AptView: View {
     }
 }
 
-struct AptView_Previews: PreviewProvider {
+struct FixAptView_Previews: PreviewProvider {
     static var previews: some View {
         let newAttendanceRecord = AttendanceRecord(
             userId: "",
@@ -247,7 +244,7 @@ struct AptView_Previews: PreviewProvider {
             rawSunsetTime: Date()
         )
         
-        AptView()
+        FixAptView()
             .environmentObject(ViewRouter())
             .environmentObject(AptModel())
             .environmentObject(AttendanceModel(newAttendanceRecord: newAttendanceRecord))
@@ -255,6 +252,6 @@ struct AptView_Previews: PreviewProvider {
             .environmentObject(EnvironmentModel())
             .environmentObject(CustomViewModel())
             .environmentObject(WeatherKitManager())
-            .environmentObject(LocationManager())        
+            .environmentObject(LocationManager())
     }
 }

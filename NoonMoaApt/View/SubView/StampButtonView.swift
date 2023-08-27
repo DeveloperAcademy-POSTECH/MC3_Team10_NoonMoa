@@ -21,6 +21,7 @@ struct StampButtonView: View {
     var bodyColor: LinearGradient
     var eyeColor: LinearGradient
     var cheekColor: LinearGradient
+    var borderColor: Color
     
     var body: some View {
         
@@ -34,10 +35,12 @@ struct StampButtonView: View {
                     .resizable()
                     .scaledToFit()
                     .clipShape(RoundedRectangle(cornerRadius: 50))
-                EyeView(isSmiling: isSmiling, isBlinkingLeft: isBlinkingLeft, isBlinkingRight: isBlinkingRight, lookAtPoint: lookAtPoint, faceOrientation: faceOrientation, bodyColor: bodyColor, eyeColor: eyeColor, cheekColor: cheekColor, isInactiveOrSleep: false, isJumping: false)
+                
+                EyeStampView(isSmiling: isSmiling, isBlinkingLeft: isBlinkingLeft, isBlinkingRight: isBlinkingRight, lookAtPoint: lookAtPoint, faceOrientation: faceOrientation, bodyColor: bodyColor, eyeColor: eyeColor, cheekColor: cheekColor)
                     .frame(width: geo.size.width * 0.7)
+                
                 Circle()
-                    .strokeBorder(Color.black, lineWidth: 1)
+                    .strokeBorder(borderColor, lineWidth: 1)
                 
             }//Zstack
             .frame(width: geo.size.width, height: geo.size.width, alignment: .center)
@@ -48,7 +51,7 @@ struct StampButtonView: View {
 
 struct StampButtonView_Previews: PreviewProvider {
     static var previews: some View {
-        StampButtonView(skyColor: LinearGradient.sky.clearMorning, skyImage: Image.assets.stampSmall.clearMorning, isSmiling: false, isBlinkingLeft: false, isBlinkingRight: false, lookAtPoint: SIMD3<Float>(0.0, 0.0, 0.0), faceOrientation: SIMD3<Float>(0.0, 0.0, 0.0), bodyColor: LinearGradient.userBlue, eyeColor: LinearGradient.eyeBlue, cheekColor: LinearGradient.cheekRed)
+        StampButtonView(skyColor: LinearGradient.sky.clearMorning, skyImage: Image.assets.stampSmall.clearMorning, isSmiling: false, isBlinkingLeft: false, isBlinkingRight: false, lookAtPoint: SIMD3<Float>(0.0, 0.0, 0.0), faceOrientation: SIMD3<Float>(0.0, 0.0, 0.0), bodyColor: LinearGradient.userBlue, eyeColor: LinearGradient.eyeBlue, cheekColor: LinearGradient.cheekRed, borderColor: Color.stampBorder.clearMorning)
             .environmentObject(EnvironmentModel())
     }
 }

@@ -16,7 +16,6 @@ struct FunctionTestView: View {
     
     @State private var indexTime: Int = 0
     @State private var indexWeather: Int = 0
-    @Binding var buttonText: String
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -26,7 +25,7 @@ struct FunctionTestView: View {
                     .fill(.white)
                     .frame(width: 80, height: 48)
                     .overlay(
-                        Text(buttonText)
+                        Text("")
                             .foregroundColor(.black)
                             .font(.caption)
                     )
@@ -161,10 +160,9 @@ struct FunctionTestView: View {
 }
 
 struct FunctionTestView_Previews: PreviewProvider {
-    @State static var buttonText: String = ""
     
     static var previews: some View {
-        FunctionTestView(buttonText: $buttonText)
+        FunctionTestView()
             .environmentObject(ViewRouter())
             .environmentObject(EnvironmentModel())
     }

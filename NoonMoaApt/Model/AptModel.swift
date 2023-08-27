@@ -23,66 +23,89 @@ class AptModel: ObservableObject {
         firestoreManager.db
     }
     
-    // 올리버의 방 배치 알고리즘
+    
     func getIndexShaker(userIndex: Int) -> [Int] {
-        let numPerFloor = 3
-        let floorNum = 4
-        let aptCapacity = numPerFloor * floorNum // = 12
+        var tbr: [Int]
         
-        // to be returned
-        var tbr = [Int]()
-        
-        for i in 0..<aptCapacity {
-            tbr.append(i)
-        }
-        
-        guard userIndex >= 0, userIndex < aptCapacity else {
-            print("wrong userIndex")
-            return tbr
-        }
-        // quotient
-        // q >= 0
-        let q = userIndex / numPerFloor
-        
-        // remainer
-        let r = userIndex % numPerFloor
-        
-        var quotientArray = [Int]()
-        for i in 0..<floorNum {
-            quotientArray.append(q-1+i)
-        }
-        
-        // maxQ must equal to quotientArray.count
-        for i in 0..<quotientArray.count {
-            if quotientArray[i] < 0 {
-                quotientArray[i] += floorNum
-            } else if quotientArray[i] >= floorNum {
-                quotientArray[i] -= floorNum
-            }
-        }
-        
-        var remainderArray = [Int]()
-        for i in 0..<numPerFloor {
-            remainderArray.append(r-1+i)
-        }
-        
-        // numPerFloor must equal to remainderArray.count
-        for i in 0..<remainderArray.count {
-            if remainderArray[i] < 0 {
-                remainderArray[i] += numPerFloor
-            } else if remainderArray[i] >= numPerFloor {
-                remainderArray[i] -= numPerFloor
-            }
-        }
-        
-        for i in 0..<aptCapacity {
-            let iq = i / numPerFloor
-            let ir = i % numPerFloor
-            tbr[i] = quotientArray[iq] * numPerFloor + remainderArray[ir]
+        switch userIndex {
+        case 1: tbr = [0, 11, 10, 3, 1, 2, 6, 4, 5, 9, 7, 8]
+        case 2: tbr = [10, 11, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+        case 3: tbr = [11, 0, 10, 2, 3, 1, 5, 6, 4, 8, 9, 7]
+        case 4: tbr = [3, 1, 2, 6, 4, 5, 9, 7, 8, 0, 10, 11]
+        case 5: tbr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0]
+        case 6: tbr = [2, 3, 1, 5, 6, 4, 8, 9, 7, 11, 0, 10]
+        case 7: tbr = [6, 4, 5, 9, 7, 8, 0, 10, 11, 3, 1, 2]
+        case 8: tbr = [4, 5, 6, 7, 8, 9, 10, 11, 0, 1, 2, 3]
+        case 9: tbr = [5, 6, 4, 8, 9, 7, 11, 0, 10, 2, 3, 1]
+        case 10: tbr = [9, 7, 8, 0, 10, 11, 3, 1, 2, 6, 4, 5]
+        case 11: tbr = [7, 8, 9, 10, 11, 0, 1, 2, 3, 4, 5, 6]
+        case 12: tbr = [8, 9, 7, 11, 12, 10, 2, 3, 1, 5, 6, 4]
+
+        default: return []
         }
         
         return tbr
     }
+//    // 올리버의 방 배치 알고리즘
+//    func getIndexShaker(userIndex: Int) -> [Int] {
+//        let numPerFloor = 3
+//        let floorNum = 4
+//        let aptCapacity = numPerFloor * floorNum // = 12
+//
+//        // to be returned
+//        var tbr = [Int]()
+//
+//        for i in 0..<aptCapacity {
+//            tbr.append(i)
+//        }
+//
+//        guard userIndex >= 0, userIndex < aptCapacity else {
+//            print("wrong userIndex")
+//            return tbr
+//        }
+//        // quotient
+//        // q >= 0
+//        let q = userIndex / numPerFloor
+//
+//        // remainer
+//        let r = userIndex % numPerFloor
+//
+//        var quotientArray = [Int]()
+//        for i in 0..<floorNum {
+//            quotientArray.append(q-1+i)
+//        }
+//
+//        // maxQ must equal to quotientArray.count
+//        for i in 0..<quotientArray.count {
+//            if quotientArray[i] < 0 {
+//                quotientArray[i] += floorNum
+//            } else if quotientArray[i] >= floorNum {
+//                quotientArray[i] -= floorNum
+//            }
+//        }
+//
+//        var remainderArray = [Int]()
+//        for i in 0..<numPerFloor {
+//            remainderArray.append(r-1+i)
+//        }
+//
+//        // numPerFloor must equal to remainderArray.count
+//        for i in 0..<remainderArray.count {
+//            if remainderArray[i] < 0 {
+//                remainderArray[i] += numPerFloor
+//            } else if remainderArray[i] >= numPerFloor {
+//                remainderArray[i] -= numPerFloor
+//            }
+//        }
+//
+//        for i in 0..<aptCapacity {
+//            let iq = i / numPerFloor
+//            let ir = i % numPerFloor
+//            tbr[i] = quotientArray[iq] * numPerFloor + remainderArray[ir]
+//        }
+//
+//        return tbr
+//    }
     
     // Fetch current user's apartment
     func fetchCurrentUserApt() {

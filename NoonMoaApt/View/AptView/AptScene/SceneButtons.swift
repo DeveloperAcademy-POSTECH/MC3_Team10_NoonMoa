@@ -13,10 +13,11 @@ import FirebaseFirestore
 struct SceneButtons: View {
     
     @Binding var roomUser: User
-    @Binding var buttonText: String
     
     @State private var lastActiveToggle: Bool = false
     @State private var lastWakenTimeToggle: Bool = false
+    @State private var lastWakenTime: Int = 0
+
     @EnvironmentObject var customViewModel: CustomViewModel
     
     let pushNotiController = PushNotiController()
@@ -29,17 +30,6 @@ struct SceneButtons: View {
             switch roomUser.userState {
             case "sleep":
                 Button(action: {
-                    //TODO: 더미데이터일 경우 실행하지않기_임시로 분기처리
-                    if roomUser.token.count > 1 {
-                        
-                        // push 알림 보내기
-                        DispatchQueue.global(qos: .userInteractive).async {
-                            print("SceneButtons | roomUser \(roomUser)")
-                            pushNotiController.requestPushNotification(to: roomUser.id!)
-                        }
-                    }
-                    
-                    buttonText = "\(roomUser.roomId ?? "")\nsleep"
                     lastActiveToggle = true
                 }) {
                     Color.clear
@@ -52,21 +42,9 @@ struct SceneButtons: View {
                         .opacity(0.3)
                     
                     VStack {
-                        HStack {
-                            Image.symbol.moon
-                                .foregroundColor(.white)
-                                .font(.body)
-                            Text("3일")
-                                .foregroundColor(.white)
-                                .font(.body)
-                                .bold()
-                        }//HStack
-                        .offset(y: 4)
-                        //오프셋 보정
                         Button(action: {
                             lastActiveToggle = false
                             lastWakenTimeToggle = true
-                            buttonText = "\(roomUser.roomId ?? "")\n깨우는 중"
                             
                             if roomUser.token.count > 1 {
                                 
@@ -76,6 +54,8 @@ struct SceneButtons: View {
                                     pushNotiController.requestPushNotification(to: roomUser.id!)
                                 }
                             }
+                            UserDefaults.standard.set(Date(), forKey: "\(String(describing: roomUser.roomId))")
+
                         }) {
                             RoundedRectangle(cornerRadius: 20)
                                 .fill(Color.black)
@@ -88,8 +68,7 @@ struct SceneButtons: View {
                                         .bold()
                                 )
                         }
-                        .offset(y: -4)
-                        //오프셋 보정
+                        
                     }
                 }//ZStack
                 .opacity(lastActiveToggle ? 1 : 0)
@@ -119,8 +98,15 @@ struct SceneButtons: View {
                     }//VStack
                     
                     Button(action: {
-//                        lastWakenTimeToggle = false
-                        buttonText = "\(roomUser.roomId ?? "")\n시간 종료"
+                        
+                        lastWakenTime = Calendar.current.dateComponents([.second], from: UserDefaults.standard.value(forKey: "\(String(describing: roomUser.roomId))") as! Date , to: Date()).second ?? 0
+                        
+                        if lastWakenTime >= 10 {
+                            lastWakenTimeToggle = false
+                        } else {
+                            print(lastWakenTime)
+                        }
+                       
                     }) {
                         Color.clear
                             .cornerRadius(8)
@@ -130,7 +116,7 @@ struct SceneButtons: View {
                 
             case "active":
                 Button(action: {
-                    buttonText = "\(roomUser.roomId ?? "")\nactive"
+                   
                     //TODO: 더미데이터일 경우 실행하지않기_임시로 분기처리
                     if roomUser.token.count > 1 {
                         
@@ -186,14 +172,14 @@ struct SceneButtons: View {
                                 pushNotiController.requestPushNotification(to: roomUser.id!)
                             }
                         }
-                        buttonText = "\(roomUser.roomId ?? "")\ninactive"
+                       
                     }) {
                         Color.clear
                             .cornerRadius(8)
                     }
                 default :
                     Button(action: {
-                        buttonText = "\(roomUser.roomId ?? "")\nvacant"
+                     
                     }) {
                         Color.clear
                             .cornerRadius(8)
@@ -203,3 +189,32 @@ struct SceneButtons: View {
         }
     }
     
+struct SceneButtons_Previews: PreviewProvider {
+          static var previews: some View {
+            let newAttendanceRecord = AttendanceRecord(
+                userId: "",
+                date: Date(),
+                rawIsSmiling: false,
+                rawIsBlinkingLeft: true,
+                rawIsBlinkingRight: false,
+                rawLookAtPoint: [0, 0, 0],
+                rawFaceOrientation: [0, 0, 0],
+                rawCharacterColor: [0, 0, 0],
+                rawWeather: "clear",
+                rawTime: Date(),
+                rawSunriseTime: Date(),
+                rawSunsetTime: Date()
+            )
+            
+            FixAptView()
+                .environmentObject(ViewRouter())
+                .environmentObject(AptModel())
+                .environmentObject(AttendanceModel(newAttendanceRecord: newAttendanceRecord))
+                .environmentObject(CharacterModel())
+                .environmentObject(EnvironmentModel())
+                .environmentObject(CustomViewModel())
+                .environmentObject(WeatherKitManager())
+                .environmentObject(LocationManager())
+        }
+    }
+
