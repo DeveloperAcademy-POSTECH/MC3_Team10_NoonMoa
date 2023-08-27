@@ -26,6 +26,8 @@
 		8A7FF4A42A77AC070075BA78 /* AttendanceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7FF4A32A77AC070075BA78 /* AttendanceModel.swift */; };
 		8A7FF4A62A77AC1A0075BA78 /* CustomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7FF4A52A77AC1A0075BA78 /* CustomViewModel.swift */; };
 		8A7FF4AE2A77ACAC0075BA78 /* SceneBroadcast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7FF4AD2A77ACAC0075BA78 /* SceneBroadcast.swift */; };
+		8A83E5042A9A63A900B82C07 /* EyeStampView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A83E5032A9A63A900B82C07 /* EyeStampView.swift */; };
+		8A83E50C2A9AFEA800B82C07 /* FixAptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A83E50B2A9AFEA800B82C07 /* FixAptView.swift */; };
 		8A84C29F2A6ED2DF001A9094 /* SceneMyEye.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A84C29E2A6ED2DF001A9094 /* SceneMyEye.swift */; };
 		8A84C2A12A6ED2E9001A9094 /* SceneNeighborEye.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A84C2A02A6ED2E9001A9094 /* SceneNeighborEye.swift */; };
 		8A87D24A2A7B0BFD009D8220 /* Splash.json in Resources */ = {isa = PBXBuildFile; fileRef = 8A87D2492A7B0BFD009D8220 /* Splash.json */; };
@@ -65,7 +67,6 @@
 		E32E3E6A2A6951CE00B865E8 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32E3E502A6951CE00B865E8 /* MainView.swift */; };
 		E32E3E6D2A6951CE00B865E8 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32E3E542A6951CE00B865E8 /* LoginViewModel.swift */; };
 		E32E3E6E2A6951CE00B865E8 /* FirebaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32E3E552A6951CE00B865E8 /* FirebaseModel.swift */; };
-		E32E3E6F2A6951CE00B865E8 /* DummyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32E3E562A6951CE00B865E8 /* DummyData.swift */; };
 		E32E3E712A6951CE00B865E8 /* ViewRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32E3E582A6951CE00B865E8 /* ViewRouter.swift */; };
 		E32E3E732A6951CE00B865E8 /* AptModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32E3E5A2A6951CE00B865E8 /* AptModel.swift */; };
 		E32E3E7A2A69526600B865E8 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = E32E3E792A69526600B865E8 /* FirebaseAnalytics */; };
@@ -125,6 +126,8 @@
 		8A7FF4A32A77AC070075BA78 /* AttendanceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttendanceModel.swift; sourceTree = "<group>"; };
 		8A7FF4A52A77AC1A0075BA78 /* CustomViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomViewModel.swift; sourceTree = "<group>"; };
 		8A7FF4AD2A77ACAC0075BA78 /* SceneBroadcast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneBroadcast.swift; sourceTree = "<group>"; };
+		8A83E5032A9A63A900B82C07 /* EyeStampView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EyeStampView.swift; sourceTree = "<group>"; };
+		8A83E50B2A9AFEA800B82C07 /* FixAptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FixAptView.swift; sourceTree = "<group>"; };
 		8A84C29E2A6ED2DF001A9094 /* SceneMyEye.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneMyEye.swift; sourceTree = "<group>"; };
 		8A84C2A02A6ED2E9001A9094 /* SceneNeighborEye.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneNeighborEye.swift; sourceTree = "<group>"; };
 		8A87D2492A7B0BFD009D8220 /* Splash.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Splash.json; sourceTree = "<group>"; };
@@ -165,7 +168,6 @@
 		E32E3E502A6951CE00B865E8 /* MainView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		E32E3E542A6951CE00B865E8 /* LoginViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		E32E3E552A6951CE00B865E8 /* FirebaseModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseModel.swift; sourceTree = "<group>"; };
-		E32E3E562A6951CE00B865E8 /* DummyData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DummyData.swift; sourceTree = "<group>"; };
 		E32E3E582A6951CE00B865E8 /* ViewRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewRouter.swift; sourceTree = "<group>"; };
 		E32E3E5A2A6951CE00B865E8 /* AptModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AptModel.swift; sourceTree = "<group>"; };
 		E338B7E62A6CB54D00944E62 /* PushNotiController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotiController.swift; sourceTree = "<group>"; };
@@ -245,6 +247,7 @@
 			children = (
 				8AD230342A699F4C00C967B5 /* AptScene */,
 				E32E3E4D2A6951CE00B865E8 /* AptView.swift */,
+				8A83E50B2A9AFEA800B82C07 /* FixAptView.swift */,
 			);
 			path = AptView;
 			sourceTree = "<group>";
@@ -313,6 +316,7 @@
 			children = (
 				F4A568B22A6A36B3004BD316 /* LottieView.swift */,
 				8AD2ECC02A6E163E0063D9ED /* EyeView.swift */,
+				8A83E5032A9A63A900B82C07 /* EyeStampView.swift */,
 				DA904E312A6A361700CC14D9 /* StampLargeView.swift */,
 				DA904E322A6A361700CC14D9 /* StampButtonView.swift */,
 			);
@@ -393,7 +397,6 @@
 				8A2724DD2A78E3E000A8D970 /* WeatherKit */,
 				E35DC8802A6EEB3300990AB6 /* MidnightUpdaterController.swift */,
 				E32E3E552A6951CE00B865E8 /* FirebaseModel.swift */,
-				E32E3E562A6951CE00B865E8 /* DummyData.swift */,
 				E3A82DB12A716E1400B1EB95 /* FirestoreManager.swift */,
 				8A7FF49F2A77ABEC0075BA78 /* CharacterModel.swift */,
 				8A7FF4A12A77ABF90075BA78 /* EnvironmentModel.swift */,
@@ -593,12 +596,12 @@
 				8AD2ECC42A6E163E0063D9ED /* EyeViewController.swift in Sources */,
 				E32E3E712A6951CE00B865E8 /* ViewRouter.swift in Sources */,
 				8AD2303D2A699F4C00C967B5 /* SceneButtons.swift in Sources */,
-				E32E3E6F2A6951CE00B865E8 /* DummyData.swift in Sources */,
 				8A84C29F2A6ED2DF001A9094 /* SceneMyEye.swift in Sources */,
 				E32E3E652A6951CE00B865E8 /* AttendanceView.swift in Sources */,
 				8AD230442A699F4C00C967B5 /* SceneBackground.swift in Sources */,
 				8A7FF4AE2A77ACAC0075BA78 /* SceneBroadcast.swift in Sources */,
 				8A9910822A789F8F0083602F /* WeatherModel.swift in Sources */,
+				8A83E50C2A9AFEA800B82C07 /* FixAptView.swift in Sources */,
 				8AD2303F2A699F4C00C967B5 /* FunctionTestView.swift in Sources */,
 				8AD230402A699F4C00C967B5 /* SceneRoom.swift in Sources */,
 				E32E3E662A6951CE00B865E8 /* LoginView.swift in Sources */,
@@ -624,6 +627,7 @@
 				DA904E342A6A361700CC14D9 /* StampButtonView.swift in Sources */,
 				8A7FF4A62A77AC1A0075BA78 /* CustomViewModel.swift in Sources */,
 				8AD2ECC32A6E163E0063D9ED /* EyeView.swift in Sources */,
+				8A83E5042A9A63A900B82C07 /* EyeStampView.swift in Sources */,
 				8AD230412A699F4C00C967B5 /* SceneWeather.swift in Sources */,
 				8A7FF4A02A77ABEC0075BA78 /* CharacterModel.swift in Sources */,
 				E32E3E6D2A6951CE00B865E8 /* LoginViewModel.swift in Sources */,

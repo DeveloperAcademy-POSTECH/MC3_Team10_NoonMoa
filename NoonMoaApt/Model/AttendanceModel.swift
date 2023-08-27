@@ -103,7 +103,6 @@ class AttendanceModel: ObservableObject {
         
         environmentModel.getCurrentEnvironment()
         environmentModel.saveRawEnvironmentToAttendanceModel(newAttendanceRecord: &newAttendanceRecord)
-        characterModel.getCurrentCharacter()
         characterModel.saveRawCharacterToAttendanceModel(newAttendanceRecord: &newAttendanceRecord)
         print("newAttendanceRecord: \(String(describing: newAttendanceRecord))")
         

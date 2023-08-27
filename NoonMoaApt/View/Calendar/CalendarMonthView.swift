@@ -27,16 +27,15 @@ struct CalendarMonthView: View {
                     //연도와 월 View
                     HStack(spacing: 20) {
                         Button {
-                            withAnimation {
                                 currentMonth -= 1
-                            }
                         } label: {
                             Image(systemName: "chevron.left")
                                 .font(.title)
                                 .foregroundColor(.black)
+                                .padding(.trailing, 16)
                         }
                         
-                        Spacer()
+                        Spacer(minLength: 0)
                         
                         Text("\(extraDate()[0])년")
                             .font(.title)
@@ -45,16 +44,15 @@ struct CalendarMonthView: View {
                             .font(.title)
                             .fontWeight(.semibold)
                         
-                        Spacer()
-                        
+                        Spacer(minLength: 0)
+
                         Button {
-                            withAnimation {
                                 currentMonth += 1
-                            }
                         } label: {
                             Image(systemName: "chevron.right")
                                 .font(.title)
                                 .foregroundColor(.black)
+                                .padding(.leading, 16)
                         }
                     }
                     .padding(.top, 16)
@@ -88,7 +86,6 @@ struct CalendarMonthView: View {
                                         selectedDate = value
                                         isDayClicked = true
                                     }
-                                
                             }
                         }
                     }
@@ -106,7 +103,6 @@ struct CalendarMonthView: View {
     
     @ViewBuilder
     func CardView(value: DateValue) -> some View {
-        
         ZStack {
             
             if value.day != -1 {
@@ -114,7 +110,8 @@ struct CalendarMonthView: View {
                 let comparisonResult = Calendar.current.compare(value.date, to: Date(), toGranularity: .day)
                 
                 Circle()
-                    .stroke(style: StrokeStyle(lineWidth: 1, dash: [3, 3]))
+                    .strokeBorder(style: StrokeStyle(lineWidth: 1, dash: [3, 3]))
+                    .frame(width: 36, height: 36)
                     .foregroundColor(isToday ? .black : comparisonResult == .orderedAscending ? .calendarGray : .calendarGray)
                 Text("\(value.day)")
                     .font(.title3)
@@ -123,21 +120,17 @@ struct CalendarMonthView: View {
                     .foregroundColor(isToday ? .black : comparisonResult == .orderedAscending ? .calendarGray : .calendarGray)
                 
                 
-                //만약 해당날짜에 attendance가 찍혀있다면_으로 로직 변경
-                if Calendar.current.isDateInToday(value.date) {
-                    Circle()
-                        .background(LinearGradient.sky.clearNight)
-                        .foregroundColor(.clear)
-                        .clipShape(Circle())
-                    
-                    Image.assets.stampSmall.clearNight
-                        .resizable()
-                        .scaledToFill()
-                        .clipShape(Circle())
-                    Circle()
-                        .stroke(lineWidth: 1)
-                        .foregroundColor(Color.stampBorder.clearNight)
-                    EyeView(isSmiling: true, isBlinkingLeft: true, isBlinkingRight: false, lookAtPoint: SIMD3(0,0,0), faceOrientation: SIMD3(0,0,0), bodyColor: LinearGradient.userCyan, eyeColor: LinearGradient.eyeCyan, cheekColor: LinearGradient.cheekRed, isInactiveOrSleep: false, isJumping: false)
+                //TODO: 만약 attendance Records의 키값인 날짜에서 value에 해당하는 날짜가 있다면 그 날짜에 들어있는 스탬프 정보를 받아와서 그려야함.
+                //TODO: CharacterModel과 EnvironmentModel, CustomViewModel에 있는 함수인 fetch 함수를 실행시키고, 각 모델의 recorded변수에 접근하면 뷰를 그릴 수 있다.
+                if Calendar.current.isDateInToday(value.date) {//이 조건문을 교체해
+//                    let attendanceRecord = AttendanceRecords중에 value날짜로 된 키의 record
+//                    CharacterModel().fetchRecordedCharacter(record: attendanceRecord)
+                //하나의 attendanceRecord를 찾았다면, 그 raw데이터를 뷰데이터로 바꿔주는 함수 실행
+                    let environment = EnvironmentModel()
+                    let character = CharacterModel()
+                    let custom = CustomViewModel()
+                    StampButtonView(skyColor: environment.recordedColorOfSky, skyImage: environment.recordedStampSmallSkyImage, isSmiling: character.recordedIsSmiling, isBlinkingLeft: character.recordedIsBlinkingLeft, isBlinkingRight: character.recordedIsBlinkingRight, lookAtPoint: character.recordedLookAtPoint, faceOrientation: character.recordedFaceOrientation, bodyColor: custom.recordedBodyColor, eyeColor: custom.recordedEyeColor, cheekColor: custom.recordedCheekColor, borderColor: environment.recordedStampBorderColor)
+                        .frame(width: 36, height: 36)
                 }
             }
         }
@@ -154,6 +147,7 @@ struct CalendarMonthView: View {
                     Image(systemName: "chevron.left")
                         .font(.title)
                         .foregroundColor(.black)
+                        .padding(.trailing, 16)
                 }
                 
                 Text(String(Calendar.current.component(.year, from: value.date)) + "년")
@@ -176,7 +170,13 @@ struct CalendarMonthView: View {
                 .foregroundColor(.calendarGray)
                 .frame(height: 1)
             
-            StampLargeView(skyColor: LinearGradient.sky.clearSunset, skyImage: Image.assets.stampLarge.clearSunset, isSmiling: true, isBlinkingLeft: true, isBlinkingRight: false, lookAtPoint: SIMD3(0,0,0), faceOrientation: SIMD3(0,0,0), bodyColor: LinearGradient.userCyan, eyeColor: LinearGradient.eyeCyan, cheekColor: LinearGradient.cheekRed)
+            //TODO: attendance record에서 value에 해당하는 날짜를 찾은다음에, StampLargeView에 값을 뿌려서 그려야함.
+            
+            let environment = EnvironmentModel()
+            let character = CharacterModel()
+            let custom = CustomViewModel()
+            
+            StampLargeView(skyColor: environment.recordedColorOfSky, skyImage: environment.recordedStampLargeSkyImage, isSmiling: character.recordedIsSmiling, isBlinkingLeft: character.recordedIsBlinkingLeft, isBlinkingRight: character.recordedIsBlinkingRight, lookAtPoint: character.recordedLookAtPoint, faceOrientation: character.recordedFaceOrientation, bodyColor: custom.recordedBodyColor, eyeColor: custom.recordedEyeColor, cheekColor: custom.recordedCheekColor)
                 .frame(width: UIScreen.main.bounds.width * 0.7, height: UIScreen.main.bounds.width * 0.7)
                 .padding(.vertical)
             

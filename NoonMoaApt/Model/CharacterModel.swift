@@ -34,24 +34,24 @@ class CharacterModel: ObservableObject {
     var recordedIsSmiling: Bool = false
     var recordedIsBlinkingLeft: Bool = false
     var recordedIsBlinkingRight: Bool = false
-    var recordedLookAtPoint: SIMD3<Float> = SIMD3<Float>(0.0, 0.0, 0.0)
+    var recordedLookAtPoint: SIMD3<Float> = SIMD3<Float>(1.0, 0.0, 0.0)
     var recordedFaceOrientation: SIMD3<Float> = SIMD3<Float>(0.0, 0.0, 0.0)
-    var recordedCharacterColor: [Float] = [0.0, 0.0, 0.0]
+    var recordedCharacterColor: [Float] = [255.0, 255.0, 0.0]
     
     // MARK: - 업로드 -
     
     // Character의 실시간 데이터를 받아올 때 사용
-    func getCurrentCharacter() {
-        getCurrentCharacterViewData()
-        convertViewDataToRawCharacter(isSmiling: currentIsSmiling, isBlinkingLeft: currentIsBlinkingLeft, isBlinkingRight: currentIsBlinkingRight, lookAtPoint: currentLookAtPoint, faceOrientation: currentFaceOrientation, characterColor: currentCharacterColor)
-        print(rawLookAtPoint)
-    }
+//    func getCurrentCharacter() {
+//        getCurrentCharacterViewData()
+//        convertViewDataToRawCharacter(isSmiling: currentIsSmiling, isBlinkingLeft: currentIsBlinkingLeft, isBlinkingRight: currentIsBlinkingRight, lookAtPoint: currentLookAtPoint, faceOrientation: currentFaceOrientation, characterColor: currentCharacterColor)
+//        print(rawLookAtPoint)
+//    }
     
-    // Character의 실시간 데이터를 받아옴.
-    // View에서 바로 사용할 수 있는 형식이므로, ViewData라는 함수명을 사용
-    func getCurrentCharacterViewData() {
-    print("currentLookAtPoint: \(currentLookAtPoint)")
-    }
+//    // Character의 실시간 데이터를 받아옴.
+//    // View에서 바로 사용할 수 있는 형식이므로, ViewData라는 함수명을 사용
+//    func getCurrentCharacterViewData() {
+//    print("currentLookAtPoint: \(currentLookAtPoint)")
+//    }
     
     // AttendanceModel을 통해 서버에 저장할 때 사용
     //원본 데이터를 서버에 저장할 수 있는 데이터 형식으로 변환
@@ -84,7 +84,7 @@ class CharacterModel: ObservableObject {
 //        newAttendanceRecord?.rawLookAtPoint = rawLookAtPoint
 //        newAttendanceRecord?.rawFaceOrientation = rawFaceOrientation
 //        newAttendanceRecord?.rawCharacterColor = rawCharacterColor
-        newAttendanceRecord?.rawCharacterColor = CharacterModel().rawCharacterColor
+//        newAttendanceRecord?.rawCharacterColor = CharacterModel().rawCharacterColor
         // Update other recorded character-related properties as needed
     }
 
