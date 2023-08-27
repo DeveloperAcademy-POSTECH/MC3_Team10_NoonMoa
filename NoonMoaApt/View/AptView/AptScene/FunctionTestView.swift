@@ -133,7 +133,9 @@ struct FunctionTestView: View {
                         .opacity(0.3)
                 }
                 Button(action: {
-                    DispatchQueue.global().async {
+                    
+                    // 아파트 정보 갱신
+                    DispatchQueue.global(qos: .utility).async {
                         aptModel.fetchCurrentUserApt()
                     }
                 }) {

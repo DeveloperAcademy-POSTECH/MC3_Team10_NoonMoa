@@ -22,6 +22,9 @@ class PushNotiController: ObservableObject {
         firestoreManager.db
     }
     
+    private var notificationTimestamps: [String: Date] = [:]
+
+    
     // 푸시 알림 보내는 함수
     func sendPushNotification(userToken: String, title: String, content: String) {
         let urlString = "https://fcm.googleapis.com/fcm/send"
@@ -56,47 +59,38 @@ class PushNotiController: ObservableObject {
         task.resume()
     }
     
-
+    
     func requestPushNotification(to targetUserId: String) {
         guard let currentUser = Auth.auth().currentUser else {
             print("No current user")
             return
         }
-
+        
+        let lastNotificationTimeKey = "\(currentUser.uid)_\(targetUserId)"
+        if let lastTime = notificationTimestamps[lastNotificationTimeKey] {
+            if Date().timeIntervalSince(lastTime) < 600 {
+                print("Cannot send push notification. Wait for 10 minutes.")
+                return
+            }
+        }
+        
         let targetUserRef = db.collection("User").document(targetUserId)
         targetUserRef.addSnapshotListener { (doc, err) in
             if let doc = doc, doc.exists, let data = doc.data() {
                 if let targetUser = User(dictionary: data) {
-                    print("targetUser.token: \(targetUser.token)")
-                    print("targetUserId: \(targetUserId)")
-                    print("targetUser.userState: \(targetUser.userState)")
-                    
-                    // Check if the target user is not in 'Clicked' state
                     if targetUser.clicked == false {
-                        
-                        print("targetUser.clicked: \(targetUser.clicked)")
-                        
-                        // Update currentUser's 'requestedBy' list in Firebase
                         self.db.collection("User").document(targetUserId).updateData([
-                            "requestedBy": FieldValue.arrayUnion([currentUser.uid])
+                            "requestedBy": FieldValue.arrayUnion([currentUser.uid]),
+                            "clicked": true
                         ])
                         
-                        // After updating 'requestedBy', change clicked  to 'true'
-                        self.db.collection("User").document(targetUserId).updateData([
-                            "clicked": true])
-                        
-                        // Send push notification to targetUser
-                        self.sendPushNotification(userToken: targetUser.token, title: "이웃 : 똑똑똑, 살아계시죠?!", content: "")
-                        
+                        self.sendPushNotification(userToken: targetUser.token, title: "Notification", content: "")
+                        self.notificationTimestamps[lastNotificationTimeKey] = Date()
                     } else {
-                        // If targetUser is in 'Clicked' state, just update currentUser's 'requestedBy' list
-                        // But don't send the push notification
-                        print("else")
                         self.db.collection("User").document(targetUserId).updateData([
                             "requestedBy": FieldValue.arrayUnion([currentUser.uid])
                         ])
                     }
-                    
                 } else {
                     print("Error decoding target user")
                 }
@@ -105,25 +99,30 @@ class PushNotiController: ObservableObject {
             }
         }
     }
-
-
-
+    
     func responsePushNotification() {
         guard let currentUser = Auth.auth().currentUser else {
             print("No current user")
             return
         }
-
+        
         let currentUserRef = db.collection("User").document(currentUser.uid)
         currentUserRef.getDocument { (doc, err) in
             if let doc = doc, doc.exists, let data = doc.data() {
                 if let user = User(dictionary: data) {
-                    // Send push notifications to all users who requested the user
                     for userId in user.requestedBy {
+                        let lastNotificationTimeKey = "\(currentUser.uid)_\(userId)"
+                        if let lastTime = self.notificationTimestamps[lastNotificationTimeKey] {
+                            if Date().timeIntervalSince(lastTime) < 600 {
+                                continue
+                            }
+                        }
+                        
                         let userRef = self.db.collection("User").document(userId)
                         userRef.getDocument { (doc, err) in
                             if let doc = doc, doc.exists, let data = doc.data(), let userToken = data["token"] as? String {
-                                self.sendPushNotification(userToken: userToken, title: "내가 깨운 이웃이 일어났어요.", content: "지금 바로 반갑게 맞이해주세요!")
+                                self.sendPushNotification(userToken: userToken, title: "Notification", content: "")
+                                self.notificationTimestamps[lastNotificationTimeKey] = Date()
                             }
                         }
                     }
@@ -134,11 +133,9 @@ class PushNotiController: ObservableObject {
                 print("Error getting current user:", err)
             }
             
-            // init
             self.db.collection("User").document(currentUser.uid).updateData([
                 "requestedBy": []
             ])
         }
     }
-
 }

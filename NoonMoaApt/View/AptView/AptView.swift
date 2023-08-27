@@ -213,7 +213,7 @@ struct AptView: View {
                             ])
                         }
                     } else {
-                        print("No user is signed in.")
+                        print("AptView | No user is signed in.")
                     }
                 }
             }
