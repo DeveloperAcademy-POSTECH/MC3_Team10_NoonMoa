@@ -33,24 +33,26 @@ struct AttendanceRecord: Codable, Identifiable {
 
 class AttendanceModel: ObservableObject {
     
-    private var characterModel: CharacterModel = CharacterModel()
-    private var environmentModel: EnvironmentModel = EnvironmentModel()
-    
-    //    @Published var newAttendanceRecord: AttendanceRecord? = nil //^^ @Published가 필요성 고민 중...
-    var newAttendanceRecord: AttendanceRecord? = nil
-    
-    init(newAttendanceRecord: AttendanceRecord) {
-        // Initialize characterModel and environmentModel here
-        self.newAttendanceRecord = newAttendanceRecord
-    }
-    
-    // ^^
-    // 페페의 코드
     private var firestoreManager: FirestoreManager {
         FirestoreManager.shared
     }
     private var db: Firestore {
         firestoreManager.db
+    }
+    
+    // 외부에서 사용할 수 있는 attendanceRecords와 todayRecord 변수 추가
+    var attendanceRecords: [Date: AttendanceRecord] = [:]
+    var todayRecord: AttendanceRecord? = nil
+    
+    private var characterModel: CharacterModel = CharacterModel()
+    private var environmentModel: EnvironmentModel = EnvironmentModel()
+    
+    // @Published var newAttendanceRecord: AttendanceRecord? = nil //^^ @Published가 필요성 고민 중...
+    var newAttendanceRecord: AttendanceRecord? = nil
+    
+    init(newAttendanceRecord: AttendanceRecord) {
+        // Initialize characterModel and environmentModel here
+        self.newAttendanceRecord = newAttendanceRecord
     }
     
     // Function to convert AttendanceRecord to a dictionary
@@ -88,7 +90,6 @@ class AttendanceModel: ObservableObject {
         guard let currentUser = Auth.auth().currentUser else {
             print("No current user")
             return
-            
         }
         
         // MARK: - 서버에 업로드 될 때는 Timestamp 타입으로 자동 변환이 되어서 주석 처리 해놓음.
@@ -129,68 +130,41 @@ class AttendanceModel: ObservableObject {
     
     // 앱이 켜질 때 다운로드
     func downloadAttendanceRecords(for date: Date) {
-        let attendanceRecords = fetchAttendanceRecords(date: date)//추후 반복문 실행 시 밖으로 꺼낼 것
-        print("AttedanceModel | downloadAttendanceRecords | attendanceRecords : \(attendanceRecords)")
-        
-        // fetchAttendanceRecords 메서드 안의 completion 안으로 옮겼다. 실행 순서를 보장하려고.
-//        let dateString = changeDateToString(date: date)
-//        print("AttedanceModel | downloadAttendanceRecords | dateString : \(dateString)")
-        
-//        if let record = attendanceRecords[dateString] {
-//            environmentModel.fetchRecordedEnvironment(record: record)
-//            characterModel.fetchRecordedCharacter(record: record)
-//        }
+        fetchAttendanceRecords(date: date) { fetchedRecords in
+
+            
+            // 외부 변수를 업데이트
+            self.attendanceRecords = fetchedRecords.compactMapValues { (record) -> AttendanceRecord? in
+                record
+            }.compactMapKeys { dateString in
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "yyyy-MM-dd"
+                return dateFormatter.date(from: dateString)
+            }
+
+            print("AttendanceModel | downloadAttendanceRecords | attendanceRecords: \(self.attendanceRecords))")
+            print("=============")
+            
+            
+            // 오늘 날짜와 일치하는 데이터를 필터링
+            let startOfDay = Calendar.current.startOfDay(for: date)
+            let endOfDay = Calendar.current.date(byAdding: .day, value: 1, to: startOfDay)!
+            
+            let todaysRecords = fetchedRecords.filter { (key, record) in
+                let recordDate = record.date
+                return recordDate >= startOfDay && recordDate < endOfDay
+            }
+            
+            // 일치하는 데이터 중 첫 번째를 선택하고 외부 변수를 업데이트
+            self.todayRecord = todaysRecords.first?.value
+            print("AttendanceModel | downloadAttendanceRecords | todayRecord: \(String(describing: self.todayRecord))")
+        }
     }
     
-    //    // 앱이 켜질 때 다운로드
-    //    func downloadAttendanceRecords(for date: Date) {
-    //        guard let currentUser = Auth.auth().currentUser else {
-    //            print("No current user")
-    //            return
-    //        }
-    //
-    //        let dateFormatter = DateFormatter()
-    //        dateFormatter.dateFormat = "yyyy-MM-dd"
-    //        let dateString = dateFormatter.string(from: date)
-    //
-    //        db.collection("User").document(currentUser.uid).collection("attendanceRecords").document(dateString).getDocument { (document, error) in
-    //            if let error = error {
-    //                print("Error fetching attendance record for date \(dateString): \(error.localizedDescription)")
-    //                return
-    //            }
-    //
-    //            if let document = document, document.exists {
-    //                do {
-    //                    if let record = try document.data(as: AttendanceRecord?.self) {
-    //                        self.environmentModel.fetchRecordedEnvironment(record: record)
-    //                        self.characterModel.fetchRecordedCharacter(record: record)
-    //                    }
-    //                } catch let error {
-    //                    print("Error decoding attendance record for date \(dateString): \(error.localizedDescription)")
-    //                }
-    //            } else {
-    //                print("No attendance record found for date \(dateString).")
-    //            }
-    //        }
-    //    }
-    
-    
-    //        func fetchAttendanceRecords() -> [Date: AttendanceRecord] {
-    ////             Fetch attendance records from Firebase and return them as [Date: AttendanceRecord]
-    ////             Example of fetching from Firebase and converting to the desired dictionary format:
-    ////             var records = [Date: AttendanceRecord]()
-    ////             ... Fetch records from Firebase ...
-    //             for record in fetchedRecords {
-    //                 records[record.rawTime] = record
-    //             }
-    //             return records
-    //                    return [:] // Placeholder: Replace this with the actual fetched records
-    //        }
-    
-    func fetchAttendanceRecords(date: Date) -> [String: AttendanceRecord]  {
+    func fetchAttendanceRecords(date: Date, completion: @escaping ([String: AttendanceRecord]) -> Void) {
         guard let currentUser = Auth.auth().currentUser else {
             print("No current user")
-            return [:]
+            return
         }
         var fetchedRecords: [String: AttendanceRecord] = [:]
         
@@ -210,61 +184,68 @@ class AttendanceModel: ObservableObject {
                 print("AttendanceModel | fetchAttedanceRecords | documents: \(documents.count)")
                 
                 for document in documents {
-                    print("AttendanceModel | fetchAttedanceRecords | document: \(document.data()["rawWeather"] as? String ?? "")")
-                    do {
-                        // 여기서 record의 if let 풀어버렸다
-                        let record = try document.data(as: AttendanceRecord.self)
-                        let dateString = self.changeDateToString(date: record.date)
-                        fetchedRecords[dateString] = record
-                    } catch let error {
-                        print("Error decoding attendance record: \(error.localizedDescription)")
+//                    print("Document Data: \(document.data())") // 이 로그를 추가
+                    let documentID = document.documentID  // 문서 ID를 가져옵니다.
+                    let data = document.data()
+                    
+                    if let userId = data["userId"] as? String,
+                       let timestamp = data["date"] as? Timestamp,
+                       let rawIsSmiling = data["rawIsSmiling"] as? Bool,
+                       let rawIsBlinkingLeft = data["rawIsBlinkingLeft"] as? Bool,
+                       let rawIsBlinkingRight = data["rawIsBlinkingRight"] as? Bool,
+                       let rawLookAtPoint = (data["rawLookAtPoint"] as? NSArray)?.compactMap({ $0 as? Float }),
+                       let rawFaceOrientation = (data["rawFaceOrientation"] as? NSArray)?.compactMap({ $0 as? Float }),
+                       let rawCharacterColor = (data["rawCharacterColor"] as? NSArray)?.compactMap({ $0 as? Float }),
+                       let rawWeather = data["rawWeather"] as? String,
+                       let rawTime = (data["rawTime"] as? Timestamp)?.dateValue(),
+                       let rawSunriseTime = (data["rawSunriseTime"] as? Timestamp)?.dateValue(),
+                       let rawSunsetTime = (data["rawSunsetTime"] as? Timestamp)?.dateValue() {
+                        
+                        let date = timestamp.dateValue()
+                        let newRecord = AttendanceRecord(id: document.documentID,
+                                                         userId: userId,
+                                                         date: date,
+                                                         rawIsSmiling: rawIsSmiling,
+                                                         rawIsBlinkingLeft: rawIsBlinkingLeft,
+                                                         rawIsBlinkingRight: rawIsBlinkingRight,
+                                                         rawLookAtPoint: rawLookAtPoint,
+                                                         rawFaceOrientation: rawFaceOrientation,
+                                                         rawCharacterColor: rawCharacterColor,
+                                                         rawWeather: rawWeather,
+                                                         rawTime: rawTime,
+                                                         rawSunriseTime: rawSunriseTime,
+                                                         rawSunsetTime: rawSunsetTime)
+                        
+                        let dateString = self.changeDateToString(date: newRecord.date)
+                        // fetchedRecords[dateString] = newRecord
+                        fetchedRecords[documentID] = newRecord  // 문서 ID를 키로 사용
+
+                        
+                        print("newRecord: \(newRecord)")
+                        print("New record with Document ID \(documentID) is saved.")  // 디버깅용
+
+                        
+                        // 이제 새로 생성된 AttendanceRecord 객체를 사용하여 environmentModel과 characterModel을 업데이트합니다.
+                        self.environmentModel.fetchRecordedEnvironment(record: newRecord)
+                        self.characterModel.fetchRecordedCharacter(record: newRecord)
+                    } else {
+                        print("Document doesn't match the structure of AttendanceRecord")
                     }
                 }
-                
-                let dateString = self.changeDateToString(date: date)
-                print("AttedanceModel | downloadAttendanceRecords | dateString : \(dateString)")
-                
-                if let record = fetchedRecords[dateString] {
-                    print("AttedanceModel | downloadAttendanceRecords | record: \(record)")
-                    self.environmentModel.fetchRecordedEnvironment(record: record)
-                    self.characterModel.fetchRecordedCharacter(record: record)
-                }
+                completion(fetchedRecords)
             }
-        
-        return fetchedRecords
     }
-    
-    
-    //        // Example of saving the attendance record to Firebase
-    //        func saveAttendanceRecordToFirebase(record: AttendanceRecord) {
-    ////             ... Save the record to Firebase ...
-    //             Firestore.firestore().collection("attendanceRecords").addDocument(from: record) { error in
-    //                if let error = error {
-    //                    print("Error adding document: \(error)")
-    //                } else {
-    //                    print("Document added with ID: \(record.id ?? "")")
-    //                }
-    //             }
-    //        }
-    
-    //    // Save an attendance record to Firebase for the current user
-    //    func saveAttendanceRecordToFirebase(record: AttendanceRecord) {
-    //
-    //        guard let currentUser = Auth.auth().currentUser else {
-    //            print("No current user")
-    //            return
-    //        }
-    //
-    //        let dateFormatter = DateFormatter()
-    //        dateFormatter.dateFormat = "yyyy-MM-dd"
-    //        let dateString = dateFormatter.string(from: record.date)
-    //
-    //        do {
-    //            try db.collection("User").document(currentUser.uid).collection("attendanceRecords").document(dateString).setData(from: record)
-    //            print("Attendance record saved for date: \(dateString)")
-    //        } catch let error {
-    //            print("Error saving attendance record: \(error.localizedDescription)")
-    //        }
-    //    }
-    
+}
+
+
+extension Dictionary {
+    func compactMapKeys<T>(_ transform: (Key) throws -> T?) rethrows -> [T: Value] {
+        var newDict: [T: Value] = [:]
+        for (key, value) in self {
+            if let newKey = try transform(key) {
+                newDict[newKey] = value
+            }
+        }
+        return newDict
+    }
 }

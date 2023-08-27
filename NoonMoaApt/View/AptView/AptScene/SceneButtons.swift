@@ -46,9 +46,10 @@ struct SceneButtons: View {
                             lastActiveToggle = false
                             lastWakenTimeToggle = true
                             
-                            // push 알림 보내기
                             if roomUser.token.count > 1 {
-                                DispatchQueue.main.async {
+                                
+                                // push 알림 보내기
+                                DispatchQueue.global(qos: .userInteractive).async {
                                     print("SceneButtons | roomUser \(roomUser)")
                                     pushNotiController.requestPushNotification(to: roomUser.id!)
                                 }
@@ -118,7 +119,9 @@ struct SceneButtons: View {
                    
                     //TODO: 더미데이터일 경우 실행하지않기_임시로 분기처리
                     if roomUser.token.count > 1 {
-                        DispatchQueue.main.async {
+                        
+                        // push 알림 보내기
+                        DispatchQueue.global(qos: .userInteractive).async {
                             print("SceneButtons | roomUser \(roomUser)")
                             pushNotiController.requestPushNotification(to: roomUser.id!)
                         }
@@ -162,7 +165,9 @@ struct SceneButtons: View {
                 case "inactive":
                     Button(action: {
                         if roomUser.token.count > 1 {
-                            DispatchQueue.main.async {
+                            
+                            // push 알림 보내기
+                            DispatchQueue.global(qos: .userInteractive).async {
                                 print("SceneButtons | roomUser \(roomUser)")
                                 pushNotiController.requestPushNotification(to: roomUser.id!)
                             }

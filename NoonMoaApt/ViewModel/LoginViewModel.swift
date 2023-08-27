@@ -98,8 +98,11 @@ class LoginViewModel: ObservableObject {
                                 print("Error fetching FCM registration token: \(error)")
                             } else if let token = token {
                                 print("FCM registration token: \(token)")
-                                self.fcmToken = token // save the new token to the user
-                                print("LoginViewModel | authenticate | self.token: \(self.fcmToken)")
+                                // Only update the FCM token if it's a new user
+                                if !document!.exists {
+                                    self.fcmToken = token
+                                    print("LoginViewModel | authenticate | self.token: \(self.fcmToken)")
+                                }
                             }
                         }
                         
@@ -112,7 +115,9 @@ class LoginViewModel: ObservableObject {
                             if let document = document, document.exists {
                                 // The user already exists.
                                 print("User already exists. DO NOT assigning a new room.")
-                                
+                                // 앱 삭제했다가 빌드했을 때 문제를 해결하기 위해
+                                self.updateUserFCMToken(userDocumentRef: userDocumentRef)
+
                             } else {
                                 // The user is new, so we update them in Firestore and assign a room
                                 print("NEW User. Assigning a new room.")
@@ -121,6 +126,24 @@ class LoginViewModel: ObservableObject {
                                 self.assignRoomToUser(user: user)
                             }
                         }
+                    }
+                }
+            }
+        }
+    }
+    
+    // 앱 삭제했다가 빌드했을 때 문제를 해결하기 위해
+    func updateUserFCMToken(userDocumentRef: DocumentReference) {
+        Messaging.messaging().token { token, error in
+            if let error = error {
+                print("Error fetching FCM registration token: \(error)")
+            } else if let token = token {
+                print("FCM registration token: \(token)")
+                userDocumentRef.updateData(["token": token]) { error in
+                    if let error = error {
+                        print("Error updating FCM token in Firestore: \(error)")
+                    } else {
+                        print("FCM token updated in Firestore")
                     }
                 }
             }
