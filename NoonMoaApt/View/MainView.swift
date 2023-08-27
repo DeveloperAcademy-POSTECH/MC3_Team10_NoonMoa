@@ -11,9 +11,8 @@ struct MainView: View {
     @EnvironmentObject var viewRouter: ViewRouter
     @StateObject var aptModel: AptModel
     @StateObject var attendanceModel: AttendanceModel
-    @StateObject var characterModel: CharacterModel
-    @StateObject var environmentModel: EnvironmentModel
-    @StateObject var customViewModel: CustomViewModel
+    @StateObject var characterViewModel: CharacterViewModel
+    @StateObject var environmentViewModel: EnvironmentViewModel
     @StateObject var loginViewModel: LoginViewModel
     @StateObject var weatherKitManager: WeatherKitManager
     @StateObject var locationManager: LocationManager
@@ -41,9 +40,8 @@ struct MainView: View {
             AttendanceView(eyeViewController: EyeViewController())
                 .environmentObject(viewRouter)
                 .environmentObject(attendanceModel)
-                .environmentObject(environmentModel)
-                .environmentObject(characterModel)
-                .environmentObject(customViewModel)
+                .environmentObject(environmentViewModel)
+                .environmentObject(characterViewModel)
                 .environmentObject(weatherKitManager)
                 .environmentObject(locationManager)
         case .apt:
@@ -52,9 +50,8 @@ struct MainView: View {
                 .environmentObject(viewRouter)
                 .environmentObject(aptModel)
                 .environmentObject(attendanceModel)
-                .environmentObject(environmentModel)
-                .environmentObject(characterModel)
-                .environmentObject(customViewModel)
+                .environmentObject(environmentViewModel)
+                .environmentObject(characterViewModel)
                 .environmentObject(weatherKitManager)
                 .environmentObject(locationManager)
                 

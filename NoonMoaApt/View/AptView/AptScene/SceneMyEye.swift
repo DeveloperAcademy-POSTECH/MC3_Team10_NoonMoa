@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct SceneMyEye: View {
-//    @EnvironmentObject var eyeViewController: EyeViewController
     @Binding var roomUser: User
-    @State private var eyeNeighborViewModel = EyeNeighborViewModel()
-    @EnvironmentObject var customViewModel: CustomViewModel
+    @EnvironmentObject var environmentViewModel: EnvironmentViewModel
+    @EnvironmentObject var characterViewModel: CharacterViewModel
+    @EnvironmentObject var eyeNeighborViewModel: EyeNeighborViewModel
     var isJumping: Bool
 
     var body: some View {
@@ -21,8 +21,8 @@ struct SceneMyEye: View {
                 isBlinkingRight: eyeNeighborViewModel.isBlinkingRight,
                 lookAtPoint: eyeNeighborViewModel.lookAtPoint,
                 faceOrientation: eyeNeighborViewModel.faceOrientation,
-                bodyColor: customViewModel.currentBodyColor,
-                eyeColor: customViewModel.currentEyeColor, cheekColor: customViewModel.currentCheekColor, isInactiveOrSleep: false, isJumping: roomUser.isJumping)
+                bodyColor: characterViewModel.characterRecordViewData.bodyColor,
+                eyeColor: characterViewModel.characterRecordViewData.eyeColor, cheekColor: characterViewModel.characterRecordViewData.cheekColor, isInactiveOrSleep: false, isJumping: roomUser.isJumping)
         .onAppear {
             eyeNeighborViewModel.updateColors(roomUser: roomUser)
             //이웃 눈의 랜덤한 움직임 함수 실행

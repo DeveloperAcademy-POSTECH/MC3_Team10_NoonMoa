@@ -175,7 +175,7 @@ struct EyeView: View {
 
 struct TestView: View {
     @EnvironmentObject var eyeViewController: EyeViewController
-    @EnvironmentObject var customViewModel: CustomViewModel
+    @EnvironmentObject var characterViewModel: CharacterViewModel
 
     var body: some View {
         
@@ -183,7 +183,7 @@ struct TestView: View {
                 isBlinkingLeft: eyeViewController.eyeMyViewModel.isBlinkingLeft,
                 isBlinkingRight: eyeViewController.eyeMyViewModel.isBlinkingRight,
                 lookAtPoint: eyeViewController.eyeMyViewModel.lookAtPoint,
-                faceOrientation: eyeViewController.eyeMyViewModel.faceOrientation, bodyColor: customViewModel.currentBodyColor, eyeColor: customViewModel.currentEyeColor, cheekColor: customViewModel.currentCheekColor, isInactiveOrSleep: false, isJumping: false)
+                faceOrientation: eyeViewController.eyeMyViewModel.faceOrientation, bodyColor: characterViewModel.characterRecordViewData.bodyColor, eyeColor: characterViewModel.characterRecordViewData.eyeColor, cheekColor: characterViewModel.characterRecordViewData.cheekColor, isInactiveOrSleep: false, isJumping: false)
     }
 }
 
@@ -191,7 +191,7 @@ struct TestView_Previews: PreviewProvider {
     static var previews: some View {
         TestView()
             .environmentObject(EyeViewController())
-            .environmentObject(CustomViewModel())
+            .environmentObject(CharacterViewModel())
     }
 }
 //

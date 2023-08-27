@@ -9,7 +9,7 @@ import SwiftUI
 
 struct FunctionTestView: View {
     @EnvironmentObject var viewRouter: ViewRouter
-    @EnvironmentObject var environmentModel: EnvironmentModel
+    @EnvironmentObject var environmentModel: EnvironmentViewModel
     @EnvironmentObject var weatherKitManager: WeatherKitManager
     @EnvironmentObject var locationManager: LocationManager
     @EnvironmentObject var aptModel: AptModel
@@ -33,10 +33,9 @@ struct FunctionTestView: View {
                 
                 Button(action: {
                     weatherKitManager.getWeather(latitude: locationManager.latitude, longitude: locationManager.longitude)
-                    environmentModel.rawWeather = weatherKitManager.condition
-                    environmentModel.getCurrentEnvironment()
-                    print(environmentModel.rawWeather)
-                    print(environmentModel.currentTime)
+                    environmentModel.environmentRecord?.rawWeather = weatherKitManager.condition
+//                    environmentModel.getCurrentEnvironment()
+         
                     UIImpactFeedbackGenerator(style: .medium).impactOccurred()
                 }) {
                     RoundedRectangle(cornerRadius: 8)
@@ -53,10 +52,9 @@ struct FunctionTestView: View {
                 Button(action: {
                     let array = ["sunrise", "morning", "afternoon", "sunset", "evening", "night"]
                     indexTime = (indexTime + 7) % 6
-                    environmentModel.currentTime = array[indexTime]
-                    environmentModel.convertEnvironmentToViewData(isInputCurrentData: true, weather: environmentModel.currentWeather, time: environmentModel.currentTime, isThunder: environmentModel.currentIsThunder)
+                    environmentModel.environmentRecordViewData.time = array[indexTime]
                     print(indexTime)
-                    print(environmentModel.currentTime)
+                    print(environmentModel.environmentRecordViewData.time)
                     UIImpactFeedbackGenerator(style: .medium).impactOccurred()
                 }) {
                     RoundedRectangle(cornerRadius: 8)
@@ -72,9 +70,7 @@ struct FunctionTestView: View {
                 Button(action: {
                     let array = ["clear", "cloudy", "rainy", "snowy"]
                     indexWeather = (indexWeather + 5) % 4
-                    environmentModel.currentWeather = array[indexWeather]
-                    print(indexWeather)
-                    print(environmentModel.currentWeather)
+                  
                     UIImpactFeedbackGenerator(style: .medium).impactOccurred()
                 }) {
                     RoundedRectangle(cornerRadius: 8)
@@ -162,6 +158,6 @@ struct FunctionTestView_Previews: PreviewProvider {
     static var previews: some View {
         FunctionTestView()
             .environmentObject(ViewRouter())
-            .environmentObject(EnvironmentModel())
+            .environmentObject(EnvironmentViewModel())
     }
 }

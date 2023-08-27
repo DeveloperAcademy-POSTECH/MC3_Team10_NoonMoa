@@ -5,7 +5,7 @@ import CoreLocation
 struct WeatherTestView: View {
     @EnvironmentObject var weatherKitManager: WeatherKitManager
     @EnvironmentObject var locationManager: LocationManager
-    @EnvironmentObject var environmentModel: EnvironmentModel
+    @EnvironmentObject var environmentViewModel: EnvironmentViewModel
 
     var body: some View {
 
@@ -15,7 +15,7 @@ struct WeatherTestView: View {
                 Text(weatherKitManager.condition)
                 Text(weatherKitManager.temp)
                 Button(action: {  weatherKitManager.getWeather(latitude: 4, longitude: 45)
-                    environmentModel.rawWeather = weatherKitManager.condition
+                    environmentViewModel.environmentRecord?.rawWeather = weatherKitManager.condition
                     print("hello")
 
                 }) {
@@ -23,7 +23,7 @@ struct WeatherTestView: View {
                 }
                 Text(String(locationManager.latitude))
                 Text(String(locationManager.longitude))
-                Text(String(environmentModel.rawWeather))
+                Text(String(environmentViewModel.environmentRecord?.rawWeather ?? "weather not available"))
             }
             .task {
                 weatherKitManager.getWeather(latitude: locationManager.latitude, longitude: locationManager.longitude)

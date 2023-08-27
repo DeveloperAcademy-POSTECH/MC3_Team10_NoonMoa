@@ -13,7 +13,7 @@ import FirebaseAuth
 
 struct launchScreenView: View {
     @EnvironmentObject var viewRouter: ViewRouter
-    @EnvironmentObject var environmentModel: EnvironmentModel
+    @EnvironmentObject var environmentViewModel: EnvironmentViewModel
     @State private var isViewActive: Bool = false
     @AppStorage("isOnboardingDone") var isOnboardingDone: Bool = false
     @AppStorage("isLogInDone") var isLogInDone: Bool = false

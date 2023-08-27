@@ -19,6 +19,7 @@ struct User: Codable, Identifiable, Equatable {
     var characterColor: [Float]?
     var token: String
     var requestedBy: [String]
+        //TODO: 아래 두 변수는 임시방편으로 사용했는데, 사실 뷰에서 처리해야하는 변수들이라 사라지는게 맞습니다.
     var clicked: Bool = false
     var isJumping: Bool = false
     
@@ -26,11 +27,6 @@ struct User: Codable, Identifiable, Equatable {
         get { return UserState(rawValue: userState) ?? .inactive }
         set { userState = newValue.rawValue }
     }
-    
-//    var characterColorEnum: CharacterColor {
-//        get { return CharacterColor(rawValue: characterColor) ?? Color.userBlue.toArray }
-//        set { characterColor = newValue.rawValue }
-//    }
 }
 
 extension User {
@@ -53,17 +49,6 @@ extension User {
 
     }
 }
-
-
-//struct AttendanceRecord: Codable, Identifiable {
-//    @DocumentID var id: String? // = UUID().uuidString <- 이 부분 제거
-//    var userId: String
-//    var date: Date
-//    var weatherCondition: String
-//    var eyeDirection: [Float]
-//    var aptId: String? // add this line
-//}
-
 
 struct AttendanceSheet: Codable, Identifiable {
     @DocumentID var id: String?
@@ -130,30 +115,6 @@ enum UserState: String, Codable {
     case inactive = "inactive"
 }
 
-//enum CharacterColor: [Float], Codable {
-//    case pink = "pink"
-//    case cyan = "cyan"
-//    case yellow = "yellow"
-//    case blue = "blue"
-//    
-//    init(from decoder: Decoder) throws {
-//        let label = try decoder.singleValueContainer().decode(String.self)
-//        switch label {
-//        case "pink":
-//            self = .pink
-//        case "cyan":
-//            self = .cyan
-//        case "yellow":
-//            self = .yellow
-//        case "blue":
-//            self = .blue
-//        // Add more cases as needed
-//        default:
-//            throw DecodingError.dataCorruptedError(in: try! decoder.singleValueContainer(), debugDescription: "Unable to decode eye color")
-//        }
-//    }
-//}
-
 enum WeatherCondition: String, Codable {
     case clear = "clear"
     case cloudy = "cloudy"
@@ -161,17 +122,6 @@ enum WeatherCondition: String, Codable {
     case snow = "snow"
     case thunderstorms = "thunderstorms"
 }
-
-/*
- @DocumentID var id: String?
- var roomId: String?
- var aptId: String?
- var userState: String
- var lastActiveDate: Date?
- var characterColor: String
- var token: String
- */
-
 
 extension User {
 

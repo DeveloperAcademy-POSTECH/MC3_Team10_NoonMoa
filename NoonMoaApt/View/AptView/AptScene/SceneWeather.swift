@@ -9,12 +9,12 @@ import SwiftUI
 import Lottie
 
 struct SceneWeather: View {
-    @EnvironmentObject var environmentModel: EnvironmentModel
+    @EnvironmentObject var environmentViewModel: EnvironmentViewModel
 
     var body: some View {
         
         //이렇게 분기처리한 이유: 로띠는 뷰를 다시 그려도 이전 재생중이던 애니메이션이 실행되어 업데이트가 되지 않았다.
-        switch environmentModel.currentWeather {
+        switch environmentViewModel.environmentRecord?.rawWeather {
         case "clear":
             LottieView(name: Lottie.clearMorning, animationSpeed: 1)
                 .ignoresSafeArea()
@@ -38,6 +38,6 @@ struct SceneWeather: View {
 struct SceneWeather_Previews: PreviewProvider {
     static var previews: some View {
         SceneWeather()
-            .environmentObject(EnvironmentModel())
+            .environmentObject(EnvironmentViewModel())
     }
 }

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct StampButtonView: View {
     
-    @StateObject var environmentModel: EnvironmentModel = EnvironmentModel()
+    @StateObject var environmentViewModel = EnvironmentViewModel()
     
     var skyColor: LinearGradient
     var skyImage: Image
@@ -52,6 +52,6 @@ struct StampButtonView: View {
 struct StampButtonView_Previews: PreviewProvider {
     static var previews: some View {
         StampButtonView(skyColor: LinearGradient.sky.clearMorning, skyImage: Image.assets.stampSmall.clearMorning, isSmiling: false, isBlinkingLeft: false, isBlinkingRight: false, lookAtPoint: SIMD3<Float>(0.0, 0.0, 0.0), faceOrientation: SIMD3<Float>(0.0, 0.0, 0.0), bodyColor: LinearGradient.userBlue, eyeColor: LinearGradient.eyeBlue, cheekColor: LinearGradient.cheekRed, borderColor: Color.stampBorder.clearMorning)
-            .environmentObject(EnvironmentModel())
+            .environmentObject(EnvironmentViewModel())
     }
 }
