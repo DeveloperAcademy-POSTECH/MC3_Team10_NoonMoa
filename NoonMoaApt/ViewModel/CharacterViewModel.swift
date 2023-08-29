@@ -31,6 +31,8 @@ class CharacterViewModel: ObservableObject {
 
     // MARK: - 업로드용 변환 -
     
+    //현재 뷰에서 참조하고 있던 뷰 데이터를 저장에 사용되는 rawData 포맷으로 변형하기 위한 함수이다.
+    //해당 함수는 AttendanceViewModel에서 실행시키며, CharacterViewModel().characterRecord를 서버에 저장하게 된다.
     func convertCharacterToRawData() {
         let rawLookAtPoint: [Float] = [characterRecordViewData.lookAtPoint[0],characterRecordViewData.lookAtPoint[1],characterRecordViewData.lookAtPoint[2]]
         let rawFaceOrientation: [Float] = [characterRecordViewData.faceOrientation[0], characterRecordViewData.faceOrientation[1], characterRecordViewData.faceOrientation[2]]

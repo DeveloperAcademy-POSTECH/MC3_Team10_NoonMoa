@@ -6,6 +6,9 @@ struct WeatherTestView: View {
     @EnvironmentObject var weatherKitManager: WeatherKitManager
     @EnvironmentObject var locationManager: LocationManager
     @EnvironmentObject var environmentViewModel: EnvironmentViewModel
+    @State private var dateHour: Int = 0
+    @State private var sunriseHour: Int = 0
+    @State private var sunsetHour: Int = 0
 
     var body: some View {
 
@@ -14,9 +17,20 @@ struct WeatherTestView: View {
                 Label(weatherKitManager.symbol, systemImage: weatherKitManager.symbol)
                 Text(weatherKitManager.condition)
                 Text(weatherKitManager.temp)
-                Button(action: {  weatherKitManager.getWeather(latitude: 4, longitude: 45)
+                Text("dateHour: \(dateHour)")
+                Text("sunriseHour: \(sunriseHour)")
+                Text("sunsetHour: \(sunsetHour)")
+               
+                Button(action: {
+                    weatherKitManager.getWeather(latitude: locationManager.latitude, longitude: locationManager.longitude)
                     environmentViewModel.environmentRecord?.rawWeather = weatherKitManager.condition
-                    print("hello")
+                    
+                    //TODO: 어디 놓냐에 따라 실행 시기에 따라,
+                    let myFormatter = DateFormatter()
+                    myFormatter.dateFormat = "HH"  // 변환할 형식
+                    self.dateHour = Int(myFormatter.string(from: Date())) ?? 0
+                    self.sunriseHour = Int(myFormatter.string(from: weatherKitManager.sunrise)) ?? 0
+                    self.sunsetHour = Int(myFormatter.string(from: weatherKitManager.sunset)) ?? 0
 
                 }) {
                     Text("Button")
@@ -29,7 +43,6 @@ struct WeatherTestView: View {
                 weatherKitManager.getWeather(latitude: locationManager.latitude, longitude: locationManager.longitude)
                 print(locationManager.latitude)
                 print(locationManager.longitude)
-
             }
             
         } else {

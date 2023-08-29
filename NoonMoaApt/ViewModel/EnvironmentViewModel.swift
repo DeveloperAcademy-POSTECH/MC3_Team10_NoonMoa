@@ -23,11 +23,21 @@ class EnvironmentViewModel: ObservableObject {
     }
    
     // MARK: - 업로드용 변환 -
-
+    func convertEnvironmentToRawData() {
+        async {
+            do {
+                let weatherKitManager = await WeatherKitManager()
+                let locationManager = LocationManager()
+                await weatherKitManager.getWeather(latitude: locationManager.latitude, longitude: locationManager.longitude)
+                let rawWeather = await weatherKitManager.condition
+                let rawSunrise = await weatherKitManager.sunrise
+                let rawSunset = await weatherKitManager.sunset
+                environmentRecord = EnvironmentRecord(rawWeather: rawWeather, rawTime: Date(), rawSunriseTime: rawSunrise, rawSunsetTime: rawSunset)
+            }
+        }
+    }
     
     // MARK: - 다운로드 후 변환 -
-    
-
     
     // WeatherKit으로부터 받아온 raw data or 서버로부터 받아온 recordedRaw]를 Environment로 중간 변환
     func convertRawDataToEnvironment(isInputCurrentData: Bool, weather: String, time: Date, sunrise: Date, sunset: Date) {

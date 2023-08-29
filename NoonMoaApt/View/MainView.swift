@@ -31,19 +31,19 @@ struct MainView: View {
                 .environmentObject(LoginViewModel(viewRouter: ViewRouter()))
         case .attendance:
             
-//            WeatherTestView()
-//                .environmentObject(weatherKitManager)
-//                .environmentObject(locationManager)
-//                .environmentObject(environmentModel)
-
-////            let record = attendanceModel.ensureCurrentRecord()
-            AttendanceView(eyeViewController: EyeViewController())
-                .environmentObject(viewRouter)
-                .environmentObject(attendanceModel)
-                .environmentObject(environmentViewModel)
-                .environmentObject(characterViewModel)
+            WeatherTestView()
                 .environmentObject(weatherKitManager)
                 .environmentObject(locationManager)
+                .environmentObject(environmentViewModel)
+
+//////            let record = attendanceModel.ensureCurrentRecord()
+//            AttendanceView(eyeViewController: EyeViewController())
+//                .environmentObject(viewRouter)
+//                .environmentObject(attendanceModel)
+//                .environmentObject(environmentViewModel)
+//                .environmentObject(characterViewModel)
+//                .environmentObject(weatherKitManager)
+//                .environmentObject(locationManager)
         case .apt:
 //            WeatherTestView()
             AptView()
