@@ -98,14 +98,15 @@ struct FunctionTestView: View {
             HStack(spacing: 8) {
                 
                 Button(action: {
-//                    EyeViewController().resetFaceAnchor()
-//                    UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                    loginViewModel.deleteUserAccount()
+                    loginViewModel.isLogInDone = false
+                    viewRouter.currentView = .login
                 }) {
                     RoundedRectangle(cornerRadius: 8)
                         .fill(.white)
                         .frame(width: 80, height: 48)
                         .overlay(
-                            Text("Reset\nFace")
+                            Text("Account Deleted")
                                 .foregroundColor(.black)
                                 .font(.caption)
                         )
