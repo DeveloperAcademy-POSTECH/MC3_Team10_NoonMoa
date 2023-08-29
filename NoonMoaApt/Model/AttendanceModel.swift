@@ -151,9 +151,13 @@ class AttendanceModel: ObservableObject {
             let endOfDay = Calendar.current.date(byAdding: .day, value: 1, to: startOfDay)!
             
             let todaysRecords = fetchedRecords.filter { (key, record) in
-                let recordDate = record.date
+                guard let recordDate = record.date else {
+                    print("Date is nil in the record.")
+                    return false
+                }
                 return recordDate >= startOfDay && recordDate < endOfDay
             }
+
             
             // 일치하는 데이터 중 첫 번째를 선택하고 외부 변수를 업데이트
             self.todayRecord = todaysRecords.first?.value
@@ -216,18 +220,22 @@ class AttendanceModel: ObservableObject {
                                                          rawSunriseTime: rawSunriseTime,
                                                          rawSunsetTime: rawSunsetTime)
                         
-                        let dateString = self.changeDateToString(date: newRecord.date)
+                        guard let recordDate = newRecord.date else {
+                            print("Date is nil in the newRecord.")
+                            return
+                        }
+                        let dateString = self.changeDateToString(date: recordDate)
+                        
                         // fetchedRecords[dateString] = newRecord
                         fetchedRecords[documentID] = newRecord  // 문서 ID를 키로 사용
-
-                        
                         print("newRecord: \(newRecord)")
                         print("New record with Document ID \(documentID) is saved.")  // 디버깅용
-
                         
                         // 이제 새로 생성된 AttendanceRecord 객체를 사용하여 environmentModel과 characterModel을 업데이트합니다.
-                        self.environmentModel.fetchRecordedEnvironment(record: newRecord)
-                        self.characterModel.fetchRecordedCharacter(record: newRecord)
+//                        self.environmentViewModel.fetchRecordedEnvironment(record: newRecord)
+//                        self.characterModel.fetchRecordedCharacter(record: newRecord)
+                        
+                        
                     } else {
                         print("Document doesn't match the structure of AttendanceRecord")
                     }

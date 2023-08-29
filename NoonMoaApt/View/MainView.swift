@@ -54,6 +54,7 @@ struct MainView: View {
                 .environmentObject(characterViewModel)
                 .environmentObject(weatherKitManager)
                 .environmentObject(locationManager)
+                .environmentObject(loginViewModel)
                 
         default:
             LoginView()

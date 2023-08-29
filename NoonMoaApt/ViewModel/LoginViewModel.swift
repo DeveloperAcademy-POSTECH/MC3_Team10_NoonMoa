@@ -22,8 +22,8 @@ class LoginViewModel: ObservableObject {
     private var db: Firestore {
         firestoreManager.db
     }
-//    private let dummyData = DummyData()
     
+    @AppStorage("isLogInDone") var isLogInDone: Bool = false
     @Published var nonce = ""
     @Published var fcmToken: String = ""
     var viewRouter = ViewRouter()
@@ -81,7 +81,7 @@ class LoginViewModel: ObservableObject {
                 print("로그인 완료")
                         
                 // Here the user has logged in successfully
-                // Now update the user in Firestore 
+                // Now update the user in Firestore
                 if let authResult = result {
                     
                     print("LoginViewModel | authenticate | authResult.user.uid \(authResult.user.uid)")
@@ -129,6 +129,14 @@ class LoginViewModel: ObservableObject {
                     }
                 }
             }
+        }
+    }
+    
+    func logout(){
+        do {
+            try Auth.auth().signOut()
+        } catch let signOutError as NSError {
+            print("Error signing out: \(signOutError)")
         }
     }
     
@@ -417,4 +425,3 @@ class LoginViewModel: ObservableObject {
         return result
     }
 }
-
