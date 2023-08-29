@@ -14,20 +14,20 @@ import FirebaseAuth
 struct AttendanceRecord: Codable, Identifiable {
     
     @DocumentID var id: String? // = UUID().uuidString <- 이 부분 제거
-    var userId: String
-    var date: Date
+    var userId: String?
+    var date: Date?
     
-    var rawIsSmiling: Bool
-    var rawIsBlinkingLeft: Bool
-    var rawIsBlinkingRight: Bool
-    var rawLookAtPoint: [Float]
-    var rawFaceOrientation: [Float]
-    var rawCharacterColor: [Float]
+    var rawIsSmiling: Bool?
+    var rawIsBlinkingLeft: Bool?
+    var rawIsBlinkingRight: Bool?
+    var rawLookAtPoint: [Float]?
+    var rawFaceOrientation: [Float]?
+    var rawCharacterColor: [Float]?
     
-    var rawWeather: String
-    var rawTime: Date
-    var rawSunriseTime: Date
-    var rawSunsetTime: Date
+    var rawWeather: String?
+    var rawTime: Date?
+    var rawSunriseTime: Date?
+    var rawSunsetTime: Date?
 }
 
 
@@ -39,13 +39,13 @@ class AttendanceModel: ObservableObject {
     private var db: Firestore {
         firestoreManager.db
     }
-    
+
     // 외부에서 사용할 수 있는 attendanceRecords와 todayRecord 변수 추가
     var attendanceRecords: [Date: AttendanceRecord] = [:]
     var todayRecord: AttendanceRecord? = nil
     
-    private var characterModel: CharacterModel = CharacterModel()
-    private var environmentModel: EnvironmentModel = EnvironmentModel()
+    private var characterViewModel: CharacterViewModel = CharacterViewModel()
+    private var environmentViewModel: EnvironmentViewModel = EnvironmentViewModel()
     
     // @Published var newAttendanceRecord: AttendanceRecord? = nil //^^ @Published가 필요성 고민 중...
     var newAttendanceRecord: AttendanceRecord? = nil
@@ -102,9 +102,9 @@ class AttendanceModel: ObservableObject {
         newAttendanceRecord?.userId = currentUser.uid
         newAttendanceRecord?.date = nowDate
         
-        environmentModel.getCurrentEnvironment()
-        environmentModel.saveRawEnvironmentToAttendanceModel(newAttendanceRecord: &newAttendanceRecord)
-        characterModel.saveRawCharacterToAttendanceModel(newAttendanceRecord: &newAttendanceRecord)
+//        environmentModel.getCurrentEnvironment()
+//        environmentModel.saveRawEnvironmentToAttendanceModel(newAttendanceRecord: &newAttendanceRecord)
+//        characterModel.saveRawCharacterToAttendanceModel(newAttendanceRecord: &newAttendanceRecord)
         print("newAttendanceRecord: \(String(describing: newAttendanceRecord))")
         
         // 마지막으로 Firebase에 Date를 key 값으로 사용하여, userId를 포함한 newAttendanceRecord를 기록한다!!!

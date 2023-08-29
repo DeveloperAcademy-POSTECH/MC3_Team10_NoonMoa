@@ -8,14 +8,14 @@
 import SwiftUI
 
 struct SceneBackground: View {
-    @EnvironmentObject var environmentModel: EnvironmentModel
+    @EnvironmentObject var environmentViewModel: EnvironmentViewModel
     
     var body: some View {
         
         GeometryReader { geo in
             ZStack {
-                environmentModel.currentColorOfSky
-                GroundView(colorOfGround: environmentModel.currentColorOfGround, geoSizeWidth: geo.size.width)
+                environmentViewModel.environmentRecordViewData.colorOfSky
+                GroundView(colorOfGround: environmentViewModel.environmentRecordViewData.colorOfGround, geoSizeWidth: geo.size.width)
                             .offset(y: geo.size.height / 2)
             }
             .ignoresSafeArea()
@@ -78,7 +78,7 @@ struct SceneBackground_Previews: PreviewProvider {
     
     static var previews: some View {
         SceneBackground()
-            .environmentObject(EnvironmentModel())
+            .environmentObject(EnvironmentViewModel())
         
     }
 }

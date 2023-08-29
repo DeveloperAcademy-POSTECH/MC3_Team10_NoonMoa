@@ -279,7 +279,7 @@ struct Lottie {
     static let thunder = String("thunderDN")
 }
 
-extension Text {
+extension String {
     
     struct sounds {
         static let clear = "clear"

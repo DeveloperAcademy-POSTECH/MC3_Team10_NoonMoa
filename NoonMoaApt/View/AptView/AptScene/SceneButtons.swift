@@ -18,7 +18,7 @@ struct SceneButtons: View {
     @State private var lastWakenTimeToggle: Bool = false
     @State private var lastWakenTime: Int = 0
 
-    @EnvironmentObject var customViewModel: CustomViewModel
+    @EnvironmentObject var characterViewModel: CharacterViewModel
     
     let pushNotiController = PushNotiController()
     
@@ -151,7 +151,7 @@ struct SceneButtons: View {
                             .particleEffect(systemImage: "suit.heart.fill",
                                             font: .title3,
                                             status:  roomUser.clicked,
-                                            tint: customViewModel.currentCharacterColor)
+                                            tint: characterViewModel.characterRecordViewData.characterColor)
                     } else {
                         Color.clear
                             .cornerRadius(8)
@@ -210,9 +210,8 @@ struct SceneButtons_Previews: PreviewProvider {
                 .environmentObject(ViewRouter())
                 .environmentObject(AptModel())
                 .environmentObject(AttendanceModel(newAttendanceRecord: newAttendanceRecord))
-                .environmentObject(CharacterModel())
-                .environmentObject(EnvironmentModel())
-                .environmentObject(CustomViewModel())
+                .environmentObject(CharacterViewModel())
+                .environmentObject(EnvironmentViewModel())
                 .environmentObject(WeatherKitManager())
                 .environmentObject(LocationManager())
         }

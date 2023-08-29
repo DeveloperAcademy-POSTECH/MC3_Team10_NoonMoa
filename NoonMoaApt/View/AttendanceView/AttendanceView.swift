@@ -17,9 +17,8 @@ struct AttendanceView: View {
     
     @EnvironmentObject var viewRouter: ViewRouter
     @EnvironmentObject var attendanceModel: AttendanceModel
-    @EnvironmentObject var environmentModel: EnvironmentModel
-    @EnvironmentObject var characterModel: CharacterModel
-    @EnvironmentObject var customViewModel: CustomViewModel
+    @EnvironmentObject var environmentViewModel: EnvironmentViewModel
+    @EnvironmentObject var characterViewModel: CharacterViewModel
     @EnvironmentObject var weatherKitManager: WeatherKitManager
     @EnvironmentObject var locationManager: LocationManager
     @StateObject var eyeViewController: EyeViewController
@@ -58,19 +57,19 @@ struct AttendanceView: View {
                     HStack {
                         VStack(alignment: .leading) {
                             if !isStamped {
-                                Text(environmentModel.currentBroadcastAttendanceIncompleteTitle)
+                                Text(environmentViewModel.environmentRecordViewData.broadcastAttendanceIncompleteTitle)
                                     .font(.title)
                                     .fontWeight(.black)
                                     .padding(.bottom, 4)
-                                Text(environmentModel.currentBroadcastAttendanceIncompleteBody)
+                                Text(environmentViewModel.environmentRecordViewData.broadcastAttendanceIncompleteBody)
                                     .font(.title3)
                                     .fontWeight(.semibold)
                             } else {
-                                Text(environmentModel.currentBroadcastAttendanceCompletedTitle)
+                                Text(environmentViewModel.environmentRecordViewData.broadcastAttendanceCompletedTitle)
                                     .font(.title)
                                     .fontWeight(.black)
                                     .padding(.bottom, 4)
-                                Text(environmentModel.currentBroadcastAttendanceCompletedBody)
+                                Text(environmentViewModel.environmentRecordViewData.broadcastAttendanceCompletedBody)
                                     .font(.title3)
                                     .fontWeight(.semibold)
                             }
@@ -100,7 +99,7 @@ struct AttendanceView: View {
                         
                     } else {
                         //출석체크 후 저장된 날씨와, 캐릭터의 움직임 좌표값으로 표현된 뷰
-                        StampLargeView(skyColor: environmentModel.currentColorOfSky, skyImage: environmentModel.currentStampLargeSkyImage, isSmiling: characterModel.currentIsSmiling, isBlinkingLeft: characterModel.currentIsBlinkingLeft, isBlinkingRight: characterModel.currentIsBlinkingRight, lookAtPoint: characterModel.currentLookAtPoint, faceOrientation: characterModel.currentFaceOrientation, bodyColor: customViewModel.currentBodyColor, eyeColor: customViewModel.currentEyeColor, cheekColor: customViewModel.currentCheekColor)
+                        StampLargeView(skyColor: environmentViewModel.environmentRecordViewData.colorOfSky, skyImage: environmentViewModel.environmentRecordViewData.stampLargeSkyImage, isSmiling: characterViewModel.characterRecordViewData.isSmiling, isBlinkingLeft: characterViewModel.characterRecordViewData.isBlinkingLeft, isBlinkingRight: characterViewModel.characterRecordViewData.isBlinkingRight, lookAtPoint: characterViewModel.characterRecordViewData.lookAtPoint, faceOrientation: characterViewModel.characterRecordViewData.faceOrientation, bodyColor: characterViewModel.characterRecordViewData.bodyColor, eyeColor: characterViewModel.characterRecordViewData.eyeColor, cheekColor: characterViewModel.characterRecordViewData.cheekColor)
                             .frame(width: geo.size.width, height: geo.size.width)
                             .scaleEffect(isScaleEffectPlayed ? 0.9 : 1)
                             .opacity(isShutterEffectPlayed ? 1 : 0)
@@ -123,14 +122,13 @@ struct AttendanceView: View {
                         // 눈도장 찍기 버튼
                         Button (action: {
                             //사용자 색상 최초 지정(default값)
-                            self.playSound(soundName: Text.sounds.shutter)
-                            customViewModel.pickerValueToCharacterColor(value: customViewModel.pickerValue)
+                            self.playSound(soundName: String.sounds.shutter)
+                            characterViewModel.pickerValueToCharacterColor(value: characterViewModel.pickerValue)
                             //날씨 받아오기
                             weatherKitManager.getWeather(latitude: locationManager.latitude, longitude: locationManager.longitude)
-                            environmentModel.rawWeather = weatherKitManager.condition
-                            environmentModel.getCurrentEnvironment()
-                            print("at attendanceView after stamped, weather:\(environmentModel.currentWeather)")
-                            print("at attendanceView after stamped, time:\(environmentModel.currentTime)")
+                            environmentViewModel.environmentRecord?.rawWeather = weatherKitManager.condition
+//                            environmentViewModel.getCurrentEnvironment()
+                            
                             DispatchQueue.main.async {
                                 UIImpactFeedbackGenerator(style: .soft).impactOccurred()
                                 withAnimation(.easeInOut(duration: 0.2).repeatCount(1, autoreverses: true)) {
@@ -153,12 +151,12 @@ struct AttendanceView: View {
                                 withAnimation(.linear.speed(1.5).repeatCount(1, autoreverses: true)) {
                                     isShutterEffectPlayed = true
                                 }
-                                characterModel.currentIsSmiling = eyeViewController.eyeMyViewModel.isSmiling
-                                characterModel.currentIsBlinkingLeft = eyeViewController.eyeMyViewModel.isBlinkingLeft
-                                characterModel.currentIsBlinkingRight = eyeViewController.eyeMyViewModel.isBlinkingRight
-                                characterModel.currentLookAtPoint = eyeViewController.eyeMyViewModel.lookAtPoint
-                                characterModel.currentFaceOrientation = eyeViewController.eyeMyViewModel.faceOrientation
-                                characterModel.currentCharacterColor = customViewModel.currentCharacterColor
+                                characterViewModel.characterRecordViewData.isSmiling = eyeViewController.eyeMyViewModel.isSmiling
+                                characterViewModel.characterRecordViewData.isBlinkingLeft = eyeViewController.eyeMyViewModel.isBlinkingLeft
+                                characterViewModel.characterRecordViewData.isBlinkingRight = eyeViewController.eyeMyViewModel.isBlinkingRight
+                                characterViewModel.characterRecordViewData.lookAtPoint = eyeViewController.eyeMyViewModel.lookAtPoint
+                                characterViewModel.characterRecordViewData.faceOrientation = eyeViewController.eyeMyViewModel.faceOrientation
+                                    //TODO: 컬러관련 부분도 저장필요
                             }
                             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                                 withAnimation(.spring(response: 0.5, dampingFraction: 0.3).speed(1)) {
@@ -209,9 +207,7 @@ struct AttendanceView: View {
                             }
                             // 시작하기 버튼
                             Button (action: {
-                                characterModel.rawCharacterColor = customViewModel.currentCharacterColor.toArray
                                 viewRouter.currentView = .apt
-                                attendanceModel.uploadAttendanceRecord()
                                 UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
                             }) {
                                 RoundedRectangle(cornerRadius: 16)
@@ -231,38 +227,10 @@ struct AttendanceView: View {
                 }//VStack
             }//GeometryReader
             .padding(24)
-            
-            if isSettingOpen {
-                AttendanceTestView()
-            }
-            
-            VStack {
-                Button { // 설정 버튼
-                    isSettingOpen.toggle()
-                } label: {
-                    if isSettingOpen {
-                        Image.assets.buttons.settingSelected
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 50)
-                    } else {
-                        Image.assets.buttons.settingUnSelected
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 50)
-                    }
-                }
-                Spacer()
-            }
         }//ZStack
                 .onAppear {
                     //테스트용 날씨 보기위해 임시로 아래 함수만 실행
                     weatherKitManager.getWeather(latitude: locationManager.latitude, longitude: locationManager.longitude)
-                    environmentModel.rawWeather = weatherKitManager.condition
-                    environmentModel.getCurrentEnvironment()
-                    print("at attendanceView, weather:\(environmentModel.currentWeather)")
-                    print("at attendanceView, time:\(environmentModel.currentTime)")
-
                 }
     }
     
@@ -285,7 +253,8 @@ struct AttendanceView: View {
             AttendanceView(eyeViewController: EyeViewController())
                 .environmentObject(ViewRouter())
                 .environmentObject(AttendanceModel(newAttendanceRecord: newAttendanceRecord))
-                .environmentObject(CustomViewModel())
+                .environmentObject(CharacterViewModel())
+                .environmentObject(EnvironmentViewModel())
                 .environmentObject(EyeViewController())
         }
     }

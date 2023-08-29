@@ -15,9 +15,8 @@ struct FixAptView: View {
     @EnvironmentObject var viewRouter: ViewRouter
     @EnvironmentObject var aptModel: AptModel
     @EnvironmentObject var attendanceModel: AttendanceModel
-    @EnvironmentObject var characterModel: CharacterModel
-    @EnvironmentObject var environmentModel: EnvironmentModel
-    @EnvironmentObject var customViewModel: CustomViewModel
+    @EnvironmentObject var characterViewModel: CharacterViewModel
+    @EnvironmentObject var environmentViewModel: EnvironmentViewModel
     @EnvironmentObject var weatherKitManager: WeatherKitManager
     @EnvironmentObject var locationManager: LocationManager
     
@@ -53,7 +52,7 @@ struct FixAptView: View {
         ZStack{
             //배경 레이어
             SceneBackground()
-                .environmentObject(environmentModel)
+                .environmentObject(environmentViewModel)
                 .scaleEffect(isAptEffectPlayed ? 1 : 1.3)
             
             //아파트 레이어
@@ -66,7 +65,6 @@ struct FixAptView: View {
                                 HStack(spacing: 12) {
                                     ForEach(users[rowIndex].indices, id: \.self) { colIndex in
                                                                                  SceneRoom(roomUser: $users[rowIndex][colIndex])
-                                                .environmentObject(customViewModel)
                                                 .frame(width: (geo.size.width - 48) / 3, height: ((geo.size.width - 48) / 3) / 1.2)
                                         
                                     }
@@ -90,11 +88,11 @@ struct FixAptView: View {
             
             //날씨 레이어
             SceneWeather()
-                .environmentObject(environmentModel)
+                .environmentObject(environmentViewModel)
                 .opacity(isAptEffectPlayed ? 1 : 0.5)
             
             SceneBroadcast()
-                .environmentObject(environmentModel)
+                .environmentObject(environmentViewModel)
             
             //버튼 레이어
             GeometryReader { proxy in
@@ -105,7 +103,6 @@ struct FixAptView: View {
                                 HStack(spacing: 12) {
                                     ForEach(users[rowIndex].indices, id: \.self) { colIndex in
                                         SceneButtons(roomUser: $users[rowIndex][colIndex])
-                                            .environmentObject(customViewModel)
                                             .frame(width: (geo.size.width - 48) / 3, height: ((geo.size.width - 48) / 3) / 1.2)
                                         //방 이미지 자체의 비율 1:1.2 통한 높이 산정
                                     }
@@ -124,7 +121,7 @@ struct FixAptView: View {
             //            기능테스트위한 임시 뷰
             FunctionTestView()
                 .environmentObject(viewRouter)
-                .environmentObject(environmentModel)
+                .environmentObject(environmentViewModel)
                 .environmentObject(weatherKitManager)
                 .opacity(isSettingOpen ? 1 : 0)
             
@@ -189,22 +186,19 @@ struct FixAptView: View {
         .onAppear {
             // 현재 날씨 데이터 받아오기
             weatherKitManager.getWeather(latitude: locationManager.latitude, longitude: locationManager.longitude)
-            environmentModel.rawWeather = weatherKitManager.condition
-            environmentModel.getCurrentEnvironment()
-            print("at aptView, weather:\(environmentModel.currentWeather)")
-            print("at aptView, time:\(environmentModel.currentTime)")
+            environmentViewModel.environmentRecord?.rawWeather = weatherKitManager.condition
             
             // 현재 아파트 정보 받아오기
             aptModel.fetchCurrentUserApt()
             
-            playSound(soundName: Text.sounds.clear)
+            playSound(soundName: String.sounds.clear)
 //            Timer.scheduledTimer(withTimeInterval: 4.0, repeats: true) { timer in
 //                DispatchQueue.global().async {
 //                    aptModel.fetchCurrentUserApt()
 //                }
 //            }
             
-            attendanceModel.downloadAttendanceRecords(for: Date())
+//            $attendanceModel.downloadAttendanceRecords(for: Date())
             
             // When the app is active, update the user's state to .active
             if let user = Auth.auth().currentUser {
@@ -248,9 +242,8 @@ struct FixAptView_Previews: PreviewProvider {
             .environmentObject(ViewRouter())
             .environmentObject(AptModel())
             .environmentObject(AttendanceModel(newAttendanceRecord: newAttendanceRecord))
-            .environmentObject(CharacterModel())
-            .environmentObject(EnvironmentModel())
-            .environmentObject(CustomViewModel())
+            .environmentObject(CharacterViewModel())
+            .environmentObject(EnvironmentViewModel())
             .environmentObject(WeatherKitManager())
             .environmentObject(LocationManager())
     }

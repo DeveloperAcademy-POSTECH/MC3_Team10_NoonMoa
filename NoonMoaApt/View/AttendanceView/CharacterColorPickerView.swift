@@ -8,14 +8,14 @@
 import SwiftUI
 
 struct CharacterColorPickerView: View {
-    @EnvironmentObject var customViewModel: CustomViewModel
+    @EnvironmentObject var characterViewModel: CharacterViewModel
     @State private var colorPickerSize: CGFloat = 16 //누르면 커지는 효과 16고정
     @State private var colorPickerOpacity: Bool = false //누르면 커지는 밝아지는 효과
     
     var body: some View {
             GeometryReader { geometry in
                 ZStack(alignment: .leading) {
-                    LinearGradient(gradient: Gradient(colors: [customViewModel.color1, customViewModel.color2, customViewModel.color3, customViewModel.color4]), startPoint: .leading, endPoint: .trailing)
+                    LinearGradient(gradient: Gradient(colors: [characterViewModel.color1, characterViewModel.color2, characterViewModel.color3, characterViewModel.color4]), startPoint: .leading, endPoint: .trailing)
                         .frame(width: geometry.size.width, height: 48 - colorPickerSize)
                         .cornerRadius(16)
                         .opacity(colorPickerOpacity ? 1 : 0.7)
@@ -35,13 +35,13 @@ struct CharacterColorPickerView: View {
                         
                     }
                     .opacity(colorPickerOpacity ? 1 : 0.7)
-                    .offset(x: geometry.size.width * 0.05 + (CGFloat(customViewModel.pickerValue) * geometry.size.width) * 0.9 - 12)
+                    .offset(x: geometry.size.width * 0.05 + (CGFloat(characterViewModel.pickerValue) * geometry.size.width) * 0.9 - 12)
                     .gesture(
                         DragGesture(minimumDistance: 0)
                             .onChanged { gesture in
                                 updateValue(with: gesture, in: geometry)
-                                customViewModel.pickerValueToCharacterColor(value: customViewModel.pickerValue)
-                                print(customViewModel.pickerValue)
+                                characterViewModel.pickerValueToCharacterColor(value: characterViewModel.pickerValue)
+                                print(characterViewModel.pickerValue)
                                 withAnimation(.easeInOut(duration: 0.2)) {
                                     colorPickerSize = 0
                                     colorPickerOpacity = true
@@ -61,7 +61,7 @@ struct CharacterColorPickerView: View {
     }
     func updateValue(with gesture: DragGesture.Value, in geometry: GeometryProxy) {
         let newValue = gesture.location.x / geometry.size.width
-        customViewModel.pickerValue = min(max(Double(newValue), 0), 1)
+        characterViewModel.pickerValue = min(max(Double(newValue), 0), 1)
     }
 }
 

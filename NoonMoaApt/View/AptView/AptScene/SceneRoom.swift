@@ -12,7 +12,6 @@ import FirebaseFirestore
 
 struct SceneRoom: View {
     @EnvironmentObject var eyeViewController: EyeViewController
-    @EnvironmentObject var customViewModel: CustomViewModel
 
     @Binding var roomUser: User
     @State private var isBlindUp: Bool = false
@@ -43,8 +42,7 @@ struct SceneRoom: View {
                 if roomUser.userState == "active" {
                     if roomUser.id == Auth.auth().currentUser?.uid {
                         SceneMyEye(roomUser: $roomUser, isJumping: roomUser.isJumping)
-                            .environmentObject(customViewModel)
-//                            .environmentObject(eyeViewController)
+                            .environmentObject(EyeNeighborViewModel())
                     } else {
                         SceneNeighborEye(roomUser: $roomUser, isJumping: roomUser.isJumping)
                     }

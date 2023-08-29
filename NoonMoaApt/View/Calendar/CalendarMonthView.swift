@@ -19,7 +19,6 @@ struct CalendarMonthView: View {
             CustomBlurView(effect: .systemUltraThinMaterialLight) { view in }
             .clipShape(RoundedRectangle(cornerRadius: 24))
             
-            
             if !isDayClicked {
                 VStack {
                     let days: [String] = ["일", "월", "화", "수", "목", "금", "토"]
@@ -126,11 +125,10 @@ struct CalendarMonthView: View {
 //                    let attendanceRecord = AttendanceRecords중에 value날짜로 된 키의 record
 //                    CharacterModel().fetchRecordedCharacter(record: attendanceRecord)
                 //하나의 attendanceRecord를 찾았다면, 그 raw데이터를 뷰데이터로 바꿔주는 함수 실행
-                    let environment = EnvironmentModel()
-                    let character = CharacterModel()
-                    let custom = CustomViewModel()
-                    StampButtonView(skyColor: environment.recordedColorOfSky, skyImage: environment.recordedStampSmallSkyImage, isSmiling: character.recordedIsSmiling, isBlinkingLeft: character.recordedIsBlinkingLeft, isBlinkingRight: character.recordedIsBlinkingRight, lookAtPoint: character.recordedLookAtPoint, faceOrientation: character.recordedFaceOrientation, bodyColor: custom.recordedBodyColor, eyeColor: custom.recordedEyeColor, cheekColor: custom.recordedCheekColor, borderColor: environment.recordedStampBorderColor)
-                        .frame(width: 36, height: 36)
+                    let environment = EnvironmentViewModel()
+                    let character = CharacterViewModel()
+//                    StampButtonView(skyColor: environment.recordedColorOfSky, skyImage: environment.recordedStampSmallSkyImage, isSmiling: CharacterViewModel.recordedIsSmiling, isBlinkingLeft: character.recordedIsBlinkingLeft, isBlinkingRight: character.recordedIsBlinkingRight, lookAtPoint: character.recordedLookAtPoint, faceOrientation: character.recordedFaceOrientation, bodyColor: custom.recordedBodyColor, eyeColor: custom.recordedEyeColor, cheekColor: custom.recordedCheekColor, borderColor: environment.recordedStampBorderColor)
+//                        .frame(width: 36, height: 36)
                 }
             }
         }
@@ -172,13 +170,12 @@ struct CalendarMonthView: View {
             
             //TODO: attendance record에서 value에 해당하는 날짜를 찾은다음에, StampLargeView에 값을 뿌려서 그려야함.
             
-            let environment = EnvironmentModel()
-            let character = CharacterModel()
-            let custom = CustomViewModel()
+            let environment = EnvironmentViewModel()
+            let character = CharacterViewModel()
             
-            StampLargeView(skyColor: environment.recordedColorOfSky, skyImage: environment.recordedStampLargeSkyImage, isSmiling: character.recordedIsSmiling, isBlinkingLeft: character.recordedIsBlinkingLeft, isBlinkingRight: character.recordedIsBlinkingRight, lookAtPoint: character.recordedLookAtPoint, faceOrientation: character.recordedFaceOrientation, bodyColor: custom.recordedBodyColor, eyeColor: custom.recordedEyeColor, cheekColor: custom.recordedCheekColor)
-                .frame(width: UIScreen.main.bounds.width * 0.7, height: UIScreen.main.bounds.width * 0.7)
-                .padding(.vertical)
+//            StampLargeView(skyColor: environment.recordedColorOfSky, skyImage: environment.recordedStampLargeSkyImage, isSmiling: character.recordedIsSmiling, isBlinkingLeft: character.recordedIsBlinkingLeft, isBlinkingRight: character.recordedIsBlinkingRight, lookAtPoint: character.recordedLookAtPoint, faceOrientation: character.recordedFaceOrientation, bodyColor: custom.recordedBodyColor, eyeColor: custom.recordedEyeColor, cheekColor: custom.recordedCheekColor)
+//                .frame(width: UIScreen.main.bounds.width * 0.7, height: UIScreen.main.bounds.width * 0.7)
+//                .padding(.vertical)
             
             Spacer()
                 
@@ -230,12 +227,6 @@ struct CalendarMonthView: View {
     }
 }
 
-struct CalendarMonthView_Previews: PreviewProvider {
-    static var previews: some View {
-        CalendarMonthView()
-    }
-}
-
 extension Date {
     
     func getAllDates() -> [Date] {
@@ -266,5 +257,11 @@ struct CustomBlurView: UIViewRepresentable {
         DispatchQueue.main.async {
             onChange(uiView)
         }
+    }
+}
+
+struct CalendarMonthView_Previews: PreviewProvider {
+    static var previews: some View {
+        CalendarMonthView()
     }
 }

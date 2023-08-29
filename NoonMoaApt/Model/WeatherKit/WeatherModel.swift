@@ -4,19 +4,6 @@ import WeatherKit
 @MainActor class WeatherKitManager: ObservableObject {
     @Published var weather: Weather?
     
-//    func getWeather(latitude: Double, longitude: Double) {
-//        print("getWeather | latitude: \(latitude), longtitude: \(longitude)")
-//        async {
-//            do {
-//                weather = try await Task.detached(priority: .userInitiated) {
-//                    return try await WeatherService.shared.weather(for:.init(latitude: latitude, longitude: longitude))
-//                }.value
-//            } catch {
-//                fatalError("\(error)")
-//            }
-//        }
-//    }
-    
     func getWeather(latitude: Double, longitude: Double) {
         print("getWeather | latitude: \(latitude), longtitude: \(longitude)")
         async {

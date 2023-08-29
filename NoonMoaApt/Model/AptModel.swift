@@ -23,7 +23,6 @@ class AptModel: ObservableObject {
         firestoreManager.db
     }
     
-    
     func getIndexShaker(userIndex: Int) -> [Int] {
         var tbr: [Int]
         
@@ -46,67 +45,7 @@ class AptModel: ObservableObject {
         
         return tbr
     }
-//    // 올리버의 방 배치 알고리즘
-//    func getIndexShaker(userIndex: Int) -> [Int] {
-//        let numPerFloor = 3
-//        let floorNum = 4
-//        let aptCapacity = numPerFloor * floorNum // = 12
-//
-//        // to be returned
-//        var tbr = [Int]()
-//
-//        for i in 0..<aptCapacity {
-//            tbr.append(i)
-//        }
-//
-//        guard userIndex >= 0, userIndex < aptCapacity else {
-//            print("wrong userIndex")
-//            return tbr
-//        }
-//        // quotient
-//        // q >= 0
-//        let q = userIndex / numPerFloor
-//
-//        // remainer
-//        let r = userIndex % numPerFloor
-//
-//        var quotientArray = [Int]()
-//        for i in 0..<floorNum {
-//            quotientArray.append(q-1+i)
-//        }
-//
-//        // maxQ must equal to quotientArray.count
-//        for i in 0..<quotientArray.count {
-//            if quotientArray[i] < 0 {
-//                quotientArray[i] += floorNum
-//            } else if quotientArray[i] >= floorNum {
-//                quotientArray[i] -= floorNum
-//            }
-//        }
-//
-//        var remainderArray = [Int]()
-//        for i in 0..<numPerFloor {
-//            remainderArray.append(r-1+i)
-//        }
-//
-//        // numPerFloor must equal to remainderArray.count
-//        for i in 0..<remainderArray.count {
-//            if remainderArray[i] < 0 {
-//                remainderArray[i] += numPerFloor
-//            } else if remainderArray[i] >= numPerFloor {
-//                remainderArray[i] -= numPerFloor
-//            }
-//        }
-//
-//        for i in 0..<aptCapacity {
-//            let iq = i / numPerFloor
-//            let ir = i % numPerFloor
-//            tbr[i] = quotientArray[iq] * numPerFloor + remainderArray[ir]
-//        }
-//
-//        return tbr
-//    }
-    
+
     // Fetch current user's apartment
     func fetchCurrentUserApt() {
         guard let userId = Auth.auth().currentUser?.uid else { return }
