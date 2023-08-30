@@ -198,7 +198,7 @@ struct AptView: View {
 //                }
 //            }
             
-//            attendanceModel.downloadAttendanceRecords(for: Date())
+            attendanceModel.downloadAttendanceRecords(for: Date())
             
             // When the app is active, update the user's state to .active
             if let user = Auth.auth().currentUser {

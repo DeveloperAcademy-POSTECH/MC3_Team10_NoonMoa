@@ -73,15 +73,26 @@ class AttendanceModel: ObservableObject {
         ]
     }
     
-    func changeDateToString(date: Date) -> String {
-        let nowDate = date
+    // Date -> String
+    func formatDateToString(date: Date) -> String {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        let dateString = dateFormatter.string(from: newAttendanceRecord?.date ?? nowDate)
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"  // 이 부분을 ISO 8601 형식으로 변경
+        let dateString = dateFormatter.string(from: date)  // newAttendanceRecord?.date ?? nowDate 부분을 제거
         
         return dateString
     }
-    
+
+    // String -> Date
+    func formatStringToDate(dateString: String) -> Date? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"  // 이 형식은 그대로 둡니다.
+        if let date = dateFormatter.date(from: dateString) {
+            return date
+        } else {
+            return nil
+        }
+    }
+
     
     // 출석도장 찍거나 설정창에서 바꿀 때
     func uploadAttendanceRecord() {
@@ -97,10 +108,10 @@ class AttendanceModel: ObservableObject {
         // let timestamp = Timestamp(date: newAttendanceRecord?.date ?? nowDate)
         
         let nowDate = Date()
-        let dateString = changeDateToString(date: nowDate)
+        let dateString = formatDateToString(date: nowDate)
         
         newAttendanceRecord?.userId = currentUser.uid
-        newAttendanceRecord?.date = nowDate
+        newAttendanceRecord?.date = nowDate // 수정할 필요 있음
         
 //        environmentModel.getCurrentEnvironment()
 //        environmentModel.saveRawEnvironmentToAttendanceModel(newAttendanceRecord: &newAttendanceRecord)
@@ -146,6 +157,23 @@ class AttendanceModel: ObservableObject {
             print("=============")
             
             
+            // Date를 String으로 변환
+            let now = date
+            print("Date: \(now)")
+            
+            let dateString = self.formatDateToString(date: now)
+            print("Date as String: \(dateString)")
+            print("Type of Date as String: \(type(of: dateString))")
+
+            // String을 Date로 변환
+            if let convertedDate = self.formatStringToDate(dateString: dateString) {
+                print("Converted Date: \(convertedDate)")
+                print("Type of Converted Date: \(type(of: convertedDate))")
+            } else {
+                print("Failed to convert date")
+            }
+            
+            
             // 오늘 날짜와 일치하는 데이터를 필터링
             let startOfDay = Calendar.current.startOfDay(for: date)
             let endOfDay = Calendar.current.date(byAdding: .day, value: 1, to: startOfDay)!
@@ -186,6 +214,8 @@ class AttendanceModel: ObservableObject {
                 }
                 
                 print("AttendanceModel | fetchAttedanceRecords | documents: \(documents.count)")
+                let date_string = self.formatDateToString(date: date)
+                
                 
                 for document in documents {
 //                    print("Document Data: \(document.data())") // 이 로그를 추가
@@ -224,7 +254,7 @@ class AttendanceModel: ObservableObject {
                             print("Date is nil in the newRecord.")
                             return
                         }
-                        let dateString = self.changeDateToString(date: recordDate)
+                        let dateString = self.formatDateToString(date: recordDate)
                         
                         // fetchedRecords[dateString] = newRecord
                         fetchedRecords[documentID] = newRecord  // 문서 ID를 키로 사용
@@ -240,6 +270,7 @@ class AttendanceModel: ObservableObject {
                         print("Document doesn't match the structure of AttendanceRecord")
                     }
                 }
+                print("TESTTTTTTTTTTT")
                 completion(fetchedRecords)
             }
     }
