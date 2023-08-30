@@ -24,26 +24,23 @@ class AptModel: ObservableObject {
     }
     
     func getIndexShaker(userIndex: Int) -> [Int] {
-        var tbr: [Int]
         
         switch userIndex {
-        case 1: tbr = [0, 11, 10, 3, 1, 2, 6, 4, 5, 9, 7, 8]
-        case 2: tbr = [10, 11, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-        case 3: tbr = [11, 0, 10, 2, 3, 1, 5, 6, 4, 8, 9, 7]
-        case 4: tbr = [3, 1, 2, 6, 4, 5, 9, 7, 8, 0, 10, 11]
-        case 5: tbr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0]
-        case 6: tbr = [2, 3, 1, 5, 6, 4, 8, 9, 7, 11, 0, 10]
-        case 7: tbr = [6, 4, 5, 9, 7, 8, 0, 10, 11, 3, 1, 2]
-        case 8: tbr = [4, 5, 6, 7, 8, 9, 10, 11, 0, 1, 2, 3]
-        case 9: tbr = [5, 6, 4, 8, 9, 7, 11, 0, 10, 2, 3, 1]
-        case 10: tbr = [9, 7, 8, 0, 10, 11, 3, 1, 2, 6, 4, 5]
-        case 11: tbr = [7, 8, 9, 10, 11, 0, 1, 2, 3, 4, 5, 6]
-        case 12: tbr = [8, 9, 7, 11, 12, 10, 2, 3, 1, 5, 6, 4]
+        case 0: return [11, 10, 9, 2, 0, 1, 5, 3, 4, 8, 6, 7]
+        case 1: return [9, 10, 11, 0, 1, 2, 3, 4, 5, 6, 7, 8]
+        case 2: return [10, 11, 9, 1, 2, 0, 4, 5, 3, 7, 8, 6]
+        case 3: return [2, 0, 1, 5, 3, 4, 8, 6, 7, 11, 9, 10]
+        case 4: return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+        case 5: return [1, 2, 0, 4, 5, 3, 7, 8, 6, 10, 11, 9]
+        case 6: return [5, 3, 4, 8, 6, 7, 11, 9, 10, 2, 0, 1]
+        case 7: return [3, 4, 5, 6, 7, 8, 9, 10, 11, 0, 1, 2]
+        case 8: return [4, 5, 3, 7, 8, 6, 10, 11, 9, 1, 2, 0]
+        case 9: return [8, 6, 7, 11, 9, 10, 2, 0, 1, 5, 3, 4]
+        case 10: return [6, 7, 8, 9, 10, 11, 0, 1, 2, 3, 4, 5]
+        case 11: return [7, 8, 6, 10, 11, 9, 1, 2, 0, 4, 5, 3]
 
         default: return []
         }
-        
-        return tbr
     }
 
     // Fetch current user's apartment
@@ -129,6 +126,9 @@ extension AptModel {
                 
                 // Step 3: Use getIndexShaker() to create a 4x3 array
                 let shakedIndices = self.getIndexShaker(userIndex: currentUserIndex)
+
+                print("AptModel | generateUserLayout | shakedIndices: \(shakedIndices)")
+                print("AptModel | generateUserLayout | currentUserIndex: \(currentUserIndex)")
                 
                 var userLayout = [[User?]](repeating: [User?](repeating: nil, count: 3), count: 4) // Initialize 4x3 array with nil
                 
@@ -137,6 +137,9 @@ extension AptModel {
                 for i in 0..<12 {
                     let row = i / 3
                     let col = i % 3
+                    print("AptModel | generateUserLayout | shakedIndices[i]: \(shakedIndices[i])")
+                    print("AptModel | generateUserLayout | userIds[shakedIndices[i]]: \(userIds[shakedIndices[i]])")
+                        
                     let userId = userIds[shakedIndices[i]]
                     
                     if userId == "dummyUserId" {

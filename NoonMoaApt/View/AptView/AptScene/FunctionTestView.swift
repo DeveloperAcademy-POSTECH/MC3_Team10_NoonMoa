@@ -13,6 +13,7 @@ struct FunctionTestView: View {
     @EnvironmentObject var weatherKitManager: WeatherKitManager
     @EnvironmentObject var locationManager: LocationManager
     @EnvironmentObject var aptModel: AptModel
+    @EnvironmentObject var loginViewModel: LoginViewModel
     
     @State private var indexTime: Int = 0
     @State private var indexWeather: Int = 0
@@ -21,15 +22,22 @@ struct FunctionTestView: View {
         VStack(alignment: .leading) {
             Spacer()
             HStack(spacing: 8) {
-                RoundedRectangle(cornerRadius: 8)
-                    .fill(.white)
-                    .frame(width: 80, height: 48)
-                    .overlay(
-                        Text("")
-                            .foregroundColor(.black)
-                            .font(.caption)
-                    )
-                    .opacity(0.3)
+                Button {
+                    loginViewModel.isLogInDone = false
+                    loginViewModel.logout()
+                    viewRouter.currentView = .login
+                } label: {
+                    RoundedRectangle(cornerRadius: 8)
+                        .fill(.white)
+                        .frame(width: 80, height: 48)
+                        .overlay(
+                            Text("Sign Out")
+                                .foregroundColor(.black)
+                                .font(.caption)
+                        )
+                        .opacity(0.3)
+                }
+
                 
                 Button(action: {
                     weatherKitManager.getWeather(latitude: locationManager.latitude, longitude: locationManager.longitude)
@@ -90,14 +98,15 @@ struct FunctionTestView: View {
             HStack(spacing: 8) {
                 
                 Button(action: {
-//                    EyeViewController().resetFaceAnchor()
-//                    UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                    loginViewModel.deleteUserAccount()
+                    loginViewModel.isLogInDone = false
+                    viewRouter.currentView = .login
                 }) {
                     RoundedRectangle(cornerRadius: 8)
                         .fill(.white)
                         .frame(width: 80, height: 48)
                         .overlay(
-                            Text("Reset\nFace")
+                            Text("Account Deleted")
                                 .foregroundColor(.black)
                                 .font(.caption)
                         )
