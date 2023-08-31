@@ -14,8 +14,8 @@ struct SceneBackground: View {
         
         GeometryReader { geo in
             ZStack {
-                environmentViewModel.environmentRecordViewData.colorOfSky
-                GroundView(colorOfGround: environmentViewModel.environmentRecordViewData.colorOfGround, geoSizeWidth: geo.size.width)
+                environmentViewModel.environmentViewData.colorOfSky
+                GroundView(colorOfGround: environmentViewModel.environmentViewData.colorOfGround, geoSizeWidth: geo.size.width)
                             .offset(y: geo.size.height / 2)
             }
             .ignoresSafeArea()

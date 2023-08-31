@@ -183,7 +183,7 @@ struct TestView: View {
                 isBlinkingLeft: eyeViewController.eyeMyViewModel.isBlinkingLeft,
                 isBlinkingRight: eyeViewController.eyeMyViewModel.isBlinkingRight,
                 lookAtPoint: eyeViewController.eyeMyViewModel.lookAtPoint,
-                faceOrientation: eyeViewController.eyeMyViewModel.faceOrientation, bodyColor: characterViewModel.characterRecordViewData.bodyColor, eyeColor: characterViewModel.characterRecordViewData.eyeColor, cheekColor: characterViewModel.characterRecordViewData.cheekColor, isInactiveOrSleep: false, isJumping: false)
+                faceOrientation: eyeViewController.eyeMyViewModel.faceOrientation, bodyColor: characterViewModel.characterViewData.bodyColor, eyeColor: characterViewModel.characterViewData.eyeColor, cheekColor: characterViewModel.characterViewData.cheekColor, isInactiveOrSleep: false, isJumping: false)
     }
 }
 

@@ -23,7 +23,6 @@ struct NoonMoaAptApp: App {
     
     var viewRouter = ViewRouter()
     var midnightUpdater = MidnightUpdater()
-    var weatherKitManager = WeatherKitManager()
     var locationManager = LocationManager()
     var environmentViewModel = EnvironmentViewModel()
     
@@ -52,7 +51,6 @@ struct NoonMoaAptApp: App {
                      characterViewModel: CharacterViewModel(),
                      environmentViewModel: EnvironmentViewModel(),
                      loginViewModel: LoginViewModel(viewRouter: ViewRouter()),
-                     weatherKitManager: WeatherKitManager(),
                      locationManager: LocationManager()
             )
             .environmentObject(delegate.viewRouter)

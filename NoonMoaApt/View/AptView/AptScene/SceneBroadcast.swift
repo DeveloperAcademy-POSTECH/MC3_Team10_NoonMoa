@@ -21,9 +21,9 @@ struct SceneBroadcast: View {
                 Spacer().frame(height: 56)
                 Text(displayedText)
                     .foregroundColor(
-                        environmentViewModel.environmentRecordViewData.time == "sunrise" ||
-                        environmentViewModel.environmentRecordViewData.time == "morning" ||
-                        environmentViewModel.environmentRecordViewData.time == "afternoon" ?
+                        environmentViewModel.environmentViewData.time == "sunrise" ||
+                        environmentViewModel.environmentViewData.time == "morning" ||
+                        environmentViewModel.environmentViewData.time == "afternoon" ?
                         .announcementGray :
                         .white)
                     .opacity(1.0)
@@ -38,7 +38,7 @@ struct SceneBroadcast: View {
         .onAppear {
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                 displayedText = ""
-                fullText = environmentViewModel.environmentRecordViewData.broadcastAnnounce
+                fullText = environmentViewModel.environmentViewData.broadcastAnnounce
                 startTyping()
             }
         }

@@ -17,7 +17,6 @@ struct AptView: View {
     @EnvironmentObject var attendanceModel: AttendanceModel
     @EnvironmentObject var characterViewModel: CharacterViewModel
     @EnvironmentObject var environmentViewModel: EnvironmentViewModel
-    @EnvironmentObject var weatherKitManager: WeatherKitManager
     @EnvironmentObject var locationManager: LocationManager
     
     @State private var users: [[User]] = User.UTData
@@ -123,7 +122,6 @@ struct AptView: View {
             FunctionTestView()
                 .environmentObject(viewRouter)
                 .environmentObject(environmentViewModel)
-                .environmentObject(weatherKitManager)
                 .opacity(isSettingOpen ? 1 : 0)
             
             //캘린더뷰
@@ -185,20 +183,11 @@ struct AptView: View {
             }
         }//ZStack
         .onAppear {
-            // 현재 날씨 데이터 받아오기
-            weatherKitManager.getWeather(latitude: locationManager.latitude, longitude: locationManager.longitude)
             
             // 현재 아파트 정보 받아오기
             aptModel.fetchCurrentUserApt()
             
             playSound(soundName: String.sounds.clear)
-//            Timer.scheduledTimer(withTimeInterval: 4.0, repeats: true) { timer in
-//                DispatchQueue.global().async {
-//                    aptModel.fetchCurrentUserApt()
-//                }
-//            }
-            
-            attendanceModel.downloadAttendanceRecords(for: Date())
             
             // When the app is active, update the user's state to .active
             if let user = Auth.auth().currentUser {
@@ -244,7 +233,6 @@ struct AptView_Previews: PreviewProvider {
             .environmentObject(AttendanceModel(newAttendanceRecord: newAttendanceRecord))
             .environmentObject(CharacterViewModel())
             .environmentObject(EnvironmentViewModel())
-            .environmentObject(WeatherKitManager())
-            .environmentObject(LocationManager())        
+            .environmentObject(LocationManager())
     }
 }

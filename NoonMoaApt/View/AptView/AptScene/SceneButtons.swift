@@ -151,7 +151,7 @@ struct SceneButtons: View {
                             .particleEffect(systemImage: "suit.heart.fill",
                                             font: .title3,
                                             status:  roomUser.clicked,
-                                            tint: characterViewModel.characterRecordViewData.characterColor)
+                                            tint: characterViewModel.characterViewData.characterColor)
                     } else {
                         Color.clear
                             .cornerRadius(8)
@@ -212,7 +212,6 @@ struct SceneButtons_Previews: PreviewProvider {
                 .environmentObject(AttendanceModel(newAttendanceRecord: newAttendanceRecord))
                 .environmentObject(CharacterViewModel())
                 .environmentObject(EnvironmentViewModel())
-                .environmentObject(WeatherKitManager())
                 .environmentObject(LocationManager())
         }
     }

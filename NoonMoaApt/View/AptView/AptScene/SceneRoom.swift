@@ -24,6 +24,7 @@ struct SceneRoom: View {
                     .scaledToFit()
                 
                 if roomUser.userState == "active" {
+                    //본인의 방일 경우 .white
                     if roomUser.id == Auth.auth().currentUser?.uid {
                         Image.assets.room.white
                             .resizable()
