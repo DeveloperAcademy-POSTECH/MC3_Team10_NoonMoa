@@ -45,7 +45,7 @@ class AttendanceModel: ObservableObject {
     var todayRecord: AttendanceRecord? = nil
     
     private var characterViewModel: CharacterViewModel = CharacterViewModel()
-    private var environmentViewModel: EnvironmentViewModel = EnvironmentViewModel()
+//    private var environmentViewModel: EnvironmentViewModel = EnvironmentViewModel()
     
     // @Published var newAttendanceRecord: AttendanceRecord? = nil //^^ @Published가 필요성 고민 중...
     var newAttendanceRecord: AttendanceRecord? = nil

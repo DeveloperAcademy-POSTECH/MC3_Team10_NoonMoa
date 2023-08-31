@@ -13,25 +13,9 @@ struct SceneWeather: View {
 
     var body: some View {
         
-        //이렇게 분기처리한 이유: 로띠는 뷰를 다시 그려도 이전 재생중이던 애니메이션이 실행되어 업데이트가 되지 않았다.
-        switch environmentViewModel.environment?.rawWeather {
-        case "clear":
-            LottieView(name: Lottie.clearMorning, animationSpeed: 1)
-                .ignoresSafeArea()
-                .opacity(0.6)
-        case "cloudy":
-            LottieView(name: Lottie.cloudyMorning, animationSpeed: 1)
-                .ignoresSafeArea()
-                .opacity(0.6)
-        case "rainy":
-            LottieView(name: Lottie.rainyMorning, animationSpeed: 1)
-                .ignoresSafeArea()
-                .opacity(0.6)
-        case "snowy":
-            LottieView(name: Lottie.snowyMorning, animationSpeed: 1)
-                .ignoresSafeArea()
-        default: EmptyView()
-        }
+        LottieView(name: environmentViewModel.environmentViewData.lottieImageName, animationSpeed: 1)
+            .ignoresSafeArea()
+            .opacity(0.6)
     }
 }
 

@@ -10,7 +10,6 @@ import SwiftUI
 struct FunctionTestView: View {
     @EnvironmentObject var viewRouter: ViewRouter
     @EnvironmentObject var environmentModel: EnvironmentViewModel
-    @EnvironmentObject var weatherKitManager: WeatherKitManager
     @EnvironmentObject var locationManager: LocationManager
     @EnvironmentObject var aptModel: AptModel
     
@@ -32,10 +31,8 @@ struct FunctionTestView: View {
                     .opacity(0.3)
                 
                 Button(action: {
-//                    weatherKitManager.getWeather(latitude: locationManager.latitude, longitude: locationManager.longitude)
-//                    environmentModel.environment?.rawWeather = weatherKitManager.condition
-//                    environmentModel.getCurrentEnvironment()
-         
+                    
+                    
                     UIImpactFeedbackGenerator(style: .medium).impactOccurred()
                 }) {
                     RoundedRectangle(cornerRadius: 8)
@@ -50,11 +47,8 @@ struct FunctionTestView: View {
                 }
                 
                 Button(action: {
-                    let array = ["sunrise", "morning", "afternoon", "sunset", "evening", "night"]
                     indexTime = (indexTime + 7) % 6
-                    environmentModel.environmentViewData.time = array[indexTime]
-                    print(indexTime)
-                    print(environmentModel.environmentViewData.time)
+                    environmentModel.environmentViewData.colorOfSky = generateArrayOfSkyForTimeShuffle(weather: environmentModel.environmentViewData.weather)[indexTime]
                     UIImpactFeedbackGenerator(style: .medium).impactOccurred()
                 }) {
                     RoundedRectangle(cornerRadius: 8)
@@ -68,9 +62,8 @@ struct FunctionTestView: View {
                         .opacity(0.3)
                 }
                 Button(action: {
-                    let array = ["clear", "cloudy", "rainy", "snowy"]
                     indexWeather = (indexWeather + 5) % 4
-                  
+                    
                     UIImpactFeedbackGenerator(style: .medium).impactOccurred()
                 }) {
                     RoundedRectangle(cornerRadius: 8)
@@ -83,15 +76,15 @@ struct FunctionTestView: View {
                         )
                         .opacity(0.3)
                 }
-              
+                
             }
             .padding(.horizontal)
             
             HStack(spacing: 8) {
                 
                 Button(action: {
-//                    EyeViewController().resetFaceAnchor()
-//                    UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                    //                    EyeViewController().resetFaceAnchor()
+                    //                    UIImpactFeedbackGenerator(style: .medium).impactOccurred()
                 }) {
                     RoundedRectangle(cornerRadius: 8)
                         .fill(.white)
@@ -151,6 +144,15 @@ struct FunctionTestView: View {
                 }
             }
             .padding(.horizontal)
+        }
+    }
+    func generateArrayOfSkyForTimeShuffle(weather: String) -> [LinearGradient] {
+        switch weather {
+        case "clear" : return [LinearGradient.sky.clearSunrise, LinearGradient.sky.clearMorning, LinearGradient.sky.clearAfternoon, LinearGradient.sky.clearSunset, LinearGradient.sky.clearEvening, LinearGradient.sky.clearNight];
+        case "cloudy" : return [LinearGradient.sky.clearSunrise, LinearGradient.sky.cloudyMorning, LinearGradient.sky.cloudyAfternoon, LinearGradient.sky.cloudySunset, LinearGradient.sky.cloudyEvening, LinearGradient.sky.cloudyNight];
+        case "rainy" : return [LinearGradient.sky.clearSunrise, LinearGradient.sky.rainyMorning, LinearGradient.sky.rainyAfternoon, LinearGradient.sky.rainySunset, LinearGradient.sky.rainyEvening, LinearGradient.sky.rainyNight];
+        case "snowy" : return [LinearGradient.sky.clearSunrise, LinearGradient.sky.snowyMorning, LinearGradient.sky.snowyAfternoon, LinearGradient.sky.snowySunset, LinearGradient.sky.snowyEvening, LinearGradient.sky.snowyNight];
+        default : return []
         }
     }
 }

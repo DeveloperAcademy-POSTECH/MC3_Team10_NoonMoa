@@ -19,7 +19,6 @@ struct AttendanceView: View {
     @EnvironmentObject var attendanceModel: AttendanceModel
     @EnvironmentObject var environmentViewModel: EnvironmentViewModel
     @EnvironmentObject var characterViewModel: CharacterViewModel
-    @EnvironmentObject var weatherKitManager: WeatherKitManager
     @EnvironmentObject var locationManager: LocationManager
     @StateObject var eyeViewController: EyeViewController
     
@@ -124,10 +123,7 @@ struct AttendanceView: View {
                             //사용자 색상 최초 지정(default값)
                             self.playSound(soundName: String.sounds.shutter)
                             characterViewModel.pickerValueToCharacterColor(value: characterViewModel.pickerValue)
-                            //날씨 받아오기
-//                            weatherKitManager.getWeather(latitude: locationManager.latitude, longitude: locationManager.longitude)
-//                            environmentViewModel.environment?.rawWeather = weatherKitManager.condition
-//                            environmentViewModel.getCurrentEnvironment()
+                         
                             
                             DispatchQueue.main.async {
                                 UIImpactFeedbackGenerator(style: .soft).impactOccurred()
@@ -228,10 +224,7 @@ struct AttendanceView: View {
             }//GeometryReader
             .padding(24)
         }//ZStack
-                .onAppear {
-                    //테스트용 날씨 보기위해 임시로 아래 함수만 실행
-//                    weatherKitManager.getWeather(latitude: locationManager.latitude, longitude: locationManager.longitude)
-                }
+             
     }
     
     struct AttendanceView_Previews: PreviewProvider {

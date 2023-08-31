@@ -9,7 +9,6 @@ import SwiftUI
 
 struct SceneMyEye: View {
     @Binding var roomUser: User
-    @EnvironmentObject var environmentViewModel: EnvironmentViewModel
     @EnvironmentObject var characterViewModel: CharacterViewModel
     @EnvironmentObject var eyeNeighborViewModel: EyeNeighborViewModel
     var isJumping: Bool
@@ -26,8 +25,10 @@ struct SceneMyEye: View {
         .onAppear {
             eyeNeighborViewModel.updateColors(roomUser: roomUser)
             //이웃 눈의 랜덤한 움직임 함수 실행
-            withAnimation(.linear(duration: 3)) {
-                eyeNeighborViewModel.randomEyeMove(roomUser: roomUser)
+            DispatchQueue.main.async {
+                withAnimation(.linear(duration: 3)) {
+                    eyeNeighborViewModel.randomEyeMove(roomUser: roomUser)
+                }
             }
             Timer.scheduledTimer(withTimeInterval: 3.0, repeats: true) { timer in
                 DispatchQueue.main.async {

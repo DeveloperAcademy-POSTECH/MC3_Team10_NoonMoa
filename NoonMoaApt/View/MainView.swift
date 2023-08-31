@@ -14,7 +14,6 @@ struct MainView: View {
     @StateObject var characterViewModel: CharacterViewModel
     @StateObject var environmentViewModel: EnvironmentViewModel
     @StateObject var loginViewModel: LoginViewModel
-    @StateObject var weatherKitManager: WeatherKitManager
     @StateObject var locationManager: LocationManager
 
     
@@ -31,19 +30,20 @@ struct MainView: View {
                 .environmentObject(LoginViewModel(viewRouter: ViewRouter()))
         case .attendance:
             
-            WeatherTestView()
-                .environmentObject(weatherKitManager)
-                .environmentObject(locationManager)
-                .environmentObject(environmentViewModel)
-
-//////            let record = attendanceModel.ensureCurrentRecord()
-//            AttendanceView(eyeViewController: EyeViewController())
-//                .environmentObject(viewRouter)
-//                .environmentObject(attendanceModel)
-//                .environmentObject(environmentViewModel)
-//                .environmentObject(characterViewModel)
-//                .environmentObject(weatherKitManager)
+//            WeatherTestView()
 //                .environmentObject(locationManager)
+//                .environmentObject(environmentViewModel)
+
+////            let record = attendanceModel.ensureCurrentRecord()
+            AttendanceView(eyeViewController: EyeViewController())
+                .environmentObject(viewRouter)
+                .environmentObject(attendanceModel)
+                .environmentObject(environmentViewModel)
+                .environmentObject(characterViewModel)
+                .environmentObject(locationManager)
+                .task(priority: .userInitiated) {
+                    await environmentViewModel.getWeather(latitude: locationManager.latitude, longitude: locationManager.longitude)
+                }
         case .apt:
 //            WeatherTestView()
             AptView()
@@ -52,8 +52,10 @@ struct MainView: View {
                 .environmentObject(attendanceModel)
                 .environmentObject(environmentViewModel)
                 .environmentObject(characterViewModel)
-                .environmentObject(weatherKitManager)
                 .environmentObject(locationManager)
+                .task(priority: .userInitiated) {
+                    await environmentViewModel.getWeather(latitude: locationManager.latitude, longitude: locationManager.longitude)
+                }
                 
         default:
             LoginView()

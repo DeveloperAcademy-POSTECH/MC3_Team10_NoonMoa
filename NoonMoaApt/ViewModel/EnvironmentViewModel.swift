@@ -1,43 +1,53 @@
-//
-//  EnvironmentModel.swift
-//  NoonMoaApt
-//
-//  Created by 최민규 on 2023/07/31.
-//
-
 import Foundation
 import SwiftUI
+import WeatherKit
 
-class EnvironmentViewModel: ObservableObject {
+@MainActor class EnvironmentViewModel: ObservableObject {
+    @Published var weather: Weather?
+
+    @Published var environment: EnvironmentRecord = EnvironmentRecord(rawWeather: "clear", rawTime: Date(), rawSunriseTime: Date(), rawSunsetTime: Date())
+    @Published var environmentViewData: EnvironmentRecordViewData = EnvironmentRecordViewData(weather: "clear", isWind: false, isThunder: false, time: "morning", lottieImageName: Lottie.clearMorning, colorOfSky: .sky.clearMorning, colorOfGround: .ground.clearMorning, broadcastAttendanceIncompleteTitle: String.broadcast.attendanceIncompleteTitle.clearMorning, broadcastAttendanceIncompleteBody: String.broadcast.attendanceIncompleteBody.clearMorning, broadcastAttendanceCompletedTitle: String.broadcast.attendanceCompletedTitle.clearMorning, broadcastAttendanceCompletedBody: String.broadcast.attendanceCompletedBody.clearMorning, broadcastAnnounce: String.broadcast.announce[0], stampLargeSkyImage: Image.assets.stampLarge.clearMorning, stampSmallSkyImage: Image.assets.stampSmall.clearMorning, stampBorderColor: Color.stampBorder.clearMorning)
     
-    @Published var environment: EnvironmentRecord?
-    @Published var environmentViewData: EnvironmentRecordViewData = EnvironmentRecordViewData(weather: "clear", isWind: false, isThunder: false, time: "morning", lottieImageName: Lottie.clearMorning, colorOfSky: .sky.clearMorning, colorOfGround: .ground.clearMorning, broadcastAttendanceIncompleteTitle: .broadcast.attendanceIncompleteTitle.clearMorning, broadcastAttendanceIncompleteBody: .broadcast.attendanceIncompleteBody.clearMorning, broadcastAttendanceCompletedTitle: .broadcast.attendanceCompletedTitle.clearMorning, broadcastAttendanceCompletedBody: .broadcast.attendanceCompletedBody.clearMorning, broadcastAnnounce: .broadcast.announce[0], stampLargeSkyImage: .assets.stampLarge.clearMorning, stampSmallSkyImage: .assets.stampSmall.clearMorning, stampBorderColor: .stampBorder.clearMorning)
-    
-    var recordedEnvironment: EnvironmentRecord?
-    var recordedEnvironmentViewData: EnvironmentRecordViewData?
-    
-    init(environment: EnvironmentRecord? = nil, recordedEnvironment: EnvironmentRecord? = nil, recordedEnvironmentViewData: EnvironmentRecordViewData? = nil) {
-        self.environment = environment
-        self.recordedEnvironment = recordedEnvironment
-        self.recordedEnvironmentViewData = recordedEnvironmentViewData
-    }
-   
-    // MARK: - 업로드용 변환 -
-  
-    //웨더킷에서 날씨를 앱 시작단계에서 비동기로 불러오고,
-    
-    func convertWeatherToEnvironmentRecord(using weatherKitManager: WeatherKitManager) {
-            DispatchQueue.main.async {
-                self.environment = EnvironmentRecord(
-                    rawWeather: weatherKitManager.condition!, rawTime: weatherKitManager.date!, rawSunriseTime: weatherKitManager.sunrise!, rawSunsetTime: weatherKitManager.sunset!)
+    @Published var recordedEnvironment: EnvironmentRecord = EnvironmentRecord(rawWeather: "clear", rawTime: Date(), rawSunriseTime: Date(), rawSunsetTime: Date())
+    @Published var recordedEnvironmentViewData: EnvironmentRecordViewData = EnvironmentRecordViewData(weather: "clear", isWind: false, isThunder: false, time: "morning", lottieImageName: Lottie.clearMorning, colorOfSky: .sky.clearMorning, colorOfGround: .ground.clearMorning, broadcastAttendanceIncompleteTitle: String.broadcast.attendanceIncompleteTitle.clearMorning, broadcastAttendanceIncompleteBody: String.broadcast.attendanceIncompleteBody.clearMorning, broadcastAttendanceCompletedTitle: String.broadcast.attendanceCompletedTitle.clearMorning, broadcastAttendanceCompletedBody: String.broadcast.attendanceCompletedBody.clearMorning, broadcastAnnounce: String.broadcast.announce[0], stampLargeSkyImage: Image.assets.stampLarge.clearMorning, stampSmallSkyImage: Image.assets.stampSmall.clearMorning, stampBorderColor: Color.stampBorder.clearMorning)
+
+
+    func getWeather(latitude: Double, longitude: Double) async {
+        print("getWeather | latitude: \(latitude), longtitude: \(longitude)")
+        Task(priority: .userInitiated) {
+            do {
+                weather = try await Task(priority: .userInitiated) {
+                    return try await WeatherService.shared.weather(for:.init(latitude: latitude, longitude: longitude))
+                }.value
+                print(latitude)
+                print(longitude)
+                let condition = weather?.currentWeather.condition.rawValue ?? "clear"
+                let date = Date()
+                let sunrise = weather?.dailyForecast[0].sun.sunrise ?? Date()
+                let sunset = weather?.dailyForecast[0].sun.sunset ?? Date()
+                self.environment = EnvironmentRecord(rawWeather: condition, rawTime: date, rawSunriseTime: sunrise, rawSunsetTime: sunset)
+                convertRawDataToEnvironmentViewData(isInputAttndanceRecord: false, environmentModel: self.environment)
+                print(String(self.environment.rawWeather))
+            } catch {
+                print("Weather error: \(error)")
+                fatalError("\(error)")
             }
-        print("함수실행완료!")
+        }
     }
-    // MARK: - 실시간 뷰 표현용 변환 / 저장된 값 다운로드 후 변환 -
+    
+    var symbol: String {
+        weather?.currentWeather.symbolName ?? "xmark"
+    }
+    
+    var temp: String {
+        let temp = weather?.currentWeather.temperature
+        let convertedTemp = temp?.converted(to: .celsius).description
+        return convertedTemp ?? "Connecting to WeatherKit"
+    }
     
     // isThisForCalendarView가 false일 때는 Input: WeatherKit으로 부터 받은 값, Output: 뷰에서 사용하는 environmentRecordViewData에 할당.
     // isThisForCalendarView가 true일 때는 Input: AttendanceRecord로 부터 받은 값, Output: Calendar뷰에서 사용하는 recordedEnvironmentViewData에 할당.
-    func convertRawDataToEnvironment(isInputAttndanceRecord: Bool, environmentModel: EnvironmentRecord) {
+    func convertRawDataToEnvironmentViewData(isInputAttndanceRecord: Bool, environmentModel: EnvironmentRecord) {
         
         let weather = environmentModel.rawWeather
         let time = environmentModel.rawTime
@@ -427,3 +437,5 @@ class EnvironmentViewModel: ObservableObject {
         return hour
     }
 }
+
+

@@ -212,7 +212,6 @@ struct SceneButtons_Previews: PreviewProvider {
                 .environmentObject(AttendanceModel(newAttendanceRecord: newAttendanceRecord))
                 .environmentObject(CharacterViewModel())
                 .environmentObject(EnvironmentViewModel())
-                .environmentObject(WeatherKitManager())
                 .environmentObject(LocationManager())
         }
     }

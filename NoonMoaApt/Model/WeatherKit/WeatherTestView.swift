@@ -3,7 +3,6 @@ import WeatherKit
 import CoreLocation
 
 struct WeatherTestView: View {
-    @EnvironmentObject var weatherKitManager: WeatherKitManager
     @EnvironmentObject var locationManager: LocationManager
     @EnvironmentObject var environmentViewModel: EnvironmentViewModel
     @State private var dateHour: Int = 0
@@ -14,27 +13,22 @@ struct WeatherTestView: View {
         
         if locationManager.authorisationStatus == .authorizedWhenInUse {
             VStack {
-                Label(weatherKitManager.symbol, systemImage: weatherKitManager.symbol)
-                Text(weatherKitManager.condition ?? "111")
-                Text(weatherKitManager.temp)
-                
-                Text(environmentViewModel.environment?.rawWeather ?? "nil")
-                Text(String(describing: environmentViewModel.environment?.rawTime ?? Date()))
-                Text(String(describing: environmentViewModel.environment?.rawSunriseTime ?? Date()))
-                Text(String(describing: environmentViewModel.environment?.rawSunsetTime ?? Date()))
-
+                Label(environmentViewModel.symbol, systemImage: environmentViewModel.symbol)
+                Text(environmentViewModel.environment.rawWeather)
+                Text(String(describing: environmentViewModel.environment.rawSunriseTime))
+                Text(String(describing: environmentViewModel.environment.rawSunsetTime))
+                Text(environmentViewModel.temp)
+                Text("---------")
+                Text(environmentViewModel.environmentViewData.weather)
+                Text(environmentViewModel.environmentViewData.time)
                 Button(action: {
-                    DispatchQueue.main.async {
-                        environmentViewModel.convertWeatherToEnvironmentRecord(using: weatherKitManager)
-                        environmentViewModel.convertRawDataToEnvironment(isInputAttndanceRecord: false, environmentModel: environmentViewModel.environment ?? EnvironmentRecord(rawWeather: "", rawTime: Date(), rawSunriseTime: Date(), rawSunsetTime: Date()))
-                    }
-                    print("아아아아ㅏ아아")
+              
                 }) {
                     Text("Button")
                 }
             }
             .task(priority: .userInitiated) {
-                    await weatherKitManager.getWeather(latitude: locationManager.latitude, longitude: locationManager.longitude)
+                    await environmentViewModel.getWeather(latitude: locationManager.latitude, longitude: locationManager.longitude)
                     print("weatherkit task")
                 }
             
