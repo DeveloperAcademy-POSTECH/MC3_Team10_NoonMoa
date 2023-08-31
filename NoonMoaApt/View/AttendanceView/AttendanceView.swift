@@ -57,19 +57,19 @@ struct AttendanceView: View {
                     HStack {
                         VStack(alignment: .leading) {
                             if !isStamped {
-                                Text(environmentViewModel.environmentRecordViewData.broadcastAttendanceIncompleteTitle)
+                                Text(environmentViewModel.environmentViewData.broadcastAttendanceIncompleteTitle)
                                     .font(.title)
                                     .fontWeight(.black)
                                     .padding(.bottom, 4)
-                                Text(environmentViewModel.environmentRecordViewData.broadcastAttendanceIncompleteBody)
+                                Text(environmentViewModel.environmentViewData.broadcastAttendanceIncompleteBody)
                                     .font(.title3)
                                     .fontWeight(.semibold)
                             } else {
-                                Text(environmentViewModel.environmentRecordViewData.broadcastAttendanceCompletedTitle)
+                                Text(environmentViewModel.environmentViewData.broadcastAttendanceCompletedTitle)
                                     .font(.title)
                                     .fontWeight(.black)
                                     .padding(.bottom, 4)
-                                Text(environmentViewModel.environmentRecordViewData.broadcastAttendanceCompletedBody)
+                                Text(environmentViewModel.environmentViewData.broadcastAttendanceCompletedBody)
                                     .font(.title3)
                                     .fontWeight(.semibold)
                             }
@@ -99,7 +99,7 @@ struct AttendanceView: View {
                         
                     } else {
                         //출석체크 후 저장된 날씨와, 캐릭터의 움직임 좌표값으로 표현된 뷰
-                        StampLargeView(skyColor: environmentViewModel.environmentRecordViewData.colorOfSky, skyImage: environmentViewModel.environmentRecordViewData.stampLargeSkyImage, isSmiling: characterViewModel.characterRecordViewData.isSmiling, isBlinkingLeft: characterViewModel.characterRecordViewData.isBlinkingLeft, isBlinkingRight: characterViewModel.characterRecordViewData.isBlinkingRight, lookAtPoint: characterViewModel.characterRecordViewData.lookAtPoint, faceOrientation: characterViewModel.characterRecordViewData.faceOrientation, bodyColor: characterViewModel.characterRecordViewData.bodyColor, eyeColor: characterViewModel.characterRecordViewData.eyeColor, cheekColor: characterViewModel.characterRecordViewData.cheekColor)
+                        StampLargeView(skyColor: environmentViewModel.environmentViewData.colorOfSky, skyImage: environmentViewModel.environmentViewData.stampLargeSkyImage, isSmiling: characterViewModel.characterViewData.isSmiling, isBlinkingLeft: characterViewModel.characterViewData.isBlinkingLeft, isBlinkingRight: characterViewModel.characterViewData.isBlinkingRight, lookAtPoint: characterViewModel.characterViewData.lookAtPoint, faceOrientation: characterViewModel.characterViewData.faceOrientation, bodyColor: characterViewModel.characterViewData.bodyColor, eyeColor: characterViewModel.characterViewData.eyeColor, cheekColor: characterViewModel.characterViewData.cheekColor)
                             .frame(width: geo.size.width, height: geo.size.width)
                             .scaleEffect(isScaleEffectPlayed ? 0.9 : 1)
                             .opacity(isShutterEffectPlayed ? 1 : 0)
@@ -125,8 +125,8 @@ struct AttendanceView: View {
                             self.playSound(soundName: String.sounds.shutter)
                             characterViewModel.pickerValueToCharacterColor(value: characterViewModel.pickerValue)
                             //날씨 받아오기
-                            weatherKitManager.getWeather(latitude: locationManager.latitude, longitude: locationManager.longitude)
-                            environmentViewModel.environmentRecord?.rawWeather = weatherKitManager.condition
+//                            weatherKitManager.getWeather(latitude: locationManager.latitude, longitude: locationManager.longitude)
+//                            environmentViewModel.environment?.rawWeather = weatherKitManager.condition
 //                            environmentViewModel.getCurrentEnvironment()
                             
                             DispatchQueue.main.async {
@@ -151,11 +151,11 @@ struct AttendanceView: View {
                                 withAnimation(.linear.speed(1.5).repeatCount(1, autoreverses: true)) {
                                     isShutterEffectPlayed = true
                                 }
-                                characterViewModel.characterRecordViewData.isSmiling = eyeViewController.eyeMyViewModel.isSmiling
-                                characterViewModel.characterRecordViewData.isBlinkingLeft = eyeViewController.eyeMyViewModel.isBlinkingLeft
-                                characterViewModel.characterRecordViewData.isBlinkingRight = eyeViewController.eyeMyViewModel.isBlinkingRight
-                                characterViewModel.characterRecordViewData.lookAtPoint = eyeViewController.eyeMyViewModel.lookAtPoint
-                                characterViewModel.characterRecordViewData.faceOrientation = eyeViewController.eyeMyViewModel.faceOrientation
+                                characterViewModel.characterViewData.isSmiling = eyeViewController.eyeMyViewModel.isSmiling
+                                characterViewModel.characterViewData.isBlinkingLeft = eyeViewController.eyeMyViewModel.isBlinkingLeft
+                                characterViewModel.characterViewData.isBlinkingRight = eyeViewController.eyeMyViewModel.isBlinkingRight
+                                characterViewModel.characterViewData.lookAtPoint = eyeViewController.eyeMyViewModel.lookAtPoint
+                                characterViewModel.characterViewData.faceOrientation = eyeViewController.eyeMyViewModel.faceOrientation
                                     //TODO: 컬러관련 부분도 저장필요
                             }
                             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
@@ -230,7 +230,7 @@ struct AttendanceView: View {
         }//ZStack
                 .onAppear {
                     //테스트용 날씨 보기위해 임시로 아래 함수만 실행
-                    weatherKitManager.getWeather(latitude: locationManager.latitude, longitude: locationManager.longitude)
+//                    weatherKitManager.getWeather(latitude: locationManager.latitude, longitude: locationManager.longitude)
                 }
     }
     

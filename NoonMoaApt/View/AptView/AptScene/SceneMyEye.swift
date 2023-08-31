@@ -21,8 +21,8 @@ struct SceneMyEye: View {
                 isBlinkingRight: eyeNeighborViewModel.isBlinkingRight,
                 lookAtPoint: eyeNeighborViewModel.lookAtPoint,
                 faceOrientation: eyeNeighborViewModel.faceOrientation,
-                bodyColor: characterViewModel.characterRecordViewData.bodyColor,
-                eyeColor: characterViewModel.characterRecordViewData.eyeColor, cheekColor: characterViewModel.characterRecordViewData.cheekColor, isInactiveOrSleep: false, isJumping: roomUser.isJumping)
+                bodyColor: characterViewModel.characterViewData.bodyColor,
+                eyeColor: characterViewModel.characterViewData.eyeColor, cheekColor: characterViewModel.characterViewData.cheekColor, isInactiveOrSleep: false, isJumping: roomUser.isJumping)
         .onAppear {
             eyeNeighborViewModel.updateColors(roomUser: roomUser)
             //이웃 눈의 랜덤한 움직임 함수 실행

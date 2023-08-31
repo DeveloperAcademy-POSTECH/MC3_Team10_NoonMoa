@@ -9,41 +9,34 @@ struct WeatherTestView: View {
     @State private var dateHour: Int = 0
     @State private var sunriseHour: Int = 0
     @State private var sunsetHour: Int = 0
-
+    
     var body: some View {
-
+        
         if locationManager.authorisationStatus == .authorizedWhenInUse {
             VStack {
                 Label(weatherKitManager.symbol, systemImage: weatherKitManager.symbol)
-                Text(weatherKitManager.condition)
+                Text(weatherKitManager.condition ?? "111")
                 Text(weatherKitManager.temp)
-                Text("dateHour: \(dateHour)")
-                Text("sunriseHour: \(sunriseHour)")
-                Text("sunsetHour: \(sunsetHour)")
-               
-                Button(action: {
-                    weatherKitManager.getWeather(latitude: locationManager.latitude, longitude: locationManager.longitude)
-                    environmentViewModel.environmentRecord?.rawWeather = weatherKitManager.condition
-                    
-                    //TODO: 어디 놓냐에 따라 실행 시기에 따라,
-                    let myFormatter = DateFormatter()
-                    myFormatter.dateFormat = "HH"  // 변환할 형식
-                    self.dateHour = Int(myFormatter.string(from: Date())) ?? 0
-                    self.sunriseHour = Int(myFormatter.string(from: weatherKitManager.sunrise)) ?? 0
-                    self.sunsetHour = Int(myFormatter.string(from: weatherKitManager.sunset)) ?? 0
+                
+                Text(environmentViewModel.environment?.rawWeather ?? "nil")
+                Text(String(describing: environmentViewModel.environment?.rawTime ?? Date()))
+                Text(String(describing: environmentViewModel.environment?.rawSunriseTime ?? Date()))
+                Text(String(describing: environmentViewModel.environment?.rawSunsetTime ?? Date()))
 
+                Button(action: {
+                    DispatchQueue.main.async {
+                        environmentViewModel.convertWeatherToEnvironmentRecord(using: weatherKitManager)
+                        environmentViewModel.convertRawDataToEnvironment(isInputAttndanceRecord: false, environmentModel: environmentViewModel.environment ?? EnvironmentRecord(rawWeather: "", rawTime: Date(), rawSunriseTime: Date(), rawSunsetTime: Date()))
+                    }
+                    print("아아아아ㅏ아아")
                 }) {
                     Text("Button")
                 }
-                Text(String(locationManager.latitude))
-                Text(String(locationManager.longitude))
-                Text(String(environmentViewModel.environmentRecord?.rawWeather ?? "weather not available"))
             }
-            .task {
-                weatherKitManager.getWeather(latitude: locationManager.latitude, longitude: locationManager.longitude)
-                print(locationManager.latitude)
-                print(locationManager.longitude)
-            }
+            .task(priority: .userInitiated) {
+                    await weatherKitManager.getWeather(latitude: locationManager.latitude, longitude: locationManager.longitude)
+                    print("weatherkit task")
+                }
             
         } else {
             //사용자가 위치 허용하지 않았을 때

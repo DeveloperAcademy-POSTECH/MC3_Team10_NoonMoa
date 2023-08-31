@@ -14,7 +14,7 @@ struct SceneWeather: View {
     var body: some View {
         
         //이렇게 분기처리한 이유: 로띠는 뷰를 다시 그려도 이전 재생중이던 애니메이션이 실행되어 업데이트가 되지 않았다.
-        switch environmentViewModel.environmentRecord?.rawWeather {
+        switch environmentViewModel.environment?.rawWeather {
         case "clear":
             LottieView(name: Lottie.clearMorning, animationSpeed: 1)
                 .ignoresSafeArea()

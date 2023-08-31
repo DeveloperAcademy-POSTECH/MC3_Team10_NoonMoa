@@ -186,7 +186,7 @@ struct AptView: View {
         }//ZStack
         .onAppear {
             // 현재 날씨 데이터 받아오기
-            weatherKitManager.getWeather(latitude: locationManager.latitude, longitude: locationManager.longitude)
+//            weatherKitManager.getWeather(latitude: locationManager.latitude, longitude: locationManager.longitude)
             
             // 현재 아파트 정보 받아오기
             aptModel.fetchCurrentUserApt()

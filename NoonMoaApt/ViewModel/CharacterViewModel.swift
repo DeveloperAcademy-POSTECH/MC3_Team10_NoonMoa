@@ -10,14 +10,14 @@ import SwiftUI
 
 class CharacterViewModel: ObservableObject {
     
-    @Published var characterRecord: CharacterRecord?
-    @Published var characterRecordViewData: CharacterRecordViewData = CharacterRecordViewData(isSmiling: true, isBlinkingLeft: false, isBlinkingRight: true, lookAtPoint: SIMD3(1,0,0), faceOrientation: SIMD3(1,0,0), characterColor: .userBlue, bodyColor: .userYellow, eyeColor: .eyeYellow, cheekColor: .cheekRed)
+    @Published var character: CharacterRecord?
+    @Published var characterViewData: CharacterRecordViewData = CharacterRecordViewData(isSmiling: true, isBlinkingLeft: false, isBlinkingRight: true, lookAtPoint: SIMD3(1,0,0), faceOrientation: SIMD3(1,0,0), characterColor: .userBlue, bodyColor: .userYellow, eyeColor: .eyeYellow, cheekColor: .cheekRed)
     
     var recordedCharacter: CharacterRecord?
     var recordedCharacterViewData: CharacterRecordViewData?
    
-    init(characterRecord: CharacterRecord? = nil, recordedCharacter: CharacterRecord? = nil, recordedCharacterViewData: CharacterRecordViewData? = nil) {
-        self.characterRecord = characterRecord
+    init(character: CharacterRecord? = nil, recordedCharacter: CharacterRecord? = nil, recordedCharacterViewData: CharacterRecordViewData? = nil) {
+        self.character = character
         self.recordedCharacter = recordedCharacter
         self.recordedCharacterViewData = recordedCharacterViewData
     }
@@ -34,10 +34,10 @@ class CharacterViewModel: ObservableObject {
     //현재 뷰에서 참조하고 있던 뷰 데이터를 저장에 사용되는 rawData 포맷으로 변형하기 위한 함수이다.
     //해당 함수는 AttendanceViewModel에서 실행시키며, CharacterViewModel().characterRecord를 서버에 저장하게 된다.
     func convertCharacterToRawData() {
-        let rawLookAtPoint: [Float] = [characterRecordViewData.lookAtPoint[0],characterRecordViewData.lookAtPoint[1],characterRecordViewData.lookAtPoint[2]]
-        let rawFaceOrientation: [Float] = [characterRecordViewData.faceOrientation[0], characterRecordViewData.faceOrientation[1], characterRecordViewData.faceOrientation[2]]
-        let rawCharacterColor: [Float] = [characterRecordViewData.characterColor.toArray[0], characterRecordViewData.characterColor.toArray[1], characterRecordViewData.characterColor.toArray[2]]
-        characterRecord = CharacterRecord(rawIsSmiling: characterRecordViewData.isSmiling, rawIsBlinkingLeft: characterRecordViewData.isBlinkingLeft, rawIsBlinkingRight: characterRecordViewData.isBlinkingRight, rawLookAtPoint: rawLookAtPoint, rawFaceOrientation: rawFaceOrientation, rawCharacterColor: rawCharacterColor)
+        let rawLookAtPoint: [Float] = [characterViewData.lookAtPoint[0],characterViewData.lookAtPoint[1],characterViewData.lookAtPoint[2]]
+        let rawFaceOrientation: [Float] = [characterViewData.faceOrientation[0], characterViewData.faceOrientation[1], characterViewData.faceOrientation[2]]
+        let rawCharacterColor: [Float] = [characterViewData.characterColor.toArray[0], characterViewData.characterColor.toArray[1], characterViewData.characterColor.toArray[2]]
+        character = CharacterRecord(rawIsSmiling: characterViewData.isSmiling, rawIsBlinkingLeft: characterViewData.isBlinkingLeft, rawIsBlinkingRight: characterViewData.isBlinkingRight, rawLookAtPoint: rawLookAtPoint, rawFaceOrientation: rawFaceOrientation, rawCharacterColor: rawCharacterColor)
     }
     
     // MARK: - 다운로드 후 변환 -
@@ -75,10 +75,10 @@ extension CharacterViewModel {
         }
         
         //기준컬러 지정
-        self.characterRecordViewData.characterColor = Color(red: yR, green: yG, blue: yB)
+        self.characterViewData.characterColor = Color(red: yR, green: yG, blue: yB)
         //기준컬러에서 RGB 각각 50씩 올려서 그라디언트 생성
-        self.characterRecordViewData.bodyColor = LinearGradient(colors: [Color(red: min(max(((yR * 255 + 50) / 255), 0), 1), green: min(max(((yG * 255 + 50) / 255), 0), 1), blue: min(max(((yB * 255 + 50) / 255), 0), 1)), Color(red: yR, green: yG, blue: yB)], startPoint: .top, endPoint: .bottom)
-        self.characterRecordViewData.eyeColor = LinearGradient(colors: [Color(red: min(max(((yR * 255 + 50) / 255), 0), 1), green: min(max(((yG * 255 + 50) / 255), 0), 1), blue: min(max(((yB * 255 + 50) / 255), 0), 1)), Color(red: yR, green: yG, blue: yB)], startPoint: .top, endPoint: .bottom)
+        self.characterViewData.bodyColor = LinearGradient(colors: [Color(red: min(max(((yR * 255 + 50) / 255), 0), 1), green: min(max(((yG * 255 + 50) / 255), 0), 1), blue: min(max(((yB * 255 + 50) / 255), 0), 1)), Color(red: yR, green: yG, blue: yB)], startPoint: .top, endPoint: .bottom)
+        self.characterViewData.eyeColor = LinearGradient(colors: [Color(red: min(max(((yR * 255 + 50) / 255), 0), 1), green: min(max(((yG * 255 + 50) / 255), 0), 1), blue: min(max(((yB * 255 + 50) / 255), 0), 1)), Color(red: yR, green: yG, blue: yB)], startPoint: .top, endPoint: .bottom)
         
         return [Float(yR), Float(yG), Float(yB)]
     }

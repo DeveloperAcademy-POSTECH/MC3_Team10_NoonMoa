@@ -10,37 +10,39 @@ import SwiftUI
 
 class EnvironmentViewModel: ObservableObject {
     
-    @Published var environmentRecord: EnvironmentRecord?
-    @Published var environmentRecordViewData: EnvironmentRecordViewData = EnvironmentRecordViewData(weather: "clear", isWind: false, isThunder: false, time: "morning", lottieImageName: Lottie.clearMorning, colorOfSky: .sky.clearMorning, colorOfGround: .ground.clearMorning, broadcastAttendanceIncompleteTitle: .broadcast.attendanceIncompleteTitle.clearMorning, broadcastAttendanceIncompleteBody: .broadcast.attendanceIncompleteBody.clearMorning, broadcastAttendanceCompletedTitle: .broadcast.attendanceCompletedTitle.clearMorning, broadcastAttendanceCompletedBody: .broadcast.attendanceCompletedBody.clearMorning, broadcastAnnounce: .broadcast.announce[0], stampLargeSkyImage: .assets.stampLarge.clearMorning, stampSmallSkyImage: .assets.stampSmall.clearMorning, stampBorderColor: .stampBorder.clearMorning)
+    @Published var environment: EnvironmentRecord?
+    @Published var environmentViewData: EnvironmentRecordViewData = EnvironmentRecordViewData(weather: "clear", isWind: false, isThunder: false, time: "morning", lottieImageName: Lottie.clearMorning, colorOfSky: .sky.clearMorning, colorOfGround: .ground.clearMorning, broadcastAttendanceIncompleteTitle: .broadcast.attendanceIncompleteTitle.clearMorning, broadcastAttendanceIncompleteBody: .broadcast.attendanceIncompleteBody.clearMorning, broadcastAttendanceCompletedTitle: .broadcast.attendanceCompletedTitle.clearMorning, broadcastAttendanceCompletedBody: .broadcast.attendanceCompletedBody.clearMorning, broadcastAnnounce: .broadcast.announce[0], stampLargeSkyImage: .assets.stampLarge.clearMorning, stampSmallSkyImage: .assets.stampSmall.clearMorning, stampBorderColor: .stampBorder.clearMorning)
     
-    var recordedEnvironment: CharacterRecord?
-    var recordedEnvironmentViewData: CharacterRecordViewData?
+    var recordedEnvironment: EnvironmentRecord?
+    var recordedEnvironmentViewData: EnvironmentRecordViewData?
     
-    init(environmentRecord: EnvironmentRecord? = nil, recordedEnvironment: CharacterRecord? = nil, recordedEnvironmentViewData: CharacterRecordViewData? = nil) {
-        self.environmentRecord = environmentRecord
+    init(environment: EnvironmentRecord? = nil, recordedEnvironment: EnvironmentRecord? = nil, recordedEnvironmentViewData: EnvironmentRecordViewData? = nil) {
+        self.environment = environment
         self.recordedEnvironment = recordedEnvironment
         self.recordedEnvironmentViewData = recordedEnvironmentViewData
     }
    
     // MARK: - 업로드용 변환 -
-    func convertEnvironmentToRawData() {
-        async {
-            do {
-                let weatherKitManager = await WeatherKitManager()
-                let locationManager = LocationManager()
-                await weatherKitManager.getWeather(latitude: locationManager.latitude, longitude: locationManager.longitude)
-                let rawWeather = await weatherKitManager.condition
-                let rawSunrise = await weatherKitManager.sunrise
-                let rawSunset = await weatherKitManager.sunset
-                environmentRecord = EnvironmentRecord(rawWeather: rawWeather, rawTime: Date(), rawSunriseTime: rawSunrise, rawSunsetTime: rawSunset)
+  
+    //웨더킷에서 날씨를 앱 시작단계에서 비동기로 불러오고,
+    
+    func convertWeatherToEnvironmentRecord(using weatherKitManager: WeatherKitManager) {
+            DispatchQueue.main.async {
+                self.environment = EnvironmentRecord(
+                    rawWeather: weatherKitManager.condition!, rawTime: weatherKitManager.date!, rawSunriseTime: weatherKitManager.sunrise!, rawSunsetTime: weatherKitManager.sunset!)
             }
-        }
+        print("함수실행완료!")
     }
+    // MARK: - 실시간 뷰 표현용 변환 / 저장된 값 다운로드 후 변환 -
     
-    // MARK: - 다운로드 후 변환 -
-    
-    // WeatherKit으로부터 받아온 raw data or 서버로부터 받아온 recordedRaw]를 Environment로 중간 변환
-    func convertRawDataToEnvironment(isInputCurrentData: Bool, weather: String, time: Date, sunrise: Date, sunset: Date) {
+    // isThisForCalendarView가 false일 때는 Input: WeatherKit으로 부터 받은 값, Output: 뷰에서 사용하는 environmentRecordViewData에 할당.
+    // isThisForCalendarView가 true일 때는 Input: AttendanceRecord로 부터 받은 값, Output: Calendar뷰에서 사용하는 recordedEnvironmentViewData에 할당.
+    func convertRawDataToEnvironment(isInputAttndanceRecord: Bool, environmentModel: EnvironmentRecord) {
+        
+        let weather = environmentModel.rawWeather
+        let time = environmentModel.rawTime
+        let sunrise = environmentModel.rawSunriseTime
+        let sunset = environmentModel.rawSunsetTime
         
         let environmentWeather: String
         switch weather {
@@ -65,45 +67,22 @@ class EnvironmentViewModel: ObservableObject {
         
         let environmentTime: String
         let t = getHourFromDate(time: time)
-        let sunrise = getHourFromDate(time: sunrise)
-        let sunset = getHourFromDate(time: sunset)
+        let sunriseHour = getHourFromDate(time: sunrise)
+        let sunsetHour = getHourFromDate(time: sunset)
         switch t {
-        case let t where t == sunrise: environmentTime = "sunrise"
-        case let t where t == sunset: environmentTime = "sunset"
+        case let t where t == sunriseHour: environmentTime = "sunrise"
+        case let t where t == sunsetHour: environmentTime = "sunset"
         case let t where (t >= 22) || (t >= 0 && t < 6): environmentTime = "night"
         case let t where t >= 6 && t < 12: environmentTime = "morning"
         case let t where t >= 12 && t < 19: environmentTime = "afternoon"
         case let t where t >= 19 && t < 22: environmentTime = "evening"
         default: environmentTime = "sunrise"
         }
-        if isInputCurrentData {
-//            currentWeather = environmentWeather
-//            currentIsWind = environmentIsWind
-//            currentIsThunder = environmentIsThunder
-//            currentTime = environmentTime
-        } else {
-//            recordedWeather = environmentWeather
-//            recordedIsWind = environmentIsWind
-//            recordedIsThunder = environmentIsThunder
-//            recordedTime = environmentTime
-        }
-    }
-    
-    
-    func getHourFromDate(time: Date) -> Int {
-        let calendar = Calendar.current
-        let hour = calendar.component(.hour, from: time)
-        return hour
-    }
-
-    
-    
-    // [WeatherKit으로부터 받아온 raw data or 서버로부터 받아온 recordedRaw]를 변환한 Environment를, View에서 사용할 수 있는 ViewData로 변환
-    func convertEnvironmentToViewData(isInputCurrentData: Bool, weather: String, time: String, isThunder: Bool) {
+        
         var viewData = [String: Any]()
-        switch weather {
+        switch environmentWeather {
         case "clear":
-            switch time {
+            switch environmentTime {
             case "sunrise":
                 viewData = ["lottieImageName": Lottie.clearSunrise,
                             "colorOfSky": LinearGradient.sky.clearSunrise,
@@ -185,7 +164,7 @@ class EnvironmentViewModel: ObservableObject {
             }
             
         case "cloudy":
-            switch time {
+            switch environmentTime {
             case "sunrise":
                 viewData = ["lottieImageName": Lottie.cloudySunrise,
                             "colorOfSky": LinearGradient.sky.cloudySunrise,
@@ -220,7 +199,8 @@ class EnvironmentViewModel: ObservableObject {
                             "currentBroadcastAttendanceIncompleteBody": String.broadcast.attendanceIncompleteBody.cloudyAfternoon,
                             "currentBroadcastAttendanceCompletedTitle": String.broadcast.attendanceCompletedTitle.cloudyAfternoon,
                             "currentBroadcastAttendanceCompletedBody": String.broadcast.attendanceCompletedBody.cloudyAfternoon,
-                            "currentBroadcastAnnounce": (String.broadcast.announce.randomElement() ?? ""),                                                "stampLargeSkyImage": Image.assets.stampLarge.cloudyAfternoon,
+                            "currentBroadcastAnnounce": (String.broadcast.announce.randomElement() ?? ""),
+                            "stampLargeSkyImage": Image.assets.stampLarge.cloudyAfternoon,
                             "stampSmallSkyImage": Image.assets.stampSmall.cloudyAfternoon,
                             "stampBorderColor": Color.stampBorder.cloudyAfternoon]
                 
@@ -232,7 +212,8 @@ class EnvironmentViewModel: ObservableObject {
                             "currentBroadcastAttendanceIncompleteBody": String.broadcast.attendanceIncompleteBody.cloudySunset,
                             "currentBroadcastAttendanceCompletedTitle": String.broadcast.attendanceCompletedTitle.cloudySunset,
                             "currentBroadcastAttendanceCompletedBody": String.broadcast.attendanceCompletedBody.cloudySunset,
-                            "currentBroadcastAnnounce": (String.broadcast.announce.randomElement() ?? ""),                                                "stampLargeSkyImage": Image.assets.stampLarge.cloudySunset,
+                            "currentBroadcastAnnounce": (String.broadcast.announce.randomElement() ?? ""),
+                            "stampLargeSkyImage": Image.assets.stampLarge.cloudySunset,
                             "stampSmallSkyImage": Image.assets.stampSmall.cloudySunset,
                             "stampBorderColor": Color.stampBorder.cloudySunset]
                 
@@ -244,7 +225,8 @@ class EnvironmentViewModel: ObservableObject {
                             "currentBroadcastAttendanceIncompleteBody": String.broadcast.attendanceIncompleteBody.cloudyEvening,
                             "currentBroadcastAttendanceCompletedTitle": String.broadcast.attendanceCompletedTitle.cloudyEvening,
                             "currentBroadcastAttendanceCompletedBody": String.broadcast.attendanceCompletedBody.cloudyEvening,
-                            "currentBroadcastAnnounce": (String.broadcast.announce.randomElement() ?? ""),                                                "stampLargeSkyImage": Image.assets.stampLarge.cloudyEvening,
+                            "currentBroadcastAnnounce": (String.broadcast.announce.randomElement() ?? ""),
+                            "stampLargeSkyImage": Image.assets.stampLarge.cloudyEvening,
                             "stampSmallSkyImage": Image.assets.stampSmall.cloudyEvening,
                             "stampBorderColor": Color.stampBorder.cloudyEvening]
                 
@@ -256,14 +238,15 @@ class EnvironmentViewModel: ObservableObject {
                             "currentBroadcastAttendanceIncompleteBody": String.broadcast.attendanceIncompleteBody.cloudyNight,
                             "currentBroadcastAttendanceCompletedTitle": String.broadcast.attendanceCompletedTitle.cloudyNight,
                             "currentBroadcastAttendanceCompletedBody": String.broadcast.attendanceCompletedBody.cloudyNight,
-                            "currentBroadcastAnnounce": (String.broadcast.announce.randomElement() ?? ""),                                                "stampLargeSkyImage": Image.assets.stampLarge.cloudyNight,
+                            "currentBroadcastAnnounce": (String.broadcast.announce.randomElement() ?? ""),
+                            "stampLargeSkyImage": Image.assets.stampLarge.cloudyNight,
                             "stampSmallSkyImage": Image.assets.stampSmall.cloudyNight,
                             "stampBorderColor": Color.stampBorder.cloudyNight]
             default: viewData = [:]
             }
             
         case "rainy":
-            switch time {
+            switch environmentTime {
             case "sunrise":
                 viewData = ["lottieImageName": Lottie.rainySunrise,
                             "colorOfSky": LinearGradient.sky.rainySunrise,
@@ -272,7 +255,8 @@ class EnvironmentViewModel: ObservableObject {
                             "currentBroadcastAttendanceIncompleteBody": String.broadcast.attendanceIncompleteBody.rainySunrise,
                             "currentBroadcastAttendanceCompletedTitle": String.broadcast.attendanceCompletedTitle.rainySunrise,
                             "currentBroadcastAttendanceCompletedBody": String.broadcast.attendanceCompletedBody.rainySunrise,
-                            "currentBroadcastAnnounce": (String.broadcast.announce.randomElement() ?? ""),                                                "stampLargeSkyImage": Image.assets.stampLarge.rainySunrise,
+                            "currentBroadcastAnnounce": (String.broadcast.announce.randomElement() ?? ""),
+                            "stampLargeSkyImage": Image.assets.stampLarge.rainySunrise,
                             "stampSmallSkyImage": Image.assets.stampSmall.rainySunrise,
                             "stampBorderColor": Color.stampBorder.rainySunrise]
                 
@@ -284,7 +268,8 @@ class EnvironmentViewModel: ObservableObject {
                             "currentBroadcastAttendanceIncompleteBody": String.broadcast.attendanceIncompleteBody.rainyMorning,
                             "currentBroadcastAttendanceCompletedTitle": String.broadcast.attendanceCompletedTitle.rainyMorning,
                             "currentBroadcastAttendanceCompletedBody": String.broadcast.attendanceCompletedBody.rainyMorning,
-                            "currentBroadcastAnnounce": (String.broadcast.announce.randomElement() ?? ""),                                       "stampLargeSkyImage": Image.assets.stampLarge.rainyMorning,
+                            "currentBroadcastAnnounce": (String.broadcast.announce.randomElement() ?? ""),
+                            "stampLargeSkyImage": Image.assets.stampLarge.rainyMorning,
                             "stampSmallSkyImage": Image.assets.stampSmall.rainyMorning,
                             "stampBorderColor": Color.stampBorder.rainyMorning]
                 
@@ -296,7 +281,8 @@ class EnvironmentViewModel: ObservableObject {
                             "currentBroadcastAttendanceIncompleteBody": String.broadcast.attendanceIncompleteBody.rainyAfternoon,
                             "currentBroadcastAttendanceCompletedTitle": String.broadcast.attendanceCompletedTitle.rainyAfternoon,
                             "currentBroadcastAttendanceCompletedBody": String.broadcast.attendanceCompletedBody.rainyAfternoon,
-                            "currentBroadcastAnnounce": (String.broadcast.announce.randomElement() ?? ""),                                       "stampLargeSkyImage": Image.assets.stampLarge.rainyAfternoon,
+                            "currentBroadcastAnnounce": (String.broadcast.announce.randomElement() ?? ""),
+                            "stampLargeSkyImage": Image.assets.stampLarge.rainyAfternoon,
                             "stampSmallSkyImage": Image.assets.stampSmall.rainyAfternoon,
                             "stampBorderColor": Color.stampBorder.rainyAfternoon]
                 
@@ -308,7 +294,8 @@ class EnvironmentViewModel: ObservableObject {
                             "currentBroadcastAttendanceIncompleteBody": String.broadcast.attendanceIncompleteBody.rainySunset,
                             "currentBroadcastAttendanceCompletedTitle": String.broadcast.attendanceCompletedTitle.rainySunset,
                             "currentBroadcastAttendanceCompletedBody": String.broadcast.attendanceCompletedBody.rainySunset,
-                            "currentBroadcastAnnounce": (String.broadcast.announce.randomElement() ?? ""),                                       "stampLargeSkyImage": Image.assets.stampLarge.rainySunset,
+                            "currentBroadcastAnnounce": (String.broadcast.announce.randomElement() ?? ""),
+                            "stampLargeSkyImage": Image.assets.stampLarge.rainySunset,
                             "stampSmallSkyImage": Image.assets.stampSmall.rainySunset,
                             "stampBorderColor": Color.stampBorder.rainySunset]
                 
@@ -320,7 +307,8 @@ class EnvironmentViewModel: ObservableObject {
                             "currentBroadcastAttendanceIncompleteBody": String.broadcast.attendanceIncompleteBody.rainyEvening,
                             "currentBroadcastAttendanceCompletedTitle": String.broadcast.attendanceCompletedTitle.rainyEvening,
                             "currentBroadcastAttendanceCompletedBody": String.broadcast.attendanceCompletedBody.rainyEvening,
-                            "currentBroadcastAnnounce": (String.broadcast.announce.randomElement() ?? ""),                                       "stampLargeSkyImage": Image.assets.stampLarge.rainyEvening,
+                            "currentBroadcastAnnounce": (String.broadcast.announce.randomElement() ?? ""),
+                            "stampLargeSkyImage": Image.assets.stampLarge.rainyEvening,
                             "stampSmallSkyImage": Image.assets.stampSmall.rainyEvening,
                             "stampBorderColor": Color.stampBorder.rainyEvening]
                 
@@ -332,14 +320,15 @@ class EnvironmentViewModel: ObservableObject {
                             "currentBroadcastAttendanceIncompleteBody": String.broadcast.attendanceIncompleteBody.rainyNight,
                             "currentBroadcastAttendanceCompletedTitle": String.broadcast.attendanceCompletedTitle.rainyNight,
                             "currentBroadcastAttendanceCompletedBody": String.broadcast.attendanceCompletedBody.rainyNight,
-                            "currentBroadcastAnnounce": (String.broadcast.announce.randomElement() ?? ""),                                       "stampLargeSkyImage": Image.assets.stampLarge.rainyNight,
+                            "currentBroadcastAnnounce": (String.broadcast.announce.randomElement() ?? ""),
+                            "stampLargeSkyImage": Image.assets.stampLarge.rainyNight,
                             "stampSmallSkyImage": Image.assets.stampSmall.rainyNight,
                             "stampBorderColor": Color.stampBorder.rainyNight]
             default: viewData = [:]
             }
             
         case "snowy":
-            switch time {
+            switch environmentTime {
             case "sunrise":
                 viewData = ["lottieImageName": Lottie.snowySunrise,
                             "colorOfSky": LinearGradient.sky.snowySunrise,
@@ -348,7 +337,8 @@ class EnvironmentViewModel: ObservableObject {
                             "currentBroadcastAttendanceIncompleteBody": String.broadcast.attendanceIncompleteBody.snowySunrise,
                             "currentBroadcastAttendanceCompletedTitle": String.broadcast.attendanceCompletedTitle.snowySunrise,
                             "currentBroadcastAttendanceCompletedBody": String.broadcast.attendanceCompletedBody.snowySunrise,
-                            "currentBroadcastAnnounce": (String.broadcast.announce.randomElement() ?? ""),                                       "stampLargeSkyImage": Image.assets.stampLarge.snowySunrise,
+                            "currentBroadcastAnnounce": (String.broadcast.announce.randomElement() ?? ""),
+                            "stampLargeSkyImage": Image.assets.stampLarge.snowySunrise,
                             "stampSmallSkyImage": Image.assets.stampSmall.snowySunrise,
                             "stampBorderColor": Color.stampBorder.snowySunrise]
                 
@@ -360,7 +350,8 @@ class EnvironmentViewModel: ObservableObject {
                             "currentBroadcastAttendanceIncompleteBody": String.broadcast.attendanceIncompleteBody.snowyMorning,
                             "currentBroadcastAttendanceCompletedTitle": String.broadcast.attendanceCompletedTitle.snowyMorning,
                             "currentBroadcastAttendanceCompletedBody": String.broadcast.attendanceCompletedBody.snowyMorning,
-                            "currentBroadcastAnnounce": (String.broadcast.announce.randomElement() ?? ""),                                      "stampLargeSkyImage": Image.assets.stampLarge.snowyMorning,
+                            "currentBroadcastAnnounce": (String.broadcast.announce.randomElement() ?? ""),
+                            "stampLargeSkyImage": Image.assets.stampLarge.snowyMorning,
                             "stampSmallSkyImage": Image.assets.stampSmall.snowyMorning,
                             "stampBorderColor": Color.stampBorder.snowyMorning]
                 
@@ -372,7 +363,8 @@ class EnvironmentViewModel: ObservableObject {
                             "currentBroadcastAttendanceIncompleteBody": String.broadcast.attendanceIncompleteBody.snowyAfternoon,
                             "currentBroadcastAttendanceCompletedTitle": String.broadcast.attendanceCompletedTitle.snowyAfternoon,
                             "currentBroadcastAttendanceCompletedBody": String.broadcast.attendanceCompletedBody.snowyAfternoon,
-                            "currentBroadcastAnnounce": (String.broadcast.announce.randomElement() ?? ""),                                      "stampLargeSkyImage": Image.assets.stampLarge.snowyAfternoon,
+                            "currentBroadcastAnnounce": (String.broadcast.announce.randomElement() ?? ""),
+                            "stampLargeSkyImage": Image.assets.stampLarge.snowyAfternoon,
                             "stampSmallSkyImage": Image.assets.stampSmall.snowyAfternoon,
                             "stampBorderColor": Color.stampBorder.snowyAfternoon]
                 
@@ -384,7 +376,8 @@ class EnvironmentViewModel: ObservableObject {
                             "currentBroadcastAttendanceIncompleteBody": String.broadcast.attendanceIncompleteBody.snowySunset,
                             "currentBroadcastAttendanceCompletedTitle": String.broadcast.attendanceCompletedTitle.snowySunset,
                             "currentBroadcastAttendanceCompletedBody": String.broadcast.attendanceCompletedBody.snowySunset,
-                            "currentBroadcastAnnounce": (String.broadcast.announce.randomElement() ?? ""),                                      "stampLargeSkyImage": Image.assets.stampLarge.snowySunset,
+                            "currentBroadcastAnnounce": (String.broadcast.announce.randomElement() ?? ""),
+                            "stampLargeSkyImage": Image.assets.stampLarge.snowySunset,
                             "stampSmallSkyImage": Image.assets.stampSmall.snowySunset,
                             "stampBorderColor": Color.stampBorder.snowySunset]
                 
@@ -396,7 +389,8 @@ class EnvironmentViewModel: ObservableObject {
                             "currentBroadcastAttendanceIncompleteBody": String.broadcast.attendanceIncompleteBody.snowyEvening,
                             "currentBroadcastAttendanceCompletedTitle": String.broadcast.attendanceCompletedTitle.snowyEvening,
                             "currentBroadcastAttendanceCompletedBody": String.broadcast.attendanceCompletedBody.snowyEvening,
-                            "currentBroadcastAnnounce": (String.broadcast.announce.randomElement() ?? ""),                                      "stampLargeSkyImage": Image.assets.stampLarge.snowyEvening,
+                            "currentBroadcastAnnounce": (String.broadcast.announce.randomElement() ?? ""),
+                            "stampLargeSkyImage": Image.assets.stampLarge.snowyEvening,
                             "stampSmallSkyImage": Image.assets.stampSmall.snowyEvening,
                             "stampBorderColor": Color.stampBorder.snowyEvening]
                 
@@ -408,7 +402,8 @@ class EnvironmentViewModel: ObservableObject {
                             "currentBroadcastAttendanceIncompleteBody": String.broadcast.attendanceIncompleteBody.snowyNight,
                             "currentBroadcastAttendanceCompletedTitle": String.broadcast.attendanceCompletedTitle.snowyNight,
                             "currentBroadcastAttendanceCompletedBody": String.broadcast.attendanceCompletedBody.snowyNight,
-                            "currentBroadcastAnnounce": (String.broadcast.announce.randomElement() ?? ""),                                      "stampLargeSkyImage": Image.assets.stampLarge.snowyNight,
+                            "currentBroadcastAnnounce": (String.broadcast.announce.randomElement() ?? ""),
+                            "stampLargeSkyImage": Image.assets.stampLarge.snowyNight,
                             "stampSmallSkyImage": Image.assets.stampSmall.snowyNight,
                             "stampBorderColor": Color.stampBorder.snowyNight]
             default: viewData = [:]
@@ -416,11 +411,19 @@ class EnvironmentViewModel: ObservableObject {
         default: viewData = [:]
         }
         
-        if isInputCurrentData {
-            
+        
+        if isInputAttndanceRecord {
+            //캘린더뷰에서 사용할 뷰데이터로 변환
+            recordedEnvironmentViewData = EnvironmentRecordViewData(weather: environmentWeather, isWind: environmentIsWind, isThunder: environmentIsThunder, time: environmentTime, lottieImageName: viewData["lottieImageName"] as! String, colorOfSky: viewData["colorOfSky"] as! LinearGradient, colorOfGround: viewData["colorOfGround"] as! LinearGradient, broadcastAttendanceIncompleteTitle: "", broadcastAttendanceIncompleteBody: "", broadcastAttendanceCompletedTitle: "", broadcastAttendanceCompletedBody: "", broadcastAnnounce: "", stampLargeSkyImage: viewData["stampLargeSkyImage"] as! Image, stampSmallSkyImage: viewData["stampSmallSkyImage"] as! Image, stampBorderColor: viewData["stampBorderColor"] as! Color)
         } else {
-            
+            //실시간 뷰에 할당할 뷰데이터로 변환
+            environmentViewData = EnvironmentRecordViewData(weather: environmentWeather, isWind: environmentIsWind, isThunder: environmentIsThunder, time: environmentTime, lottieImageName: viewData["lottieImageName"] as! String, colorOfSky: viewData["colorOfSky"] as! LinearGradient, colorOfGround: viewData["colorOfGround"] as! LinearGradient, broadcastAttendanceIncompleteTitle: viewData["currentBroadcastAttendanceIncompleteTitle"] as! String, broadcastAttendanceIncompleteBody: viewData["currentBroadcastAttendanceIncompleteBody"] as! String, broadcastAttendanceCompletedTitle: viewData["currentBroadcastAttendanceCompletedTitle"] as! String, broadcastAttendanceCompletedBody: viewData["currentBroadcastAttendanceCompletedBody"] as! String, broadcastAnnounce: viewData["currentBroadcastAnnounce"] as! String, stampLargeSkyImage: viewData["stampLargeSkyImage"] as! Image, stampSmallSkyImage: viewData["stampSmallSkyImage"] as! Image, stampBorderColor: viewData["stampBorderColor"] as! Color)
         }
     }
+    
+    func getHourFromDate(time: Date) -> Int {
+        let calendar = Calendar.current
+        let hour = calendar.component(.hour, from: time)
+        return hour
+    }
 }
-

@@ -32,8 +32,8 @@ struct FunctionTestView: View {
                     .opacity(0.3)
                 
                 Button(action: {
-                    weatherKitManager.getWeather(latitude: locationManager.latitude, longitude: locationManager.longitude)
-                    environmentModel.environmentRecord?.rawWeather = weatherKitManager.condition
+//                    weatherKitManager.getWeather(latitude: locationManager.latitude, longitude: locationManager.longitude)
+//                    environmentModel.environment?.rawWeather = weatherKitManager.condition
 //                    environmentModel.getCurrentEnvironment()
          
                     UIImpactFeedbackGenerator(style: .medium).impactOccurred()
@@ -52,9 +52,9 @@ struct FunctionTestView: View {
                 Button(action: {
                     let array = ["sunrise", "morning", "afternoon", "sunset", "evening", "night"]
                     indexTime = (indexTime + 7) % 6
-                    environmentModel.environmentRecordViewData.time = array[indexTime]
+                    environmentModel.environmentViewData.time = array[indexTime]
                     print(indexTime)
-                    print(environmentModel.environmentRecordViewData.time)
+                    print(environmentModel.environmentViewData.time)
                     UIImpactFeedbackGenerator(style: .medium).impactOccurred()
                 }) {
                     RoundedRectangle(cornerRadius: 8)
