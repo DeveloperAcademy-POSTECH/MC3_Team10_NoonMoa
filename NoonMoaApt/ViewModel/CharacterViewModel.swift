@@ -38,6 +38,7 @@ class CharacterViewModel: ObservableObject {
         let rawFaceOrientation: [Float] = [characterViewData.faceOrientation[0], characterViewData.faceOrientation[1], characterViewData.faceOrientation[2]]
         let rawCharacterColor: [Float] = [characterViewData.characterColor.toArray[0], characterViewData.characterColor.toArray[1], characterViewData.characterColor.toArray[2]]
         character = CharacterRecord(rawIsSmiling: characterViewData.isSmiling, rawIsBlinkingLeft: characterViewData.isBlinkingLeft, rawIsBlinkingRight: characterViewData.isBlinkingRight, rawLookAtPoint: rawLookAtPoint, rawFaceOrientation: rawFaceOrientation, rawCharacterColor: rawCharacterColor)
+        print("character | \(character)")
     }
     
     // MARK: - 다운로드 후 변환 -
@@ -82,9 +83,6 @@ extension CharacterViewModel {
         
         return [Float(yR), Float(yG), Float(yB)]
     }
-    
-    //TODO: AttendanceRecord에 저장하는 것도 넣어야함
-    
     
     func convertRawColorToCharacterColor(record: AttendanceRecord) {
         let yR = Double(record.rawCharacterColor![0])

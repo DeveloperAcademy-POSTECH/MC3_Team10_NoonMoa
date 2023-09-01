@@ -11,7 +11,7 @@ import FirebaseAuth
 import FirebaseFirestore
 
 struct SceneRoom: View {
-    @EnvironmentObject var eyeViewController: EyeViewController
+    @EnvironmentObject var characterViewModel: CharacterViewModel
 
     @Binding var roomUser: User
     @State private var isBlindUp: Bool = false
@@ -43,9 +43,9 @@ struct SceneRoom: View {
                 if roomUser.userState == "active" {
                     if roomUser.id == Auth.auth().currentUser?.uid {
                         SceneMyEye(roomUser: $roomUser, isJumping: roomUser.isJumping)
-                            .environmentObject(EyeNeighborViewModel())
+                            .environmentObject(characterViewModel)
                     } else {
-                        SceneNeighborEye(roomUser: $roomUser, isJumping: roomUser.isJumping)
+                        SceneNeighborEye(roomUser: $roomUser)
                     }
                 } else if roomUser.userState == "inactive" || roomUser.userState == "sleep" {
                     SceneInactiveEye(roomUser: $roomUser)

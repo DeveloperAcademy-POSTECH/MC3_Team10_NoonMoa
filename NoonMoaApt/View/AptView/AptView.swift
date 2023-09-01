@@ -66,6 +66,7 @@ struct AptView: View {
                                         if rowIndex < aptModel.user2DLayout.count && colIndex < aptModel.user2DLayout[rowIndex].count {
                                             SceneRoom(roomUser: $aptModel.user2DLayout[rowIndex][colIndex])
                                                 .frame(width: (geo.size.width - 48) / 3, height: ((geo.size.width - 48) / 3) / 1.2)
+                                            
                                         }
                                     }
                                 }
@@ -230,7 +231,7 @@ struct AptView_Previews: PreviewProvider {
         AptView()
             .environmentObject(ViewRouter())
             .environmentObject(AptModel())
-            .environmentObject(AttendanceModel(newAttendanceRecord: newAttendanceRecord))
+            .environmentObject(AttendanceModel())
             .environmentObject(CharacterViewModel())
             .environmentObject(EnvironmentViewModel())
             .environmentObject(LocationManager())

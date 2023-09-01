@@ -14,7 +14,6 @@ struct LoginView: View {
     @StateObject var loginData = LoginViewModel(viewRouter: ViewRouter())
     @AppStorage("isLogInDone") var isLogInDone: Bool = false
     //    @Binding var roomUser: User
-    @State private var eyeNeighborViewModel = EyeNeighborViewModel()
     @State private var isBlinkingPlayed: Bool = false
     
     var body: some View {

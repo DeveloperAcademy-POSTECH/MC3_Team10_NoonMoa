@@ -209,7 +209,7 @@ struct SceneButtons_Previews: PreviewProvider {
             FixAptView()
                 .environmentObject(ViewRouter())
                 .environmentObject(AptModel())
-                .environmentObject(AttendanceModel(newAttendanceRecord: newAttendanceRecord))
+                .environmentObject(AttendanceModel())
                 .environmentObject(CharacterViewModel())
                 .environmentObject(EnvironmentViewModel())
                 .environmentObject(LocationManager())

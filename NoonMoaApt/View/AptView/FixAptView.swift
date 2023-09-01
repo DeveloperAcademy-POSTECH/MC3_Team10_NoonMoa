@@ -64,6 +64,7 @@ struct FixAptView: View {
                                 HStack(spacing: 12) {
                                     ForEach(users[rowIndex].indices, id: \.self) { colIndex in
                                                                                  SceneRoom(roomUser: $users[rowIndex][colIndex])
+                                            .environmentObject(characterViewModel)
                                                 .frame(width: (geo.size.width - 48) / 3, height: ((geo.size.width - 48) / 3) / 1.2)
                                         
                                     }
@@ -230,7 +231,7 @@ struct FixAptView_Previews: PreviewProvider {
         FixAptView()
             .environmentObject(ViewRouter())
             .environmentObject(AptModel())
-            .environmentObject(AttendanceModel(newAttendanceRecord: newAttendanceRecord))
+            .environmentObject(AttendanceModel())
             .environmentObject(CharacterViewModel())
             .environmentObject(EnvironmentViewModel())
             .environmentObject(LocationManager())

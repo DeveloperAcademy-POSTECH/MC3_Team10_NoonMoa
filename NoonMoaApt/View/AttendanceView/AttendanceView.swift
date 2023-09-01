@@ -122,9 +122,7 @@ struct AttendanceView: View {
                         Button (action: {
                             //사용자 색상 최초 지정(default값)
                             self.playSound(soundName: String.sounds.shutter)
-                            characterViewModel.pickerValueToCharacterColor(value: characterViewModel.pickerValue)
                          
-                            
                             DispatchQueue.main.async {
                                 UIImpactFeedbackGenerator(style: .soft).impactOccurred()
                                 withAnimation(.easeInOut(duration: 0.2).repeatCount(1, autoreverses: true)) {
@@ -152,7 +150,7 @@ struct AttendanceView: View {
                                 characterViewModel.characterViewData.isBlinkingRight = eyeViewController.eyeMyViewModel.isBlinkingRight
                                 characterViewModel.characterViewData.lookAtPoint = eyeViewController.eyeMyViewModel.lookAtPoint
                                 characterViewModel.characterViewData.faceOrientation = eyeViewController.eyeMyViewModel.faceOrientation
-                                    //TODO: 컬러관련 부분도 저장필요
+                                characterViewModel.pickerValueToCharacterColor(value: characterViewModel.pickerValue)
                             }
                             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                                 withAnimation(.spring(response: 0.5, dampingFraction: 0.3).speed(1)) {
@@ -203,6 +201,10 @@ struct AttendanceView: View {
                             }
                             // 시작하기 버튼
                             Button (action: {
+                                Task(priority: .userInitiated) {
+                                    characterViewModel.convertCharacterToRawData()
+                                    attendanceModel.uploadAttendanceRecord()
+                                }
                                 viewRouter.currentView = .apt
                                 UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
                             }) {
@@ -245,7 +247,7 @@ struct AttendanceView: View {
             )
             AttendanceView(eyeViewController: EyeViewController())
                 .environmentObject(ViewRouter())
-                .environmentObject(AttendanceModel(newAttendanceRecord: newAttendanceRecord))
+                .environmentObject(AttendanceModel())
                 .environmentObject(CharacterViewModel())
                 .environmentObject(EnvironmentViewModel())
                 .environmentObject(EyeViewController())

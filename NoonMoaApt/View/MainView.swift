@@ -15,13 +15,15 @@ struct MainView: View {
     @StateObject var environmentViewModel: EnvironmentViewModel
     @StateObject var loginViewModel: LoginViewModel
     @StateObject var locationManager: LocationManager
-
     
     var body: some View {
         
         switch viewRouter.currentView {
         case .launchScreen:
             launchScreenView()
+                .task(priority: .userInitiated) {
+                    await environmentViewModel.getWeather(latitude: locationManager.latitude, longitude: locationManager.longitude)
+                }
         case .onBoarding:
             OnboardingView()
                 .environmentObject(viewRouter)
@@ -44,9 +46,10 @@ struct MainView: View {
                 .task(priority: .userInitiated) {
                     await environmentViewModel.getWeather(latitude: locationManager.latitude, longitude: locationManager.longitude)
                 }
+                
         case .apt:
 //            WeatherTestView()
-            AptView()
+            FixAptView()
                 .environmentObject(viewRouter)
                 .environmentObject(aptModel)
                 .environmentObject(attendanceModel)
