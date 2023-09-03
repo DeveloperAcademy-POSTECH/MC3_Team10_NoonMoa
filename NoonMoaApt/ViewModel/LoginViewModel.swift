@@ -22,8 +22,8 @@ class LoginViewModel: ObservableObject {
     private var db: Firestore {
         firestoreManager.db
     }
-//    private let dummyData = DummyData()
     
+    @AppStorage("isLogInDone") var isLogInDone: Bool = false
     @Published var nonce = ""
     @Published var fcmToken: String = ""
     var viewRouter = ViewRouter()
@@ -81,7 +81,7 @@ class LoginViewModel: ObservableObject {
                 print("로그인 완료")
                         
                 // Here the user has logged in successfully
-                // Now update the user in Firestore 
+                // Now update the user in Firestore
                 if let authResult = result {
                     
                     print("LoginViewModel | authenticate | authResult.user.uid \(authResult.user.uid)")
@@ -131,6 +131,50 @@ class LoginViewModel: ObservableObject {
             }
         }
     }
+    
+    func logout(){
+        do {
+            try Auth.auth().signOut()
+        } catch let signOutError as NSError {
+            print("Error signing out: \(signOutError)")
+        }
+    }
+    
+    func deleteUserAccount() {
+        // Get current user
+        if let user = Auth.auth().currentUser {
+            
+            let userDocRef = db.collection("User").document(user.uid)
+            
+            // Fetch random data from User.UTData (assuming UTData is an array of User objects)
+            let randomRow = Int.random(in: 0..<User.UTData.count)
+            let randomCol = Int.random(in: 0..<User.UTData[randomRow].count)
+            var randomUserData = User.UTData[randomRow][randomCol]
+            randomUserData.userState = "vacant"
+            
+            // Update Firestore with random data
+            do {
+                try userDocRef.setData(from: randomUserData) { error in
+                    if let error = error {
+                        print("Error updating user with random data: \(error)")
+                    } else {
+                        print("User data replaced with random data")
+                        
+                        // Then sign out the user from Firebase Auth
+                        do {
+                            try Auth.auth().signOut()
+                        } catch let signOutError as NSError {
+                            print("Error signing out: \(signOutError)")
+                        }
+                    }
+                }
+            } catch let error {
+                print("Error encoding user: \(error)")
+            }
+        }
+    }
+
+
     
     // 앱 삭제했다가 빌드했을 때 문제를 해결하기 위해
     func updateUserFCMToken(userDocumentRef: DocumentReference) {
@@ -417,4 +461,3 @@ class LoginViewModel: ObservableObject {
         return result
     }
 }
-

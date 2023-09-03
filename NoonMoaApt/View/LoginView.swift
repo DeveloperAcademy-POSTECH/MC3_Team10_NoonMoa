@@ -12,7 +12,6 @@ import AuthenticationServices
 struct LoginView: View {
     @EnvironmentObject var viewRouter: ViewRouter
     @StateObject var loginData = LoginViewModel(viewRouter: ViewRouter())
-    @AppStorage("isLogInDone") var isLogInDone: Bool = false
     //    @Binding var roomUser: User
     @State private var isBlinkingPlayed: Bool = false
     
@@ -68,7 +67,7 @@ struct LoginView: View {
                     
                     loginData.authenticate(credential: credential)
                     // 임시방편, 미봉책
-                    isLogInDone = true
+                    loginData.isLogInDone = true
                     viewRouter.nextView = .attendance
                     
                 case .failure(let error):

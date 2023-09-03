@@ -140,4 +140,4 @@ extension User {
          User(roomId: "11", aptId: "1", userState: "active", lastActiveDate: Date(), characterColor: [220/255, 126/225, 126/255], token: "k",requestedBy: []),
          User(roomId: "12", aptId: "1", userState: "inactive", lastActiveDate: Date(), characterColor: [], token: "l",requestedBy: [])]
     ]
-}
+} 
