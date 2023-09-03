@@ -176,6 +176,11 @@ extension Image {
             static let blind = Image("Room_blind")
             static let blindUp = Image("Room_blindUp")
             static let windowBorder = Image("Room_windowBorder")
+            static let sleepIcon1 = Image("Room_sleepIcon1")
+            static let sleepIcon2 = Image("Room_sleepIcon2")
+            static let sleepIcon3 = Image("Room_sleepIcon3")
+
+
         }
         
         struct stampLarge {

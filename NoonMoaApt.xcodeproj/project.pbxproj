@@ -56,6 +56,7 @@
 		8AD2ECC42A6E163E0063D9ED /* EyeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD2ECC12A6E163E0063D9ED /* EyeViewController.swift */; };
 		8ADF14492A7974BA00A09057 /* ParticleEffectViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADF14482A7974BA00A09057 /* ParticleEffectViewModel.swift */; };
 		8ADF14512A79780E00A09057 /* (null) in Resources */ = {isa = PBXBuildFile; };
+		8AF4DD042AA4772800200669 /* SceneSleepEye.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF4DD032AA4772800200669 /* SceneSleepEye.swift */; };
 		DA904E332A6A361700CC14D9 /* StampLargeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA904E312A6A361700CC14D9 /* StampLargeView.swift */; };
 		DA904E342A6A361700CC14D9 /* StampButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA904E322A6A361700CC14D9 /* StampButtonView.swift */; };
 		DAEE7E102A719F8800D7FACA /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = DAEE7E0F2A719F8800D7FACA /* Lottie */; };
@@ -158,6 +159,7 @@
 		8AD2ECC02A6E163E0063D9ED /* EyeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EyeView.swift; sourceTree = "<group>"; };
 		8AD2ECC12A6E163E0063D9ED /* EyeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EyeViewController.swift; sourceTree = "<group>"; };
 		8ADF14482A7974BA00A09057 /* ParticleEffectViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticleEffectViewModel.swift; sourceTree = "<group>"; };
+		8AF4DD032AA4772800200669 /* SceneSleepEye.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneSleepEye.swift; sourceTree = "<group>"; };
 		DA904E312A6A361700CC14D9 /* StampLargeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StampLargeView.swift; sourceTree = "<group>"; };
 		DA904E322A6A361700CC14D9 /* StampButtonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StampButtonView.swift; sourceTree = "<group>"; };
 		E3025D792A702C15000BB6E9 /* LaunchScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreenView.swift; sourceTree = "<group>"; };
@@ -297,6 +299,7 @@
 				8A84C29E2A6ED2DF001A9094 /* SceneMyEye.swift */,
 				8A84C2A02A6ED2E9001A9094 /* SceneNeighborEye.swift */,
 				8AD2303B2A699F4C00C967B5 /* SceneInactiveEye.swift */,
+				8AF4DD032AA4772800200669 /* SceneSleepEye.swift */,
 				8AD2303C2A699F4C00C967B5 /* SceneBackground.swift */,
 				8A7FF4AD2A77ACAC0075BA78 /* SceneBroadcast.swift */,
 			);
@@ -605,6 +608,7 @@
 				8A83E50C2A9AFEA800B82C07 /* FixAptView.swift in Sources */,
 				8AD2303F2A699F4C00C967B5 /* FunctionTestView.swift in Sources */,
 				8AD230402A699F4C00C967B5 /* SceneRoom.swift in Sources */,
+				8AF4DD042AA4772800200669 /* SceneSleepEye.swift in Sources */,
 				E32E3E662A6951CE00B865E8 /* LoginView.swift in Sources */,
 				E32E3E6A2A6951CE00B865E8 /* MainView.swift in Sources */,
 				8A9910892A78B4300083602F /* LocationManager.swift in Sources */,

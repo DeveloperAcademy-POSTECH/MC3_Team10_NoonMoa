@@ -17,7 +17,8 @@ struct SceneButtons: View {
     @State private var lastActiveToggle: Bool = false
     @State private var lastWakenTimeToggle: Bool = false
     @State private var lastWakenTime: Int = 0
-
+    let wakeTimeLimit = 20
+    
     @EnvironmentObject var characterViewModel: CharacterViewModel
     
     let pushNotiController = PushNotiController()
@@ -55,7 +56,7 @@ struct SceneButtons: View {
                                 }
                             }
                             UserDefaults.standard.set(Date(), forKey: "\(String(describing: roomUser.roomId))")
-
+                            
                         }) {
                             RoundedRectangle(cornerRadius: 20)
                                 .fill(Color.black)
@@ -73,6 +74,7 @@ struct SceneButtons: View {
                 }//ZStack
                 .opacity(lastActiveToggle ? 1 : 0)
                 
+                
                 //깨우는 중...
                 ZStack {
                     Color.black
@@ -84,7 +86,7 @@ struct SceneButtons: View {
                             .foregroundColor(.white)
                             .font(.caption)
                             .bold()
-                        ZStack {
+                        ZStack(alignment: .leading) {
                             RoundedRectangle(cornerRadius: 8)
                                 .foregroundColor(.black)
                                 .opacity(0.5)
@@ -92,31 +94,41 @@ struct SceneButtons: View {
                             
                             RoundedRectangle(cornerRadius: 8)
                                 .foregroundColor(.white)
-                                .frame(width: 32, height: 8)
-                                .offset(x: -16)
+                                .frame(width: CGFloat(lastWakenTime * 64 / wakeTimeLimit), height: 8)
                         }
                     }//VStack
                     
                     Button(action: {
                         
-                        lastWakenTime = Calendar.current.dateComponents([.second], from: UserDefaults.standard.value(forKey: "\(String(describing: roomUser.roomId))") as! Date , to: Date()).second ?? 0
-                        
-                        if lastWakenTime >= 10 {
-                            lastWakenTimeToggle = false
-                        } else {
-                            print(lastWakenTime)
-                        }
-                       
                     }) {
                         Color.clear
                             .cornerRadius(8)
                     }
                 }//ZStack
                 .opacity(lastWakenTimeToggle ? 1 : 0)
+                .onAppear {
+                    Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
+                        if let storedDate = UserDefaults.standard.value(forKey: "\(String(describing: roomUser.roomId))") as? Date {
+                            DispatchQueue.main.async {
+                                withAnimation(.linear(duration: 1)) {
+                                    lastWakenTime = Calendar.current.dateComponents([.second], from: storedDate, to: Date()).second ?? 0
+                                }
+                                if lastWakenTime >= wakeTimeLimit {
+                                    lastWakenTimeToggle = false
+                                    lastWakenTime = 0
+                                    UserDefaults.standard.removeObject(forKey: "\(String(describing: roomUser.roomId))")
+                                } else {
+                                    print(lastWakenTime)
+                                }
+                            }
+                        }
+                    }
+                    
+                }
                 
             case "active":
                 Button(action: {
-                   
+                    
                     //TODO: 더미데이터일 경우 실행하지않기_임시로 분기처리
                     if roomUser.token.count > 1 {
                         
@@ -159,60 +171,60 @@ struct SceneButtons: View {
                                             font: .title3,
                                             status: roomUser.clicked,
                                             tint:   roomUser.characterColor?.toColor ?? Color.pink)
-                            }
-                    }
-                
-                case "inactive":
-                    Button(action: {
-                        if roomUser.token.count > 1 {
-                            
-                            // push 알림 보내기
-                            DispatchQueue.global(qos: .userInteractive).async {
-                                print("SceneButtons | roomUser \(roomUser)")
-                                pushNotiController.requestPushNotification(to: roomUser.id!)
-                            }
-                        }
-                       
-                    }) {
-                        Color.clear
-                            .cornerRadius(8)
-                    }
-                default :
-                    Button(action: {
-                     
-                    }) {
-                        Color.clear
-                            .cornerRadius(8)
                     }
                 }
-            }//ZStack
-        }
+                
+            case "inactive":
+                Button(action: {
+                    if roomUser.token.count > 1 {
+                        
+                        // push 알림 보내기
+                        DispatchQueue.global(qos: .userInteractive).async {
+                            print("SceneButtons | roomUser \(roomUser)")
+                            pushNotiController.requestPushNotification(to: roomUser.id!)
+                        }
+                    }
+                    
+                }) {
+                    Color.clear
+                        .cornerRadius(8)
+                }
+            default :
+                Button(action: {
+                    
+                }) {
+                    Color.clear
+                        .cornerRadius(8)
+                }
+            }
+        }//ZStack
     }
-    
+}
+
 struct SceneButtons_Previews: PreviewProvider {
-          static var previews: some View {
-            let newAttendanceRecord = AttendanceRecord(
-                userId: "",
-                date: Date(),
-                rawIsSmiling: false,
-                rawIsBlinkingLeft: true,
-                rawIsBlinkingRight: false,
-                rawLookAtPoint: [0, 0, 0],
-                rawFaceOrientation: [0, 0, 0],
-                rawCharacterColor: [0, 0, 0],
-                rawWeather: "clear",
-                rawTime: Date(),
-                rawSunriseTime: Date(),
-                rawSunsetTime: Date()
-            )
-            
-            FixAptView()
-                .environmentObject(ViewRouter())
-                .environmentObject(AptModel())
-                .environmentObject(AttendanceModel())
-                .environmentObject(CharacterViewModel())
-                .environmentObject(EnvironmentViewModel())
-                .environmentObject(LocationManager())
-        }
+    static var previews: some View {
+        let newAttendanceRecord = AttendanceRecord(
+            userId: "",
+            date: Date(),
+            rawIsSmiling: false,
+            rawIsBlinkingLeft: true,
+            rawIsBlinkingRight: false,
+            rawLookAtPoint: [0, 0, 0],
+            rawFaceOrientation: [0, 0, 0],
+            rawCharacterColor: [0, 0, 0],
+            rawWeather: "clear",
+            rawTime: Date(),
+            rawSunriseTime: Date(),
+            rawSunsetTime: Date()
+        )
+        
+        FixAptView()
+            .environmentObject(ViewRouter())
+            .environmentObject(AptModel())
+            .environmentObject(AttendanceViewModel())
+            .environmentObject(CharacterViewModel())
+            .environmentObject(EnvironmentViewModel())
+            .environmentObject(LocationManager())
     }
+}
 

@@ -10,7 +10,7 @@ import SwiftUI
 struct MainView: View {
     @EnvironmentObject var viewRouter: ViewRouter
     @StateObject var aptModel: AptModel
-    @StateObject var attendanceModel: AttendanceModel
+    @StateObject var attendanceViewModel: AttendanceViewModel
     @StateObject var characterViewModel: CharacterViewModel
     @StateObject var environmentViewModel: EnvironmentViewModel
     @StateObject var loginViewModel: LoginViewModel
@@ -36,10 +36,10 @@ struct MainView: View {
 //                .environmentObject(locationManager)
 //                .environmentObject(environmentViewModel)
 
-////            let record = attendanceModel.ensureCurrentRecord()
+////            let record = attendanceViewModel.ensureCurrentRecord()
             AttendanceView(eyeViewController: EyeViewController())
                 .environmentObject(viewRouter)
-                .environmentObject(attendanceModel)
+                .environmentObject(attendanceViewModel)
                 .environmentObject(environmentViewModel)
                 .environmentObject(characterViewModel)
                 .environmentObject(locationManager)
@@ -52,7 +52,7 @@ struct MainView: View {
             FixAptView()
                 .environmentObject(viewRouter)
                 .environmentObject(aptModel)
-                .environmentObject(attendanceModel)
+                .environmentObject(attendanceViewModel)
                 .environmentObject(environmentViewModel)
                 .environmentObject(characterViewModel)
                 .environmentObject(locationManager)

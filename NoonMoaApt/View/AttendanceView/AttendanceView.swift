@@ -16,7 +16,7 @@ struct AttendanceView: View {
     private let currentUser = Auth.auth().currentUser
     
     @EnvironmentObject var viewRouter: ViewRouter
-    @EnvironmentObject var attendanceModel: AttendanceModel
+    @EnvironmentObject var attendanceViewModel: AttendanceViewModel
     @EnvironmentObject var environmentViewModel: EnvironmentViewModel
     @EnvironmentObject var characterViewModel: CharacterViewModel
     @EnvironmentObject var locationManager: LocationManager
@@ -201,10 +201,17 @@ struct AttendanceView: View {
                             }
                             // 시작하기 버튼
                             Button (action: {
-                                Task(priority: .userInitiated) {
                                     characterViewModel.convertCharacterToRawData()
-                                    attendanceModel.uploadAttendanceRecord()
-                                }
+                                print(">>>" + String(describing: characterViewModel.character))
+                                print(">>>" + String(describing: characterViewModel.characterViewData))
+                                print(">>>" + String(describing: environmentViewModel.environment))
+                                print(">>>" + String(describing: environmentViewModel.environmentViewData))
+                                attendanceViewModel.newAttendanceRecord = AttendanceRecord(userId: "", date: Date(), rawIsSmiling: characterViewModel.character?.rawIsSmiling, rawIsBlinkingLeft: characterViewModel.character?.rawIsBlinkingLeft, rawIsBlinkingRight: characterViewModel.character?.rawIsBlinkingRight, rawLookAtPoint: characterViewModel.character?.rawLookAtPoint, rawFaceOrientation: characterViewModel.character?.rawFaceOrientation, rawCharacterColor: characterViewModel.character?.rawCharacterColor, rawWeather: environmentViewModel.environment.rawWeather, rawTime: environmentViewModel.environment.rawTime, rawSunriseTime: environmentViewModel.environment.rawSunriseTime, rawSunsetTime: environmentViewModel.environment.rawSunsetTime)
+                               
+                                attendanceViewModel.uploadAttendanceRecord()
+                                print(">>>" + String(describing: attendanceViewModel.newAttendanceRecord))
+                                
+                                
                                 viewRouter.currentView = .apt
                                 UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
                             }) {
@@ -247,7 +254,7 @@ struct AttendanceView: View {
             )
             AttendanceView(eyeViewController: EyeViewController())
                 .environmentObject(ViewRouter())
-                .environmentObject(AttendanceModel())
+                .environmentObject(AttendanceViewModel())
                 .environmentObject(CharacterViewModel())
                 .environmentObject(EnvironmentViewModel())
                 .environmentObject(EyeViewController())

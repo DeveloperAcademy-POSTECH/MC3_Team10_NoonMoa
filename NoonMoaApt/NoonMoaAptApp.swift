@@ -46,7 +46,7 @@ struct NoonMoaAptApp: App {
         WindowGroup {
 //            ParticleView()
             MainView(aptModel: AptModel(),
-                     attendanceModel: AttendanceModel(),
+                     attendanceViewModel: AttendanceViewModel(),
                      characterViewModel: CharacterViewModel(),
                      environmentViewModel: EnvironmentViewModel(),
                      loginViewModel: LoginViewModel(viewRouter: ViewRouter()),
