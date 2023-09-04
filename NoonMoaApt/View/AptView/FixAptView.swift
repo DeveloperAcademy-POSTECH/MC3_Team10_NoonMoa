@@ -64,10 +64,11 @@ struct FixAptView: View {
                             ForEach(users.indices, id: \.self) { rowIndex in
                                 HStack(spacing: 12) {
                                     ForEach(users[rowIndex].indices, id: \.self) { colIndex in
-                                    SceneRoom(roomUser: $users[rowIndex][colIndex])
-                                            .environmentObject(characterViewModel)
+                                        if rowIndex < aptModel.user2DLayout.count && colIndex < aptModel.user2DLayout[rowIndex].count {
+                                            SceneRoom(roomUser: $aptModel.user2DLayout[rowIndex][colIndex])
+                                                .environmentObject(characterViewModel)
                                                 .frame(width: (geo.size.width - 48) / 3, height: ((geo.size.width - 48) / 3) / 1.2)
-                                        
+                                        }
                                     }
                                 }
                             }
@@ -100,10 +101,10 @@ struct FixAptView: View {
                 ZStack {
                     GeometryReader { geo in
                         VStack(spacing: 16) {
-                            ForEach(users.indices, id: \.self) { rowIndex in
+                            ForEach(aptModel.user2DLayout.indices, id: \.self) { rowIndex in
                                 HStack(spacing: 12) {
-                                    ForEach(users[rowIndex].indices, id: \.self) { colIndex in
-                                        SceneButtons(roomUser: $users[rowIndex][colIndex])
+                                    ForEach(aptModel.user2DLayout[rowIndex].indices, id: \.self) { colIndex in
+                                        SceneButtons(roomUser: $aptModel.user2DLayout[rowIndex][colIndex])
                                             .frame(width: (geo.size.width - 48) / 3, height: ((geo.size.width - 48) / 3) / 1.2)
                                         //방 이미지 자체의 비율 1:1.2 통한 높이 산정
                                     }
@@ -244,7 +245,6 @@ struct FixAptView: View {
 
 struct FixAptView_Previews: PreviewProvider {
     static var previews: some View {
-        
         FixAptView()
             .environmentObject(ViewRouter())
             .environmentObject(AptModel())
