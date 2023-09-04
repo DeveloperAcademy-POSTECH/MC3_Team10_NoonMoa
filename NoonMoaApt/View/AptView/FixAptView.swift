@@ -23,7 +23,8 @@ struct FixAptView: View {
     @State private var isCalendarOpen: Bool = false
     @State private var isSettingOpen: Bool = false
     @State private var announcement: Bool = false
-    
+    @State private var isGateOpen: Bool = false
+
     @State var player: AVAudioPlayer!
 
     //아파트 등장 애니메이션
@@ -58,7 +59,7 @@ struct FixAptView: View {
             GeometryReader { proxy in
                 ZStack {
                     GeometryReader { geo in
-                        SceneApt()
+                        SceneApt(isGateOpen: $isGateOpen)
                         VStack(spacing: 16) {
                             ForEach(users.indices, id: \.self) { rowIndex in
                                 HStack(spacing: 12) {
@@ -115,7 +116,22 @@ struct FixAptView: View {
                 .padding()
                 .ignoresSafeArea()
                 .offset(y: proxy.size.height - proxy.size.width * 1.5)
-                //화면만큼 내린 다음에 아파트 크기 비율인 1:1.5에 따라 올려 보정?
+                .overlay(
+                    GeometryReader { geo in
+                        Button(action: {
+                            DispatchQueue.main.async {
+                                withAnimation(.easeInOut(duration: 2)) {
+                                    isGateOpen.toggle()
+                                }
+                            }
+                        }) {
+                            Color.clear
+                                .frame(width: geo.size.width, height: geo.size.width * 0.4 * 0.6)
+                        }
+                        .offset(y: geo.size.height - geo.size.width * 0.3)
+                    }
+                )
+                //화면만큼 내린 다음에 아파트 크기 비율인 1:1.5에 따라 올려 보정
             }
             
             //기능테스트위한 임시 뷰

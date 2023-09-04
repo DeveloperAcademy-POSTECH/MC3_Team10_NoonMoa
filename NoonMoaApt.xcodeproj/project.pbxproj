@@ -147,7 +147,7 @@
 		8A9910852A78A3A20083602F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8A9910882A78B4300083602F /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		8AA703DD2A99EEA300309B84 /* NoonMoaApt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NoonMoaApt.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		8AA703DE2A99EEA300309B84 /* NoonMoaAptUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NoonMoaAptUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		8AA703DE2A99EEA300309B84 /* NoonMoaAptUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = NoonMoaAptUITests.xctest; path = "/Users/oreobro/Documents/AppleDeveloperAcademy/NoonMoaApt/build/Debug-iphoneos/NoonMoaAptUITests.xctest"; sourceTree = "<absolute>"; };
 		8AD230352A699F4C00C967B5 /* SceneButtons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneButtons.swift; sourceTree = "<group>"; };
 		8AD230362A699F4C00C967B5 /* SceneApt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneApt.swift; sourceTree = "<group>"; };
 		8AD230372A699F4C00C967B5 /* FunctionTestView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FunctionTestView.swift; sourceTree = "<group>"; };
@@ -349,7 +349,6 @@
 				E32E3E162A6951B600B865E8 /* NoonMoaApt */,
 				DA10AFFC2A79783E00D20C1C /* Recovered References */,
 				8AA703DD2A99EEA300309B84 /* NoonMoaApt.app */,
-				8AA703DE2A99EEA300309B84 /* NoonMoaAptUITests.xctest */,
 			);
 			sourceTree = "<group>";
 		};
