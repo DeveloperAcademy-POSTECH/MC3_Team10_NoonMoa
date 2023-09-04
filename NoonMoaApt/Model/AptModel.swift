@@ -105,6 +105,7 @@ extension AptModel {
             let currentUserIndex = (Int(userRoomId) ?? 0) % 12 - 1
 //            print("AptModel | generateUserLayout | currentUserIndex \(currentUserIndex)")
             
+            
             let aptDocRef = self.db.collection("Apt").document(aptId)
             aptDocRef.getDocument { (aptDocument, aptError) in
                 guard let aptDocument = aptDocument, aptDocument.exists,
