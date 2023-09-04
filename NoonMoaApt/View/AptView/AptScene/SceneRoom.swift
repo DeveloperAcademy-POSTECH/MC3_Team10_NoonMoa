@@ -12,11 +12,11 @@ import FirebaseFirestore
 
 struct SceneRoom: View {
     @EnvironmentObject var characterViewModel: CharacterViewModel
-
+    
     @Binding var roomUser: User
     @State private var isBlindUp: Bool = false
     @State private var sleepIconIndex: Int = 0
-
+    
     
     var body: some View {
         GeometryReader { geo in
@@ -95,18 +95,18 @@ struct SceneRoom: View {
                     if roomUser.userState == "sleep" {
                         switch sleepIconIndex {
                         case 0:
-                            Image.assets.room.sleepIcon3
+                            Image.assets.room.sleepIcon1
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: geo.size.width / 2)
                                 .offset(x: geo.size.width / 3, y: -geo.size.height / 3)
                         case 1:
-                            Image.assets.room.sleepIcon3
+                            Image.assets.room.sleepIcon2
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: geo.size.width / 2)
                                 .offset(x: geo.size.width / 3, y: -geo.size.height / 3)
-                        case 2:
+                        case 2,3,4:
                             Image.assets.room.sleepIcon3
                                 .resizable()
                                 .scaledToFit()
@@ -116,15 +116,14 @@ struct SceneRoom: View {
                         }
                     }
                 }
+            }
+            .onAppear {
+                Timer.scheduledTimer(withTimeInterval: 0.6, repeats: true) { timer in
+                    DispatchQueue.main.async {
+                        self.sleepIconIndex = (sleepIconIndex + 1) % 5
+                    }
                 }
-//            .onAppear {
-//                Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
-//                    DispatchQueue.main.async {
-//                        self.sleepIconIndex = (sleepIconIndex + 4) % 3
-//                        print(sleepIconIndex)
-//                    }
-//                }
-//            }
+            }
         }//GeometryReader
     }
 }

@@ -63,7 +63,7 @@ struct FixAptView: View {
                             ForEach(users.indices, id: \.self) { rowIndex in
                                 HStack(spacing: 12) {
                                     ForEach(users[rowIndex].indices, id: \.self) { colIndex in
-                                                                                 SceneRoom(roomUser: $users[rowIndex][colIndex])
+                                    SceneRoom(roomUser: $users[rowIndex][colIndex])
                                             .environmentObject(characterViewModel)
                                                 .frame(width: (geo.size.width - 48) / 3, height: ((geo.size.width - 48) / 3) / 1.2)
                                         
@@ -118,7 +118,7 @@ struct FixAptView: View {
                 //화면만큼 내린 다음에 아파트 크기 비율인 1:1.5에 따라 올려 보정?
             }
             
-            //            기능테스트위한 임시 뷰
+            //기능테스트위한 임시 뷰
             FunctionTestView()
                 .environmentObject(viewRouter)
                 .environmentObject(environmentViewModel)
