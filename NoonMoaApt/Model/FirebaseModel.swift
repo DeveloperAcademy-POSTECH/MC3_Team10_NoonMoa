@@ -131,7 +131,7 @@ extension User {
          User(roomId: "2", aptId: "1", userState: "active", lastActiveDate: Date(), characterColor: [138/255, 141/255, 197/255], token: "b",requestedBy: []),
          User(roomId: "3", aptId: "1", userState: "active", lastActiveDate: Date(), characterColor: [177/255, 203/255, 182/255], token: "c",requestedBy: [])],
         [User(roomId: "4", aptId: "1", userState: "active", lastActiveDate: Date(), characterColor: [220/255, 126/225, 126/255], token: "d",requestedBy: []),
-         User(roomId: "5", aptId: "1", userState: "active", lastActiveDate: Date(), characterColor: [220/255, 126/225, 126/255], token: "e",requestedBy: []),
+         User(roomId: "5", aptId: "1", userState: "active", lastActiveDate: Date(), characterColor: [150/255, 126/225, 0/255], token: "e",requestedBy: []),
          User(roomId: "6", aptId: "1", userState: "sleep", lastActiveDate: Date(), characterColor: [177/255, 203/255, 182/255], token: "f",requestedBy: [])],
         [User(roomId: "7", aptId: "1", userState: "inactive", lastActiveDate: Date(), characterColor: [230/255, 170/255, 150/255], token: "g",requestedBy: []),
          User(roomId: "8", aptId: "1", userState: "sleep", lastActiveDate: Date(), characterColor: [138/255,141/255,197/255], token: "h",requestedBy: []),

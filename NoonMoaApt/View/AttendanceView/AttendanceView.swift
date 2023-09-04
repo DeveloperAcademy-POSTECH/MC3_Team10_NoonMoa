@@ -16,7 +16,7 @@ struct AttendanceView: View {
     private let currentUser = Auth.auth().currentUser
     
     @EnvironmentObject var viewRouter: ViewRouter
-    @EnvironmentObject var attendanceModel: AttendanceModel
+    @EnvironmentObject var attendanceViewModel: AttendanceViewModel
     @EnvironmentObject var environmentViewModel: EnvironmentViewModel
     @EnvironmentObject var characterViewModel: CharacterViewModel
     @EnvironmentObject var locationManager: LocationManager
@@ -122,9 +122,7 @@ struct AttendanceView: View {
                         Button (action: {
                             //사용자 색상 최초 지정(default값)
                             self.playSound(soundName: String.sounds.shutter)
-                            characterViewModel.pickerValueToCharacterColor(value: characterViewModel.pickerValue)
                          
-                            
                             DispatchQueue.main.async {
                                 UIImpactFeedbackGenerator(style: .soft).impactOccurred()
                                 withAnimation(.easeInOut(duration: 0.2).repeatCount(1, autoreverses: true)) {
@@ -152,7 +150,7 @@ struct AttendanceView: View {
                                 characterViewModel.characterViewData.isBlinkingRight = eyeViewController.eyeMyViewModel.isBlinkingRight
                                 characterViewModel.characterViewData.lookAtPoint = eyeViewController.eyeMyViewModel.lookAtPoint
                                 characterViewModel.characterViewData.faceOrientation = eyeViewController.eyeMyViewModel.faceOrientation
-                                    //TODO: 컬러관련 부분도 저장필요
+                                characterViewModel.pickerValueToCharacterColor(value: characterViewModel.pickerValue)
                             }
                             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                                 withAnimation(.spring(response: 0.5, dampingFraction: 0.3).speed(1)) {
@@ -203,6 +201,17 @@ struct AttendanceView: View {
                             }
                             // 시작하기 버튼
                             Button (action: {
+                                    characterViewModel.convertCharacterToRawData()
+                                print(">>>" + String(describing: characterViewModel.character))
+                                print(">>>" + String(describing: characterViewModel.characterViewData))
+                                print(">>>" + String(describing: environmentViewModel.environment))
+                                print(">>>" + String(describing: environmentViewModel.environmentViewData))
+                                attendanceViewModel.newAttendanceRecord = AttendanceRecord(userId: "", date: Date(), rawIsSmiling: characterViewModel.character?.rawIsSmiling, rawIsBlinkingLeft: characterViewModel.character?.rawIsBlinkingLeft, rawIsBlinkingRight: characterViewModel.character?.rawIsBlinkingRight, rawLookAtPoint: characterViewModel.character?.rawLookAtPoint, rawFaceOrientation: characterViewModel.character?.rawFaceOrientation, rawCharacterColor: characterViewModel.character?.rawCharacterColor, rawWeather: environmentViewModel.environment.rawWeather, rawTime: environmentViewModel.environment.rawTime, rawSunriseTime: environmentViewModel.environment.rawSunriseTime, rawSunsetTime: environmentViewModel.environment.rawSunsetTime)
+                               
+                                attendanceViewModel.uploadAttendanceRecord()
+                                print(">>>" + String(describing: attendanceViewModel.newAttendanceRecord))
+                                
+                                
                                 viewRouter.currentView = .apt
                                 UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
                             }) {
@@ -245,7 +254,7 @@ struct AttendanceView: View {
             )
             AttendanceView(eyeViewController: EyeViewController())
                 .environmentObject(ViewRouter())
-                .environmentObject(AttendanceModel(newAttendanceRecord: newAttendanceRecord))
+                .environmentObject(AttendanceViewModel())
                 .environmentObject(CharacterViewModel())
                 .environmentObject(EnvironmentViewModel())
                 .environmentObject(EyeViewController())

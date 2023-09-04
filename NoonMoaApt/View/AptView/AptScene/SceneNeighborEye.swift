@@ -9,9 +9,7 @@ import SwiftUI
 
 struct SceneNeighborEye: View {
     @Binding var roomUser: User
-    @State private var eyeNeighborViewModel = EyeNeighborViewModel()
-    @State private var isInactiveOrSleep = false
-    var isJumping: Bool
+    @State var eyeNeighborViewModel = EyeNeighborViewModel()
     
     var body: some View {
         EyeView(isSmiling: eyeNeighborViewModel.isSmiling,
@@ -20,7 +18,7 @@ struct SceneNeighborEye: View {
                 lookAtPoint: eyeNeighborViewModel.lookAtPoint,
                 faceOrientation: eyeNeighborViewModel.faceOrientation,
                 bodyColor: eyeNeighborViewModel.bodyColor,
-                eyeColor: eyeNeighborViewModel.eyeColor, cheekColor: eyeNeighborViewModel.cheekColor, isInactiveOrSleep: isInactiveOrSleep, isJumping: isJumping)
+                eyeColor: eyeNeighborViewModel.eyeColor, cheekColor: eyeNeighborViewModel.cheekColor, isInactiveOrSleep: roomUser.userState == "active" ? false : true, isJumping: roomUser.isJumping)
         .onAppear {
             eyeNeighborViewModel.updateColors(roomUser: roomUser)
             //이웃 눈의 랜덤한 움직임 함수 실행
@@ -42,6 +40,6 @@ struct SceneNeighborEye: View {
 
 struct SceneNeighborEye_Previews: PreviewProvider {
     static var previews: some View {
-        SceneNeighborEye(roomUser: .constant(User.UTData[0][1]), isJumping: false)
+        SceneNeighborEye(roomUser: .constant(User.UTData[0][1]))
     }
 }

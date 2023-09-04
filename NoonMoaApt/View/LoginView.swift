@@ -13,7 +13,6 @@ struct LoginView: View {
     @EnvironmentObject var viewRouter: ViewRouter
     @StateObject var loginData = LoginViewModel(viewRouter: ViewRouter())
     //    @Binding var roomUser: User
-    @State private var eyeNeighborViewModel = EyeNeighborViewModel()
     @State private var isBlinkingPlayed: Bool = false
     
     var body: some View {

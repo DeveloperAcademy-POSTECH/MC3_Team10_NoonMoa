@@ -13,15 +13,9 @@ class CharacterViewModel: ObservableObject {
     @Published var character: CharacterRecord?
     @Published var characterViewData: CharacterRecordViewData = CharacterRecordViewData(isSmiling: true, isBlinkingLeft: false, isBlinkingRight: true, lookAtPoint: SIMD3(1,0,0), faceOrientation: SIMD3(1,0,0), characterColor: .userBlue, bodyColor: .userYellow, eyeColor: .eyeYellow, cheekColor: .cheekRed)
     
-    var recordedCharacter: CharacterRecord?
-    var recordedCharacterViewData: CharacterRecordViewData?
+    var recordedCharacter: CharacterRecord = CharacterRecord(rawIsSmiling: false, rawIsBlinkingLeft: false, rawIsBlinkingRight: false, rawLookAtPoint: [0,0,0], rawFaceOrientation: [0,0,0], rawCharacterColor: [0,0,0])
+    var recordedCharacterViewData: CharacterRecordViewData = CharacterRecordViewData(isSmiling: false, isBlinkingLeft: false, isBlinkingRight: false, lookAtPoint: SIMD3(0,0,0), faceOrientation: SIMD3(0,0,0), characterColor: .userBlue, bodyColor: .userBlue, eyeColor: .eyeBlue, cheekColor: .cheekRed)
    
-    init(character: CharacterRecord? = nil, recordedCharacter: CharacterRecord? = nil, recordedCharacterViewData: CharacterRecordViewData? = nil) {
-        self.character = character
-        self.recordedCharacter = recordedCharacter
-        self.recordedCharacterViewData = recordedCharacterViewData
-    }
-    
     @Published var pickerValue: Double = 0.25
     //캐릭터 테마컬러 그라데이션
     let color1: Color = Color.userBlue
@@ -38,12 +32,14 @@ class CharacterViewModel: ObservableObject {
         let rawFaceOrientation: [Float] = [characterViewData.faceOrientation[0], characterViewData.faceOrientation[1], characterViewData.faceOrientation[2]]
         let rawCharacterColor: [Float] = [characterViewData.characterColor.toArray[0], characterViewData.characterColor.toArray[1], characterViewData.characterColor.toArray[2]]
         character = CharacterRecord(rawIsSmiling: characterViewData.isSmiling, rawIsBlinkingLeft: characterViewData.isBlinkingLeft, rawIsBlinkingRight: characterViewData.isBlinkingRight, rawLookAtPoint: rawLookAtPoint, rawFaceOrientation: rawFaceOrientation, rawCharacterColor: rawCharacterColor)
+        print("character | \(character)")
     }
     
     // MARK: - 다운로드 후 변환 -
     
-    func downloadCharacterRecord() {
-        
+    func convertRecordedDataToCharacterViewData() {
+        convertRawColorToCharacterColor(record: recordedCharacter)
+        recordedCharacterViewData = CharacterRecordViewData(isSmiling: recordedCharacter.rawIsSmiling, isBlinkingLeft: recordedCharacter.rawIsBlinkingLeft, isBlinkingRight: recordedCharacter.rawIsBlinkingRight, lookAtPoint: SIMD3(recordedCharacter.rawLookAtPoint[0], recordedCharacter.rawLookAtPoint[1], recordedCharacter.rawLookAtPoint[2]), faceOrientation: SIMD3(recordedCharacter.rawFaceOrientation[0], recordedCharacter.rawFaceOrientation[1], recordedCharacter.rawFaceOrientation[2]), characterColor: self.recordedCharacterViewData.characterColor, bodyColor: self.recordedCharacterViewData.bodyColor, eyeColor: self.recordedCharacterViewData.eyeColor, cheekColor: .cheekRed)
     }
 }
 
@@ -83,17 +79,14 @@ extension CharacterViewModel {
         return [Float(yR), Float(yG), Float(yB)]
     }
     
-    //TODO: AttendanceRecord에 저장하는 것도 넣어야함
-    
-    
-    func convertRawColorToCharacterColor(record: AttendanceRecord) {
-        let yR = Double(record.rawCharacterColor![0])
-        let yG = Double(record.rawCharacterColor![1])
-        let yB = Double(record.rawCharacterColor![2])
+    func convertRawColorToCharacterColor(record: CharacterRecord) {
+        let yR = Double(record.rawCharacterColor[0])
+        let yG = Double(record.rawCharacterColor[1])
+        let yB = Double(record.rawCharacterColor[2])
 
-        self.recordedCharacterViewData?.characterColor =  Color(red: yR, green: yG, blue: yB)
-       self.recordedCharacterViewData?.bodyColor = LinearGradient(colors: [Color(red: min(max(((yR * 255 + 50) / 255), 0), 1), green: min(max(((yG * 255 + 50) / 255), 0), 1), blue: min(max(((yB * 255 + 50) / 255), 0), 1)), Color(red: yR, green: yG, blue: yB)], startPoint: .top, endPoint: .bottom)
-        self.recordedCharacterViewData?.eyeColor = LinearGradient(colors: [Color(red: min(max(((yR * 255 + 50) / 255), 0), 1), green: min(max(((yG * 255 + 50) / 255), 0), 1), blue: min(max(((yB * 255 + 50) / 255), 0), 1)), Color(red: yR, green: yG, blue: yB)], startPoint: .top, endPoint: .bottom)
+        self.recordedCharacterViewData.characterColor =  Color(red: yR, green: yG, blue: yB)
+       self.recordedCharacterViewData.bodyColor = LinearGradient(colors: [Color(red: min(max(((yR * 255 + 50) / 255), 0), 1), green: min(max(((yG * 255 + 50) / 255), 0), 1), blue: min(max(((yB * 255 + 50) / 255), 0), 1)), Color(red: yR, green: yG, blue: yB)], startPoint: .top, endPoint: .bottom)
+        self.recordedCharacterViewData.eyeColor = LinearGradient(colors: [Color(red: min(max(((yR * 255 + 50) / 255), 0), 1), green: min(max(((yG * 255 + 50) / 255), 0), 1), blue: min(max(((yB * 255 + 50) / 255), 0), 1)), Color(red: yR, green: yG, blue: yB)], startPoint: .top, endPoint: .bottom)
     }
 }
 

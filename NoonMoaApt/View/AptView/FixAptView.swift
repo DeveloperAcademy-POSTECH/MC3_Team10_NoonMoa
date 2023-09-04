@@ -14,7 +14,7 @@ import AVFoundation
 struct FixAptView: View {
     @EnvironmentObject var viewRouter: ViewRouter
     @EnvironmentObject var aptModel: AptModel
-    @EnvironmentObject var attendanceModel: AttendanceModel
+    @EnvironmentObject var attendanceViewModel: AttendanceViewModel
     @EnvironmentObject var characterViewModel: CharacterViewModel
     @EnvironmentObject var environmentViewModel: EnvironmentViewModel
     @EnvironmentObject var locationManager: LocationManager
@@ -64,6 +64,7 @@ struct FixAptView: View {
                                 HStack(spacing: 12) {
                                     ForEach(users[rowIndex].indices, id: \.self) { colIndex in
                                                                                  SceneRoom(roomUser: $users[rowIndex][colIndex])
+                                            .environmentObject(characterViewModel)
                                                 .frame(width: (geo.size.width - 48) / 3, height: ((geo.size.width - 48) / 3) / 1.2)
                                         
                                     }
@@ -136,6 +137,9 @@ struct FixAptView: View {
                         CalendarMonthView()
                             .frame(height: UIScreen.main.bounds.width * 1)
                             .padding()
+                            .environmentObject(characterViewModel)
+                            .environmentObject(environmentViewModel)
+
                         Spacer()
                     }
                     .offset(y: 40)
@@ -187,8 +191,20 @@ struct FixAptView: View {
             aptModel.fetchCurrentUserApt()
             
             playSound(soundName: String.sounds.clear)
-
             
+            //MARK: - 다운로드 해결필요
+            attendanceViewModel.downloadAttendanceRecords(for: Date())
+            characterViewModel.recordedCharacter = CharacterRecord(rawIsSmiling: attendanceViewModel.todayRecord?.rawIsSmiling ?? false, rawIsBlinkingLeft: attendanceViewModel.todayRecord?.rawIsBlinkingLeft ?? false, rawIsBlinkingRight: attendanceViewModel.todayRecord?.rawIsBlinkingRight ?? false, rawLookAtPoint: attendanceViewModel.todayRecord?.rawLookAtPoint ?? [0,0,0], rawFaceOrientation: attendanceViewModel.todayRecord?.rawFaceOrientation ?? [0,0,0], rawCharacterColor: attendanceViewModel.todayRecord?.rawCharacterColor ?? [0,0,0])
+            characterViewModel.convertRecordedDataToCharacterViewData()
+            environmentViewModel.recordedEnvironment = EnvironmentRecord(rawWeather: attendanceViewModel.todayRecord?.rawWeather ?? "clear", rawTime: attendanceViewModel.todayRecord?.rawTime ?? Date(), rawSunriseTime: attendanceViewModel.todayRecord?.rawSunriseTime ?? Date(), rawSunsetTime: attendanceViewModel.todayRecord?.rawSunsetTime ?? Date())
+            environmentViewModel.convertRawDataToEnvironmentViewData(isInputAttndanceRecord: true, environmentModel: environmentViewModel.recordedEnvironment)
+            print("!!!!" + String(describing: attendanceViewModel.attendanceRecords))
+            print("!!!!" + String(describing: attendanceViewModel.todayRecord))
+            print("!!!!" + String(describing: environmentViewModel.recordedEnvironment))
+            print("!!!!" + String(describing: environmentViewModel.recordedEnvironmentViewData))
+            print("!!!!" + String(describing: characterViewModel.recordedCharacter))
+            print("!!!!" + String(describing: characterViewModel.recordedCharacterViewData))
+
             // When the app is active, update the user's state to .active
             if let user = Auth.auth().currentUser {
                 firestoreManager.syncDB()
@@ -212,25 +228,11 @@ struct FixAptView: View {
 
 struct FixAptView_Previews: PreviewProvider {
     static var previews: some View {
-        let newAttendanceRecord = AttendanceRecord(
-            userId: "",
-            date: Date(),
-            rawIsSmiling: false,
-            rawIsBlinkingLeft: true,
-            rawIsBlinkingRight: false,
-            rawLookAtPoint: [0, 0, 0],
-            rawFaceOrientation: [0, 0, 0],
-            rawCharacterColor: [0, 0, 0],
-            rawWeather: "clear",
-            rawTime: Date(),
-            rawSunriseTime: Date(),
-            rawSunsetTime: Date()
-        )
         
         FixAptView()
             .environmentObject(ViewRouter())
             .environmentObject(AptModel())
-            .environmentObject(AttendanceModel(newAttendanceRecord: newAttendanceRecord))
+            .environmentObject(AttendanceViewModel())
             .environmentObject(CharacterViewModel())
             .environmentObject(EnvironmentViewModel())
             .environmentObject(LocationManager())

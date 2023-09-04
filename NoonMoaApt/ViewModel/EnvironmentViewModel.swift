@@ -2,17 +2,17 @@ import Foundation
 import SwiftUI
 import WeatherKit
 
-@MainActor class EnvironmentViewModel: ObservableObject {
+class EnvironmentViewModel: ObservableObject {
     @Published var weather: Weather?
 
     @Published var environment: EnvironmentRecord = EnvironmentRecord(rawWeather: "clear", rawTime: Date(), rawSunriseTime: Date(), rawSunsetTime: Date())
     @Published var environmentViewData: EnvironmentRecordViewData = EnvironmentRecordViewData(weather: "clear", isWind: false, isThunder: false, time: "morning", lottieImageName: Lottie.clearMorning, colorOfSky: .sky.clearMorning, colorOfGround: .ground.clearMorning, broadcastAttendanceIncompleteTitle: String.broadcast.attendanceIncompleteTitle.clearMorning, broadcastAttendanceIncompleteBody: String.broadcast.attendanceIncompleteBody.clearMorning, broadcastAttendanceCompletedTitle: String.broadcast.attendanceCompletedTitle.clearMorning, broadcastAttendanceCompletedBody: String.broadcast.attendanceCompletedBody.clearMorning, broadcastAnnounce: String.broadcast.announce[0], stampLargeSkyImage: Image.assets.stampLarge.clearMorning, stampSmallSkyImage: Image.assets.stampSmall.clearMorning, stampBorderColor: Color.stampBorder.clearMorning)
     
-    @Published var recordedEnvironment: EnvironmentRecord = EnvironmentRecord(rawWeather: "clear", rawTime: Date(), rawSunriseTime: Date(), rawSunsetTime: Date())
-    @Published var recordedEnvironmentViewData: EnvironmentRecordViewData = EnvironmentRecordViewData(weather: "clear", isWind: false, isThunder: false, time: "morning", lottieImageName: Lottie.clearMorning, colorOfSky: .sky.clearMorning, colorOfGround: .ground.clearMorning, broadcastAttendanceIncompleteTitle: String.broadcast.attendanceIncompleteTitle.clearMorning, broadcastAttendanceIncompleteBody: String.broadcast.attendanceIncompleteBody.clearMorning, broadcastAttendanceCompletedTitle: String.broadcast.attendanceCompletedTitle.clearMorning, broadcastAttendanceCompletedBody: String.broadcast.attendanceCompletedBody.clearMorning, broadcastAnnounce: String.broadcast.announce[0], stampLargeSkyImage: Image.assets.stampLarge.clearMorning, stampSmallSkyImage: Image.assets.stampSmall.clearMorning, stampBorderColor: Color.stampBorder.clearMorning)
+    var recordedEnvironment: EnvironmentRecord = EnvironmentRecord(rawWeather: "clear", rawTime: Date(), rawSunriseTime: Date(), rawSunsetTime: Date())
+    var recordedEnvironmentViewData: EnvironmentRecordViewData = EnvironmentRecordViewData(weather: "clear", isWind: false, isThunder: false, time: "morning", lottieImageName: Lottie.clearMorning, colorOfSky: .sky.clearMorning, colorOfGround: .ground.clearMorning, broadcastAttendanceIncompleteTitle: String.broadcast.attendanceIncompleteTitle.clearMorning, broadcastAttendanceIncompleteBody: String.broadcast.attendanceIncompleteBody.clearMorning, broadcastAttendanceCompletedTitle: String.broadcast.attendanceCompletedTitle.clearMorning, broadcastAttendanceCompletedBody: String.broadcast.attendanceCompletedBody.clearMorning, broadcastAnnounce: String.broadcast.announce[0], stampLargeSkyImage: Image.assets.stampLarge.clearMorning, stampSmallSkyImage: Image.assets.stampSmall.clearMorning, stampBorderColor: Color.stampBorder.clearMorning)
 
-
-    func getWeather(latitude: Double, longitude: Double) async {
+    
+    @MainActor func getWeather(latitude: Double, longitude: Double) async {
         print("getWeather | latitude: \(latitude), longtitude: \(longitude)")
         Task(priority: .userInitiated) {
             do {
@@ -27,7 +27,8 @@ import WeatherKit
                 let sunset = weather?.dailyForecast[0].sun.sunset ?? Date()
                 self.environment = EnvironmentRecord(rawWeather: condition, rawTime: date, rawSunriseTime: sunrise, rawSunsetTime: sunset)
                 convertRawDataToEnvironmentViewData(isInputAttndanceRecord: false, environmentModel: self.environment)
-                print(String(self.environment.rawWeather))
+                print("environment | \(environment)")
+                print("environmentViewData | \(environmentViewData)")
             } catch {
                 print("Weather error: \(error)")
                 fatalError("\(error)")

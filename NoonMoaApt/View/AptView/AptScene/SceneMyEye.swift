@@ -10,7 +10,7 @@ import SwiftUI
 struct SceneMyEye: View {
     @Binding var roomUser: User
     @EnvironmentObject var characterViewModel: CharacterViewModel
-    @EnvironmentObject var eyeNeighborViewModel: EyeNeighborViewModel
+    @State private var eyeNeighborViewModel = EyeNeighborViewModel()
     var isJumping: Bool
 
     var body: some View {
@@ -23,7 +23,6 @@ struct SceneMyEye: View {
                 bodyColor: characterViewModel.characterViewData.bodyColor,
                 eyeColor: characterViewModel.characterViewData.eyeColor, cheekColor: characterViewModel.characterViewData.cheekColor, isInactiveOrSleep: false, isJumping: roomUser.isJumping)
         .onAppear {
-            eyeNeighborViewModel.updateColors(roomUser: roomUser)
             //이웃 눈의 랜덤한 움직임 함수 실행
             DispatchQueue.main.async {
                 withAnimation(.linear(duration: 3)) {
