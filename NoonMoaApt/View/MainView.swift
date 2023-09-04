@@ -54,6 +54,7 @@ struct MainView: View {
                 .environmentObject(aptModel)
                 .environmentObject(attendanceViewModel)
                 .environmentObject(environmentViewModel)
+                .environmentObject(loginViewModel)
                 .environmentObject(characterViewModel)
                 .environmentObject(locationManager)
                 .task(priority: .userInitiated) {
