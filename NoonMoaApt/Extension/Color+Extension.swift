@@ -166,6 +166,9 @@ extension Image {
             static let settingSelected = Image("Button_SettingSelected")
             static let settingUnSelected = Image("Button_SettingUnselected")
         }
+        struct apt {
+            static let aptGate = Image("Apt_gate")
+        }
         
         struct room {
             static let vacant = Image("Room_vacant")
@@ -179,8 +182,6 @@ extension Image {
             static let sleepIcon1 = Image("Room_sleepIcon1")
             static let sleepIcon2 = Image("Room_sleepIcon2")
             static let sleepIcon3 = Image("Room_sleepIcon3")
-
-
         }
         
         struct stampLarge {

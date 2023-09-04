@@ -38,39 +38,57 @@ struct SceneButtons: View {
                 }
                 //깨우기버튼
                 ZStack {
+                    
+                    CustomBlurView(effect: .systemUltraThinMaterialLight) { view in }
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                    .opacity(0.5)
+
                     Color.black
                         .cornerRadius(8)
                         .opacity(0.3)
                     
-                    VStack {
                         Button(action: {
+                            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                                UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                            }
                             lastActiveToggle = false
                             lastWakenTimeToggle = true
-                            
+                            UserDefaults.standard.set(Date(), forKey: "\(String(describing: roomUser.roomId))")
                             if roomUser.token.count > 1 {
-                                
                                 // push 알림 보내기
                                 DispatchQueue.global(qos: .userInteractive).async {
                                     print("SceneButtons | roomUser \(roomUser)")
                                     pushNotiController.requestPushNotification(to: roomUser.id!)
                                 }
                             }
-                            UserDefaults.standard.set(Date(), forKey: "\(String(describing: roomUser.roomId))")
-                            
                         }) {
                             RoundedRectangle(cornerRadius: 20)
-                                .fill(Color.black)
-                                .opacity(0.3)
+                                .fill(Color.white)
+                                .opacity(0.8)
                                 .frame(width: 80, height: 36)
                                 .overlay(
                                     Text("깨우기")
-                                        .foregroundColor(.white)
+                                        .foregroundColor(.black)
                                         .font(.body)
                                         .bold()
                                 )
                         }
-                        
-                    }
+                    Button(action: {
+                        lastActiveToggle = false
+                        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                        }) {
+                            ZStack {
+                                Image(systemName: "circle.fill")
+                                    .foregroundColor(.white)
+                                    .font(.title2.bold())
+                                    .shadow(color: .gray, radius: 4, y: 4)
+                                
+                                Image(systemName: "xmark")
+                                    .foregroundColor(.black)
+                                    .font(.caption.bold())
+                            }
+                    }.offset(x: 48, y: -36)
                 }//ZStack
                 .opacity(lastActiveToggle ? 1 : 0)
                 
@@ -109,6 +127,7 @@ struct SceneButtons: View {
                 .onAppear {
                     Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
                         if let storedDate = UserDefaults.standard.value(forKey: "\(String(describing: roomUser.roomId))") as? Date {
+                            lastWakenTimeToggle = true
                             DispatchQueue.main.async {
                                 withAnimation(.linear(duration: 1)) {
                                     lastWakenTime = Calendar.current.dateComponents([.second], from: storedDate, to: Date()).second ?? 0
