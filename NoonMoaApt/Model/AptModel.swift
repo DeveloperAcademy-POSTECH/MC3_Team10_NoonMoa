@@ -103,7 +103,7 @@ extension AptModel {
             
             // User의 현재 아파트에서 상대적인 순서 계산하기 -> 0 ~ 11
             let currentUserIndex = (Int(userRoomId) ?? 0) % 12 - 1
-//            print("AptModel | generateUserLayout | currentUserIndex \(currentUserIndex)")
+            
             
             let aptDocRef = self.db.collection("Apt").document(aptId)
             aptDocRef.getDocument { (aptDocument, aptError) in
@@ -118,6 +118,10 @@ extension AptModel {
                 
                 // Step 2: Create an array with length 12, filling with dummyUserId if needed
                 var userIds = aptUsers
+                
+                print("AptModel | generateUserLayout | aptUsers: \(aptUsers)")
+                print("AptModel | generateUserLayout | userIds: \(userIds)")
+                
                 let dummyUserId = "dummyUserId"
                 while userIds.count < 12 {
                     userIds.append(dummyUserId)
@@ -137,6 +141,7 @@ extension AptModel {
                 for i in 0..<12 {
                     let row = i / 3
                     let col = i % 3
+                    print("Row: \(row), Col: \(col)")
                     print("AptModel | generateUserLayout | shakedIndices[i]: \(shakedIndices[i])")
                     print("AptModel | generateUserLayout | userIds[shakedIndices[i]]: \(userIds[shakedIndices[i]])")
                         
@@ -156,7 +161,10 @@ extension AptModel {
                             dispatchGroup.leave() // Leave the group when the async call is finished
                         }
                     }
+                    print("==================")
+
                 }
+                
                 
                 dispatchGroup.notify(queue: .main) { // This block will be called when all async calls are finished
                     self.user2DLayout = userLayout.compactMap { $0.compactMap { $0 } } // Handle nil values if necessary

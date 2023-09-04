@@ -141,38 +141,95 @@ class LoginViewModel: ObservableObject {
     }
     
     func deleteUserAccount() {
-        // Get current user
-        if let user = Auth.auth().currentUser {
-            
-            let userDocRef = db.collection("User").document(user.uid)
-            
-            // Fetch random data from User.UTData (assuming UTData is an array of User objects)
-            let randomRow = Int.random(in: 0..<User.UTData.count)
-            let randomCol = Int.random(in: 0..<User.UTData[randomRow].count)
-            var randomUserData = User.UTData[randomRow][randomCol]
-            randomUserData.userState = "vacant"
-            
-            // Update Firestore with random data
-            do {
-                try userDocRef.setData(from: randomUserData) { error in
-                    if let error = error {
-                        print("Error updating user with random data: \(error)")
+        guard let currentUser = Auth.auth().currentUser else {
+            print("Error: User not logged in.")
+            return
+        }
+        
+        let userId = currentUser.uid
+        let userDocumentRef = self.db.collection("User").document(userId)
+        
+        // Fetch the user document to get the roomId and aptId
+        userDocumentRef.getDocument { (document, error) in
+            if let document = document, document.exists {
+                guard let userData = document.data() else {
+                    print("Error: Could not fetch user data.")
+                    return
+                }
+                
+                // Extract roomId and aptId from the fetched user data
+                guard let roomId = userData["roomId"] as? String else {
+                    print("Error: roomId not found in user data.")
+                    return
+                }
+                guard let aptId = userData["aptId"] as? String else {
+                    print("Error: aptId not found in user data.")
+                    return
+                }
+                
+                // Room 지우기
+                let aptRef = self.db.collection("Room").document(roomId)
+                aptRef.delete { err in
+                    if let err = err {
+                        print("Error deleting room document from roomId")
                     } else {
-                        print("User data replaced with random data")
+                        print("room doc from user.roomId removed successfully")
+                    }
+                }
+                
+                // Remove the user from aptUsers document in the Apt collection
+                let aptUsersRef = self.db.collection("Apt").document(aptId).collection("aptUsers").document(userId)
+                aptUsersRef.delete { error in
+                    if let error = error {
+                        print("Error deleting user from aptUsers: \(error)")
+                    } else {
+                        print("User removed from aptUsers successfully")
                         
-                        // Then sign out the user from Firebase Auth
-                        do {
-                            try Auth.auth().signOut()
-                        } catch let signOutError as NSError {
-                            print("Error signing out: \(signOutError)")
+                        // Add roomId to the global emptyRooms variable in Firestore
+                        let emptyRoomsRef = self.db.collection("globals").document("emptyRooms")
+                        emptyRoomsRef.updateData([
+                            "rooms": FieldValue.arrayUnion([roomId])
+                        ]) { err in
+                            if let err = err {
+                                print("Error updating emptyRooms: \(err)")
+                            } else {
+                                print("emptyRooms successfully updated")
+                                
+                                // Sign out the user from Firebase Auth
+                                do {
+                                    try Auth.auth().signOut()
+                                    self.isLogInDone = false
+                                    print("LoginViewModel | deleteUserAccount | Sign Out SUCCESS")
+                                } catch let signOutError as NSError {
+                                    print("Error signing out: \(signOutError)")
+                                }
+                                
+                                // Delete from Firebase Auth
+                                currentUser.delete { error in
+                                    if let error = error {
+                                        print("Error deleting user: \(error)")
+                                    } else {
+                                        // Delete user data from Firestore
+                                        userDocumentRef.delete { error in
+                                            if let error = error {
+                                                print("Error deleting user document: \(error)")
+                                            } else {
+                                                print("User document deleted")
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
-            } catch let error {
-                print("Error encoding user: \(error)")
+                
+            } else {
+                print("Error: User document does not exist.")
             }
         }
     }
+
 
 
     
@@ -259,7 +316,6 @@ class LoginViewModel: ObservableObject {
                             return
                         }
                         
-                        print(aptId)
                                         
                         let updatedUser = User(id: user.id!, roomId: roomToAssign, aptId: aptId, userState: UserState.sleep.rawValue, lastActiveDate: nil, characterColor: Color.userYellow.toArray, token: self.fcmToken, requestedBy: [])
         
