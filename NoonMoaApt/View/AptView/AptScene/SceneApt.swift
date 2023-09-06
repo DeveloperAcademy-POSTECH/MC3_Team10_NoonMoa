@@ -22,32 +22,46 @@ struct SceneApt: View {
                 RoundedRectangle(cornerRadius: 8)
             )
             .overlay (
-                    GeometryReader { geo in
-                        Image.assets.apt.aptGate
-                            .resizable()
-                            .scaledToFit()
-                            .overlay(
-                                Rectangle()
-                                    .roundedCornerStroke(8, corners: [.topLeft, .topRight])
-                            )
-                            .overlay(
+                GeometryReader { geo in
+                    Image.assets.apt.aptGate
+                        .resizable()
+                        .scaledToFit()
+                        .overlay(
                             Rectangle()
-                                .roundedCornerStroke(8, corners: [.topLeft])
+                                .roundedCornerStroke(8, corners: [.topLeft, .topRight])
+                        )
+                        .overlay(
+                            Rectangle()
+                                .roundedCorner(8, corners: [.topLeft])
                                 .frame(width: geo.size.width * 0.21)
                                 .offset(x: -geo.size.width * 0.095)
-
-                            )
-                            .overlay(
+                                .foregroundColor(.white.opacity(0.2))
+                                .overlay(
+                                    Rectangle()
+                                        .roundedCornerStroke(8, corners: [.topLeft])
+                                        .frame(width: geo.size.width * 0.21)
+                                        .offset(x: -geo.size.width * 0.095)
+                                )
+                        )
+                        .overlay(
+                            Rectangle()
+                                .roundedCorner(8, corners: [.topRight])
+                                .frame(width: geo.size.width * 0.21)
+                                .offset(x: geo.size.width * 0.095)
+                                .offset(x: -geo.size.width * 0.17 * (isGateOpen ? 1 : 0))
+                                .foregroundColor(.white.opacity(0.2))
+                                .overlay(
                             Rectangle()
                                 .roundedCornerStroke(8, corners: [.topRight])
                                 .frame(width: geo.size.width * 0.21)
                                 .offset(x: geo.size.width * 0.095)
                                 .offset(x: -geo.size.width * 0.17 * (isGateOpen ? 1 : 0))
                             )
-                            .frame(width: geo.size.width * 0.4)
-                            .offset(x: geo.size.width / 2 - geo.size.width * 0.2)
-                            .offset(y: geo.size.height - geo.size.width * 0.4 * 0.6)
-                    }
+                        )
+                        .frame(width: geo.size.width * 0.4)
+                        .offset(x: geo.size.width / 2 - geo.size.width * 0.2)
+                        .offset(y: geo.size.height - geo.size.width * 0.4 * 0.6)
+                }
             )
     }
 }
