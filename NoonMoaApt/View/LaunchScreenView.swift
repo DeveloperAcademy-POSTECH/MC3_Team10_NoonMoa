@@ -58,6 +58,7 @@ struct launchScreenView: View {
                                                     }
                                                 }
                                             } else {
+                                                self.viewRouter.nextView = .login
                                                 print("Document does not exist")
                                             }
                                         }

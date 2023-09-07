@@ -94,7 +94,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         setUpPushNotifications(application: application)
         
         // 자정이 되면 모든 user의 userState를 .sleep으로 변경
-        midnightUpdater = MidnightUpdater()
+        self.midnightUpdater = MidnightUpdater()
         timer = Timer.scheduledTimer(withTimeInterval: 60.0, repeats: true) { _ in
             let date = Date()
             let calendar = Calendar.current
