@@ -20,7 +20,9 @@ struct SettingView: View {
     @State private var userNickname: String = "nickname_test"
     
     @StateObject private var nicknameViewModel = NicknameViewModel()
-
+    @EnvironmentObject var viewRouter: ViewRouter
+    @EnvironmentObject var loginViewModel: LoginViewModel
+    
     // firebase 싱글톤
     private var firestoreManager: FirestoreManager {
         FirestoreManager.shared
@@ -89,6 +91,10 @@ struct SettingView: View {
                 
                 Button(action: {
                     //TODO: 로그아웃 기능
+                    print("로그아웃")
+                    loginViewModel.isLogInDone = false
+                    loginViewModel.logout()
+                    viewRouter.currentView = .login
                 }) {
                     HStack {
                         Image.symbol.logout
@@ -104,7 +110,11 @@ struct SettingView: View {
                 }
                 
                 Button(action: {
-                    //TODO: 로그아웃 기능
+                    //TODO: 회원탈퇴 기능
+                    print("회원 탈퇴")
+                    loginViewModel.deleteUserAccount()
+                    loginViewModel.isLogInDone = false
+                    viewRouter.currentView = .login
                 }) {
                     Text("탈퇴하기")
                         .foregroundColor(.black.opacity(0.4))
