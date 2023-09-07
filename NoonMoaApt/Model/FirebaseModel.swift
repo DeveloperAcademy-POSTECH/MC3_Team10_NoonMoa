@@ -14,7 +14,7 @@ struct User: Codable, Identifiable, Equatable {
     @DocumentID var id: String?
     var roomId: String?
     var aptId: String?
-    var nickName: String?
+    var nickname: String?
     var userState: String
     var lastActiveDate: Date?
     var characterColor: [Float]?
@@ -40,7 +40,7 @@ extension User {
         self.id = dictionary["id"] as? String
         self.roomId = dictionary["roomId"] as? String
         self.aptId = dictionary["aptId"] as? String
-        self.nickName = dictionary["nickname"] as? String
+        self.nickname = dictionary["nickname"] as? String
         self.userState = userState
         self.lastActiveDate = dictionary["lastActiveDate"] as? Date
         self.characterColor = dictionary["characterColor"] as? [Float] ?? Color.userBlue.toArray
@@ -130,7 +130,7 @@ extension User {
     static let UTData: [[User]] =
     [
         [User(roomId: "1", aptId: "1", userState: "active", lastActiveDate: Date(), characterColor: [212/255, 218/255, 151/255], token: "a",requestedBy: []),
-         User(roomId: "2", aptId: "1", userState: "active", lastActiveDate: Date(), characterColor: [138/255, 141/255, 197/255], token: "b",requestedBy: []),
+         User(roomId: "2", aptId: "1", userState: "vacantw", lastActiveDate: Date(), characterColor: [138/255, 141/255, 197/255], token: "b",requestedBy: []),
          User(roomId: "3", aptId: "1", userState: "active", lastActiveDate: Date(), characterColor: [177/255, 203/255, 182/255], token: "c",requestedBy: [])],
         [User(roomId: "4", aptId: "1", userState: "active", lastActiveDate: Date(), characterColor: [220/255, 126/225, 126/255], token: "d",requestedBy: []),
          User(roomId: "5", aptId: "1", userState: "active", lastActiveDate: Date(), characterColor: [150/255, 126/225, 0/255], token: "e",requestedBy: []),

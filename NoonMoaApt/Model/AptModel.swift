@@ -80,7 +80,7 @@ extension AptModel {
         let aptId = aptId
         print("AptModel | generateUserLayout | aptId: \(aptId)")
         
-        // Step 1: Fetch aptUsers from Apt collection
+        // Step 1: 아파트 콜렉션에서 aptUsers 문서 가져오기
         guard let userId = Auth.auth().currentUser?.uid else {
             print("User ID not available.")
             return
@@ -99,7 +99,6 @@ extension AptModel {
                 print("User document missing roomId.")
                 return
             }
-//            print("AptModel | generateUserLayout | userRoomId: \(userRoomId)")
             
             // User의 현재 아파트에서 상대적인 순서 계산하기 -> 0 ~ 11
             let currentUserIndex = (Int(userRoomId) ?? 0) % 12 - 1
@@ -112,9 +111,6 @@ extension AptModel {
                     print("Apt document not available or missing aptUsers.")
                     return
                 }
-//                print("AptModel | generateUserLayout | userRoomId \(userRoomId)")
-                
-                
                 
                 // Step 2: Create an array with length 12, filling with dummyUserId if needed
                 var userIds = aptUsers
@@ -135,7 +131,6 @@ extension AptModel {
                 print("AptModel | generateUserLayout | currentUserIndex: \(currentUserIndex)")
                 
                 var userLayout = [[User?]](repeating: [User?](repeating: nil, count: 3), count: 4) // Initialize 4x3 array with nil
-                
                 let dispatchGroup = DispatchGroup() // Create a Dispatch Group
                 
                 for i in 0..<12 {
@@ -148,7 +143,7 @@ extension AptModel {
                     let userId = userIds[shakedIndices[i]]
                     
                     if userId == "dummyUserId" {
-                        print("ADD dummyUser from User.UTData[0][0]")
+                        print("ADD dummyUser from User.UTData[\(row)][\(col)]")
                         userLayout[row][col] = User.UTData[row][col] // Assign dummy user
                     } else {
                         dispatchGroup.enter() // Enter the group before starting the async call
@@ -157,6 +152,8 @@ extension AptModel {
 //                            print("self.fetchUser | user: \(String(describing: user))")
                             if let user = user {
                                 userLayout[row][col] = user // Update with fetched user
+                            } else {
+                                userLayout[row][col] = User.UTData[0][1]
                             }
                             dispatchGroup.leave() // Leave the group when the async call is finished
                         }

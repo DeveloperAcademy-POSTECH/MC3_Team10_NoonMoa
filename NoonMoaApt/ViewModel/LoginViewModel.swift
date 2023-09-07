@@ -107,7 +107,7 @@ class LoginViewModel: ObservableObject {
                         }
                         
                         // 존재하지 않은 계정일 때 사용하게 될 새로운 User 객체
-                        let user = User(id: authResult.user.uid, roomId: nil, aptId: nil, nickName: nil, userState: UserState.sleep.rawValue, lastActiveDate: nil, characterColor: Color.userBlue.toArray, token: self.fcmToken, requestedBy: [])
+                        let user = User(id: authResult.user.uid, roomId: nil, aptId: nil, nickname: nil, userState: UserState.sleep.rawValue, lastActiveDate: nil, characterColor: Color.userBlue.toArray, token: self.fcmToken, requestedBy: [])
 
                         // Check if the user already exists in Firestore
                         let userRef = self.db.collection("User").document(user.id!)
@@ -276,7 +276,7 @@ class LoginViewModel: ObservableObject {
             "id": user.id ?? "",
             "roomId": user.roomId ?? "",
             "aptId": user.aptId ?? "",
-            "nickName": user.nickName ?? "", // 닉네임 추가
+            "nickname": user.nickname ?? "", // 닉네임 추가
             "userState": user.userState,
             "lastActiveDate": user.lastActiveDate ?? Date(),
             "characterColor": user.characterColor ?? Color.userPink.toArray,
@@ -322,7 +322,7 @@ class LoginViewModel: ObservableObject {
                         }
                         
                                         
-                        let updatedUser = User(id: user.id!, roomId: roomToAssign, aptId: aptId, nickName: nil, userState: UserState.sleep.rawValue, lastActiveDate: nil, characterColor: Color.userYellow.toArray, token: self.fcmToken, requestedBy: [])
+                        let updatedUser = User(id: user.id!, roomId: roomToAssign, aptId: aptId, nickname: nil, userState: UserState.sleep.rawValue, lastActiveDate: nil, characterColor: Color.userYellow.toArray, token: self.fcmToken, requestedBy: [])
         
                         // Update the emptyRooms document
                         emptyRoomsRef.setData(["rooms": emptyRooms], merge: true) { err in
@@ -456,7 +456,7 @@ class LoginViewModel: ObservableObject {
                                         "id": user.id ?? "",
                                         "roomId": updatedUser.roomId ?? "",
                                         "aptId": updatedUser.aptId ?? "",
-                                        "nickName": user.nickName ?? "",
+                                        "nickname": user.nickname ?? "",
                                         "userState": user.userState,
                                         "lastActiveDate": user.lastActiveDate ?? "",
                                         "characterColor": user.characterColor!,

@@ -220,6 +220,22 @@ struct SceneButtons: View {
     }
 }
 
+private struct CustomBlurView: UIViewRepresentable {
+    var effect: UIBlurEffect.Style
+    var onChange: (UIVisualEffectView) -> ()
+    
+    func makeUIView(context: Context) -> UIVisualEffectView {
+        let view = UIVisualEffectView(effect: UIBlurEffect(style: effect))
+        return view
+    }
+    
+    func updateUIView(_ uiView: UIVisualEffectView, context: Context) {
+        DispatchQueue.main.async {
+            onChange(uiView)
+        }
+    }
+}
+
 struct SceneButtons_Previews: PreviewProvider {
     @State static var nickname: String = "행복한 고양이"
     static var previews: some View {

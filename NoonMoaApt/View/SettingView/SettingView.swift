@@ -14,6 +14,23 @@ struct SettingView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var isFromSettingView: Bool = false
     @Binding var nickname: String
+    
+    // Firebase에서 가져온 사용자 정보를 저장할 변수들
+    @State private var userEmail: String = "email_test"
+    @State private var userNickname: String = "nickname_test"
+    
+    @StateObject private var nicknameViewModel = NicknameViewModel()
+    @EnvironmentObject var viewRouter: ViewRouter
+    @EnvironmentObject var loginViewModel: LoginViewModel
+    
+    // firebase 싱글톤
+    private var firestoreManager: FirestoreManager {
+        FirestoreManager.shared
+    }
+    private var db: Firestore {
+        firestoreManager.db
+    }
+    
     var body: some View {
         ZStack {
             Color.backgroundGray
@@ -23,7 +40,7 @@ struct SettingView: View {
                 VStack(alignment: .leading) {
                     HStack {
                         //TODO: nickname대신에 서버에서 받아온 나의 닉네임으로 대체한다
-                        Text(nickname)
+                        Text(userNickname)
                             .foregroundColor(.black)
                             .font(.title2)
                             .bold()
@@ -37,7 +54,7 @@ struct SettingView: View {
                         })
                         Spacer()
                     }
-                    Text(Auth.auth().currentUser?.email ?? "not available")
+                    Text(userEmail)
                         .foregroundColor(.black.opacity(0.4))
                         .font(.caption)
                 }
@@ -73,6 +90,10 @@ struct SettingView: View {
                 
                 Button(action: {
                     //TODO: 로그아웃 기능
+                    print("로그아웃")
+                    loginViewModel.isLogInDone = false
+                    loginViewModel.logout()
+                    viewRouter.currentView = .login
                 }) {
                     HStack {
                         Image.symbol.logout
@@ -88,7 +109,11 @@ struct SettingView: View {
                 }
                 
                 Button(action: {
-                    //TODO: 로그아웃 기능
+                    //TODO: 회원탈퇴 기능
+                    print("회원 탈퇴")
+                    loginViewModel.deleteUserAccount()
+                    loginViewModel.isLogInDone = false
+                    viewRouter.currentView = .login
                 }) {
                     Text("탈퇴하기")
                         .foregroundColor(.black.opacity(0.4))
@@ -100,6 +125,22 @@ struct SettingView: View {
                 Spacer()
             }
             .padding()
+        }
+        .onAppear {
+            // Firebase에서 사용자 정보 가져오기
+            if let user = Auth.auth().currentUser {
+                // 이메일 가져오기
+                userEmail = user.email ?? "not available"
+
+                // UID를 사용하여 Firestore에서 닉네임 가져오기
+                db.collection("User").document(user.uid).getDocument { document, error in
+                    if let document = document, document.exists {
+                        if let userData = document.data(), let nickname = userData["nickname"] as? String {
+                            userNickname = nickname
+                        }
+                    }
+                }
+            }
         }
         .navigationBarBackButtonHidden(true)
         .toolbar {
@@ -118,7 +159,9 @@ struct SettingView: View {
 
 struct SettingView_Previews: PreviewProvider {
     @State static var nickname: String = "행복한 고양이"
+
     static var previews: some View {
         SettingView(nickname: $nickname)
     }
 }
+
