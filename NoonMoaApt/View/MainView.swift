@@ -32,7 +32,7 @@ struct MainView: View {
             LoginView()
                 .environmentObject(LoginViewModel(viewRouter: ViewRouter()))
         case .nickname:
-            NicknameView(nickname: $nickname)
+            NicknameView(isFromSettingView: .constant(false), nickname: $nickname)
                 .environmentObject(viewRouter)
         case .attendance:
             
@@ -55,8 +55,9 @@ struct MainView: View {
 //            WeatherTestView()
 //            NicknameView(nickname: $nickname)
 //                .environmentObject(viewRouter)
-            
-            FixAptView()
+//                SettingView(nickname: $nickname)
+//
+            FixAptView(nickname: $nickname)
                 .environmentObject(viewRouter)
                 .environmentObject(aptModel)
                 .environmentObject(attendanceViewModel)

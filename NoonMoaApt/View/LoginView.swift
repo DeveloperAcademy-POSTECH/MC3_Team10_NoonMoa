@@ -68,7 +68,7 @@ struct LoginView: View {
                     loginData.authenticate(credential: credential)
                     // 임시방편, 미봉책
                     loginData.isLogInDone = true
-                    viewRouter.nextView = .attendance
+                    viewRouter.nextView = .nickname
                     
                 case .failure(let error):
                     print(error.localizedDescription)
