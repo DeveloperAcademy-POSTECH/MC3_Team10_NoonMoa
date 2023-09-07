@@ -156,6 +156,9 @@ extension Image {
     
     struct symbol {
         static let moon = Image(systemName: "moon.fill")
+        static let edit = Image("Symbol_edit")
+        static let logout = Image("Symbol_logout")
+        static let notification = Image("Symbol_notification")
     }
     
     struct assets {

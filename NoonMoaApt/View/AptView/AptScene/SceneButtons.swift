@@ -221,6 +221,7 @@ struct SceneButtons: View {
 }
 
 struct SceneButtons_Previews: PreviewProvider {
+    @State static var nickname: String = "행복한 고양이"
     static var previews: some View {
         let newAttendanceRecord = AttendanceRecord(
             userId: "",
@@ -237,7 +238,7 @@ struct SceneButtons_Previews: PreviewProvider {
             rawSunsetTime: Date()
         )
         
-        FixAptView()
+        FixAptView(nickname: $nickname)
             .environmentObject(ViewRouter())
             .environmentObject(AptModel())
             .environmentObject(AttendanceViewModel())
