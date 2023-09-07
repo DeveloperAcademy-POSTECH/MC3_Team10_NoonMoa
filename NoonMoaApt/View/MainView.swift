@@ -15,6 +15,7 @@ struct MainView: View {
     @StateObject var environmentViewModel: EnvironmentViewModel
     @StateObject var loginViewModel: LoginViewModel
     @StateObject var locationManager: LocationManager
+    @State private var nickname: String = ""
     
     var body: some View {
         
@@ -30,6 +31,9 @@ struct MainView: View {
         case .login:
             LoginView()
                 .environmentObject(LoginViewModel(viewRouter: ViewRouter()))
+        case .nickname:
+            NicknameView(nickname: $nickname)
+                .environmentObject(viewRouter)
         case .attendance:
             
 //            WeatherTestView()
@@ -49,16 +53,19 @@ struct MainView: View {
                 
         case .apt:
 //            WeatherTestView()
-            FixAptView()
+            NicknameView(nickname: $nickname)
                 .environmentObject(viewRouter)
-                .environmentObject(aptModel)
-                .environmentObject(attendanceViewModel)
-                .environmentObject(environmentViewModel)
-                .environmentObject(characterViewModel)
-                .environmentObject(locationManager)
-                .task(priority: .userInitiated) {
-                    await environmentViewModel.getWeather(latitude: locationManager.latitude, longitude: locationManager.longitude)
-                }
+
+//            FixAptView()
+//                .environmentObject(viewRouter)
+//                .environmentObject(aptModel)
+//                .environmentObject(attendanceViewModel)
+//                .environmentObject(environmentViewModel)
+//                .environmentObject(characterViewModel)
+//                .environmentObject(locationManager)
+//                .task(priority: .userInitiated) {
+//                    await environmentViewModel.getWeather(latitude: locationManager.latitude, longitude: locationManager.longitude)
+//                }
                 
         default:
             LoginView()

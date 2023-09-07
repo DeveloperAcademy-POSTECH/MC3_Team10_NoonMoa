@@ -44,6 +44,8 @@
 		8A9910822A789F8F0083602F /* EnvironmentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9910812A789F8F0083602F /* EnvironmentViewModel.swift */; };
 		8A9910842A78A03B0083602F /* WeatherTestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9910832A78A03B0083602F /* WeatherTestView.swift */; };
 		8A9910892A78B4300083602F /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9910882A78B4300083602F /* LocationManager.swift */; };
+		8AB9919A2AA9AABE009411AA /* NicknameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB991992AA9AABE009411AA /* NicknameView.swift */; };
+		8AB9919C2AA9B363009411AA /* NicknameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB9919B2AA9B363009411AA /* NicknameViewModel.swift */; };
 		8AD2303D2A699F4C00C967B5 /* SceneButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD230352A699F4C00C967B5 /* SceneButtons.swift */; };
 		8AD2303E2A699F4C00C967B5 /* SceneApt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD230362A699F4C00C967B5 /* SceneApt.swift */; };
 		8AD2303F2A699F4C00C967B5 /* FunctionTestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD230372A699F4C00C967B5 /* FunctionTestView.swift */; };
@@ -147,7 +149,9 @@
 		8A9910852A78A3A20083602F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8A9910882A78B4300083602F /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		8AA703DD2A99EEA300309B84 /* NoonMoaApt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NoonMoaApt.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		8AA703DE2A99EEA300309B84 /* NoonMoaAptUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = NoonMoaAptUITests.xctest; path = "/Users/oreobro/Documents/AppleDeveloperAcademy/NoonMoaApt/build/Debug-iphoneos/NoonMoaAptUITests.xctest"; sourceTree = "<absolute>"; };
+		8AB991972AA99F52009411AA /* NoonMoaAptUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NoonMoaAptUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		8AB991992AA9AABE009411AA /* NicknameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicknameView.swift; sourceTree = "<group>"; };
+		8AB9919B2AA9B363009411AA /* NicknameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicknameViewModel.swift; sourceTree = "<group>"; };
 		8AD230352A699F4C00C967B5 /* SceneButtons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneButtons.swift; sourceTree = "<group>"; };
 		8AD230362A699F4C00C967B5 /* SceneApt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneApt.swift; sourceTree = "<group>"; };
 		8AD230372A699F4C00C967B5 /* FunctionTestView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FunctionTestView.swift; sourceTree = "<group>"; };
@@ -239,6 +243,7 @@
 				8A8AA48F2A9B596600068A20 /* CharacterViewModel.swift */,
 				8AD2ECC12A6E163E0063D9ED /* EyeViewController.swift */,
 				8AD2ECBF2A6E163E0063D9ED /* EyeMyViewModel.swift */,
+				8AB9919B2AA9B363009411AA /* NicknameViewModel.swift */,
 				8A229FFE2A70AA6D00E0FD97 /* EyeNeighborViewModel.swift */,
 				8ADF14482A7974BA00A09057 /* ParticleEffectViewModel.swift */,
 			);
@@ -286,6 +291,14 @@
 				8A52A4942A99E9BA00F586D4 /* CalendarMonthView.swift */,
 			);
 			path = Calendar;
+			sourceTree = "<group>";
+		};
+		8AB991982AA9AAA0009411AA /* NicknameView */ = {
+			isa = PBXGroup;
+			children = (
+				8AB991992AA9AABE009411AA /* NicknameView.swift */,
+			);
+			path = NicknameView;
 			sourceTree = "<group>";
 		};
 		8AD230342A699F4C00C967B5 /* AptScene */ = {
@@ -349,6 +362,7 @@
 				E32E3E162A6951B600B865E8 /* NoonMoaApt */,
 				DA10AFFC2A79783E00D20C1C /* Recovered References */,
 				8AA703DD2A99EEA300309B84 /* NoonMoaApt.app */,
+				8AB991972AA99F52009411AA /* NoonMoaAptUITests.xctest */,
 			);
 			sourceTree = "<group>";
 		};
@@ -380,6 +394,7 @@
 		E32E3E492A6951CE00B865E8 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				8AB991982AA9AAA0009411AA /* NicknameView */,
 				8AA703E12A9A1E7600309B84 /* Calendar */,
 				8A7FF49E2A77ABA20075BA78 /* AttendanceView */,
 				8A7FF49C2A77AB3E0075BA78 /* AptView */,
@@ -484,7 +499,7 @@
 			);
 			name = NoonMoaAptUITests;
 			productName = NoonMoaAptUITests;
-			productReference = 8AA703DE2A99EEA300309B84 /* NoonMoaAptUITests.xctest */;
+			productReference = 8AB991972AA99F52009411AA /* NoonMoaAptUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -597,6 +612,7 @@
 				8A8AA4922A9B67CF00068A20 /* EnvironmentModel.swift in Sources */,
 				8AD2ECC42A6E163E0063D9ED /* EyeViewController.swift in Sources */,
 				E32E3E712A6951CE00B865E8 /* ViewRouter.swift in Sources */,
+				8AB9919C2AA9B363009411AA /* NicknameViewModel.swift in Sources */,
 				8AD2303D2A699F4C00C967B5 /* SceneButtons.swift in Sources */,
 				8A84C29F2A6ED2DF001A9094 /* SceneMyEye.swift in Sources */,
 				E32E3E652A6951CE00B865E8 /* AttendanceView.swift in Sources */,
@@ -617,6 +633,7 @@
 				8A9910842A78A03B0083602F /* WeatherTestView.swift in Sources */,
 				8A8AA4902A9B596600068A20 /* CharacterViewModel.swift in Sources */,
 				8A84C2A12A6ED2E9001A9094 /* SceneNeighborEye.swift in Sources */,
+				8AB9919A2AA9AABE009411AA /* NicknameView.swift in Sources */,
 				8A52A4952A99E9BA00F586D4 /* CalendarMonthView.swift in Sources */,
 				E32E3E182A6951B600B865E8 /* NoonMoaAptApp.swift in Sources */,
 				E32E3E6E2A6951CE00B865E8 /* FirebaseModel.swift in Sources */,

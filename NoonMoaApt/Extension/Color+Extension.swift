@@ -16,7 +16,8 @@ extension Color {
         self.init(red: red, green: green, blue: blue, opacity: alpha)
     }
     
-    static let systemGray = Color(hex: 0x787678)
+    static let buttonGray = Color(hex: 0x9B9B9B)
+    static let backgroundGray = Color(hex: 0xF0F0F0)
     static let warmBlack = Color(hex: 0x333333)
     static let userPink = Color(hex: 0xDC7E7E)
     static let userYellow = Color(hex: 0xD4DA97)
@@ -440,5 +441,3 @@ extension String {
                                "아,아 관리사무소에서 안내말씀 드리겠습니다.\n청결한 눈모아 아파트를 위해 각 세대에서는\n방청소에 신경 써주시길 바랍니다"]
     }
 }
-
-    
