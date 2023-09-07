@@ -299,12 +299,44 @@ struct AttendanceTutorialViewFirst: View {
     @Binding var isTutorialOn: Bool
     @Binding var tutorialToggle: Bool
 
-
     var body: some View {
         ZStack {
             Color.black
                 .opacity(0.7)
                 .ignoresSafeArea()
+            
+            GeometryReader { geo in
+                VStack(alignment: .leading) {
+                    Spacer().frame(height: geo.size.height * 0.06)
+                    HStack {
+                        VStack(alignment: .leading) {
+                            Text("")
+                                .foregroundColor(.clear)
+                                .font(.title)
+                                .fontWeight(.black)
+                                .padding(.bottom, 4)
+                            Text("")
+                                .foregroundColor(.clear)
+                                .font(.title3)
+                                .fontWeight(.semibold)
+                            Spacer()
+                        }
+                    }
+                    .frame(height: geo.size.height * 0.16)
+                    .offset(x: 8)
+                    
+                    StampLargeView(skyColor: LinearGradient.gradationGray, skyImage: Image(""), isSmiling: true,
+                                   isBlinkingLeft: false,
+                                   isBlinkingRight: true,
+                                   lookAtPoint: SIMD3(1,0,0),
+                                   faceOrientation: SIMD3(-1,-0.5,0),
+                                   bodyColor: LinearGradient.unStampedWhite,
+                                   eyeColor: LinearGradient.unStampedWhite, cheekColor: LinearGradient.cheekRed)
+                    .frame(width: geo.size.width, height: geo.size.width)
+                }//VStack
+            }//GeometryReader
+            .padding(24)
+            
             VStack(alignment: .center){
                 
                 Text("얼굴과 눈을 움직여서\n오늘의 눈도장을 찍어주세요")
