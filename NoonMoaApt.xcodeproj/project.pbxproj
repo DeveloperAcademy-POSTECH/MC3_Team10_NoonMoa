@@ -84,6 +84,7 @@
 		E34D3A812A9DC5580021E5B4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E34D3A802A9DC5580021E5B4 /* GoogleService-Info.plist */; };
 		E35DC8812A6EEB3300990AB6 /* MidnightUpdaterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E35DC8802A6EEB3300990AB6 /* MidnightUpdaterController.swift */; };
 		E3A82DB22A716E1400B1EB95 /* FirestoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A82DB12A716E1400B1EB95 /* FirestoreManager.swift */; };
+		E3D479942AA957C000DCE27F /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3D479932AA957C000DCE27F /* SettingView.swift */; };
 		E3F739342A6A552300E5F291 /* Color+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F739332A6A552300E5F291 /* Color+Extension.swift */; };
 		E3F739392A6A575F00E5F291 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E3F739382A6A575F00E5F291 /* Assets.xcassets */; };
 		F4A568B12A6A36AC004BD316 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4A568B02A6A36AC004BD316 /* OnboardingView.swift */; };
@@ -177,6 +178,7 @@
 		E35DC8802A6EEB3300990AB6 /* MidnightUpdaterController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidnightUpdaterController.swift; sourceTree = "<group>"; };
 		E3A82DB12A716E1400B1EB95 /* FirestoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreManager.swift; sourceTree = "<group>"; };
 		E3CBB3CB2A6967AA00195326 /* NoonMoaApt.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NoonMoaApt.entitlements; sourceTree = "<group>"; };
+		E3D479932AA957C000DCE27F /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
 		E3F739152A6A540000E5F291 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		E3F739332A6A552300E5F291 /* Color+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extension.swift"; sourceTree = "<group>"; };
 		E3F739382A6A575F00E5F291 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -381,6 +383,7 @@
 		E32E3E492A6951CE00B865E8 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				E3D479922AA957B100DCE27F /* Setting */,
 				8AA703E12A9A1E7600309B84 /* Calendar */,
 				8A7FF49E2A77ABA20075BA78 /* AttendanceView */,
 				8A7FF49C2A77AB3E0075BA78 /* AptView */,
@@ -418,6 +421,14 @@
 				E3F739332A6A552300E5F291 /* Color+Extension.swift */,
 			);
 			path = Extension;
+			sourceTree = "<group>";
+		};
+		E3D479922AA957B100DCE27F /* Setting */ = {
+			isa = PBXGroup;
+			children = (
+				E3D479932AA957C000DCE27F /* SettingView.swift */,
+			);
+			path = Setting;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -609,6 +620,7 @@
 				8AD2303F2A699F4C00C967B5 /* FunctionTestView.swift in Sources */,
 				8AD230402A699F4C00C967B5 /* SceneRoom.swift in Sources */,
 				8AF4DD042AA4772800200669 /* SceneSleepEye.swift in Sources */,
+				E3D479942AA957C000DCE27F /* SettingView.swift in Sources */,
 				E32E3E662A6951CE00B865E8 /* LoginView.swift in Sources */,
 				E32E3E6A2A6951CE00B865E8 /* MainView.swift in Sources */,
 				8A9910892A78B4300083602F /* LocationManager.swift in Sources */,

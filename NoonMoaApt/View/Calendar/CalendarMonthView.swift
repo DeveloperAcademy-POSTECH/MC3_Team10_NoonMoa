@@ -232,7 +232,7 @@ extension Date {
     }
 }
 
-struct CustomBlurView: UIViewRepresentable {
+private struct CustomBlurView: UIViewRepresentable {
     var effect: UIBlurEffect.Style
     var onChange: (UIVisualEffectView) -> ()
     

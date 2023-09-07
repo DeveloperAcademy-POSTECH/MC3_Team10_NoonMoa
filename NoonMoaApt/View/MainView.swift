@@ -49,7 +49,8 @@ struct MainView: View {
                 
         case .apt:
 //            WeatherTestView()
-            FixAptView()
+//            FixAptView()
+            AptView()
                 .environmentObject(viewRouter)
                 .environmentObject(aptModel)
                 .environmentObject(attendanceViewModel)

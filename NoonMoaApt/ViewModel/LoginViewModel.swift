@@ -107,7 +107,7 @@ class LoginViewModel: ObservableObject {
                         }
                         
                         // 존재하지 않은 계정일 때 사용하게 될 새로운 User 객체
-                        let user = User(id: authResult.user.uid, roomId: nil, aptId: nil, userState: UserState.sleep.rawValue, lastActiveDate: nil, characterColor: Color.userBlue.toArray, token: self.fcmToken, requestedBy: [])
+                        let user = User(id: authResult.user.uid, roomId: nil, aptId: nil, nickName: nil, userState: UserState.sleep.rawValue, lastActiveDate: nil, characterColor: Color.userBlue.toArray, token: self.fcmToken, requestedBy: [])
 
                         // Check if the user already exists in Firestore
                         let userRef = self.db.collection("User").document(user.id!)
@@ -140,6 +140,10 @@ class LoginViewModel: ObservableObject {
         }
     }
     
+    // 회원 탈퇴:
+    // user의 상태를 .vacant로
+    // Firebase에서 user의 정보를 삭제 -> User 문서도 삭제되는 것이 문제 -> User 문서가 삭제되지 않게 하면 될 듯?
+    // 
     func deleteUserAccount() {
         guard let currentUser = Auth.auth().currentUser else {
             print("Error: User not logged in.")
@@ -272,6 +276,7 @@ class LoginViewModel: ObservableObject {
             "id": user.id ?? "",
             "roomId": user.roomId ?? "",
             "aptId": user.aptId ?? "",
+            "nickName": user.nickName ?? "", // 닉네임 추가
             "userState": user.userState,
             "lastActiveDate": user.lastActiveDate ?? Date(),
             "characterColor": user.characterColor ?? Color.userPink.toArray,
@@ -317,7 +322,7 @@ class LoginViewModel: ObservableObject {
                         }
                         
                                         
-                        let updatedUser = User(id: user.id!, roomId: roomToAssign, aptId: aptId, userState: UserState.sleep.rawValue, lastActiveDate: nil, characterColor: Color.userYellow.toArray, token: self.fcmToken, requestedBy: [])
+                        let updatedUser = User(id: user.id!, roomId: roomToAssign, aptId: aptId, nickName: nil, userState: UserState.sleep.rawValue, lastActiveDate: nil, characterColor: Color.userYellow.toArray, token: self.fcmToken, requestedBy: [])
         
                         // Update the emptyRooms document
                         emptyRoomsRef.setData(["rooms": emptyRooms], merge: true) { err in
@@ -451,9 +456,10 @@ class LoginViewModel: ObservableObject {
                                         "id": user.id ?? "",
                                         "roomId": updatedUser.roomId ?? "",
                                         "aptId": updatedUser.aptId ?? "",
+                                        "nickName": user.nickName ?? "",
                                         "userState": user.userState,
                                         "lastActiveDate": user.lastActiveDate ?? "",
-                                        "characterColor": user.characterColor,
+                                        "characterColor": user.characterColor!,
                                         "token": self.fcmToken,
                                         "requestedBy": user.requestedBy
                                     ]
