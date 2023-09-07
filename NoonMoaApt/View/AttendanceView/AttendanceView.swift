@@ -312,37 +312,12 @@ struct AttendanceTutorialViewFirst: View {
                     .font(.custom(.font.yeondeokSea, size: 24))
                     .padding(.vertical, 96)
                 
-                VStack(alignment: .leading) {
-                    
-                    HStack {
-                        Image.tutorial.eye
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 56)
-                        Text("눈동자: 사용자 눈동자 인식")
-                            .foregroundColor(.white)
-                            .font(.custom(.font.yeondeokSea, size: 18))
-                    }
-                    HStack {
-                        Image.tutorial.closedEye
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 56)
-                        Text("감은 눈: 눈 감음 or 윙크 시")
-                            .foregroundColor(.white)
-                            .font(.custom(.font.yeondeokSea, size: 18))
-                    }
-                    HStack {
-                        Image.tutorial.cheek
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 56)
-                        Text("볼터치: 웃을 때")
-                            .foregroundColor(.white)
-                            .font(.custom(.font.yeondeokSea, size: 18))
-                    }
-                }
                 Spacer()
+                
+                Text("윙크하거나 웃어보세요\n눈몽이가 따라할거에요~")
+                    .foregroundColor(.white)
+                    .font(.custom(.font.yeondeokSea, size: 24))
+                    .padding(.vertical, 32)
                 Button(action: {
                     DispatchQueue.main.async {
                         withAnimation(.easeInOut(duration: 0.5)) {
