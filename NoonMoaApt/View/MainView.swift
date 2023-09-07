@@ -15,6 +15,7 @@ struct MainView: View {
     @StateObject var environmentViewModel: EnvironmentViewModel
     @StateObject var loginViewModel: LoginViewModel
     @StateObject var locationManager: LocationManager
+    @State private var nickname: String = ""
     
     var body: some View {
         
@@ -30,6 +31,9 @@ struct MainView: View {
         case .login:
             LoginView()
                 .environmentObject(LoginViewModel(viewRouter: ViewRouter()))
+        case .nickname:
+            NicknameView(isFromSettingView: .constant(false), nickname: $nickname)
+                .environmentObject(viewRouter)
         case .attendance:
             
 //            WeatherTestView()
@@ -49,8 +53,11 @@ struct MainView: View {
                 
         case .apt:
 //            WeatherTestView()
-//            FixAptView()
-            AptView()
+//            NicknameView(nickname: $nickname)
+//                .environmentObject(viewRouter)
+//                SettingView(nickname: $nickname)
+//
+            FixAptView(nickname: $nickname)
                 .environmentObject(viewRouter)
                 .environmentObject(aptModel)
                 .environmentObject(attendanceViewModel)

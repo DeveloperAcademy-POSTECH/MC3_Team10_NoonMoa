@@ -62,7 +62,7 @@ struct CalendarMonthView: View {
                     }
                     
                     Rectangle()
-                        .foregroundColor(.calendarGray)
+                        .foregroundColor(.black)
                         .frame(height: 1)
                     
                     //요일 View
@@ -71,7 +71,7 @@ struct CalendarMonthView: View {
                             Text(day)
                                 .font(.callout)
                                 .fontWeight(.semibold)
-                                .foregroundColor(.calendarGray)
+                                .foregroundColor(.black)
                                 .frame(maxWidth: .infinity)
                         }
                     }
@@ -123,6 +123,7 @@ struct CalendarMonthView: View {
                 
                 //TODO: 만약 attendance Records의 키값인 날짜에서 value에 해당하는 날짜가 있다면 그 날짜에 들어있는 스탬프 정보를 받아와서 그려야함.
                 //TODO: CharacterModel과 EnvironmentModel, CustomViewModel에 있는 함수인 fetch 함수를 실행시키고, 각 모델의 recorded변수에 접근하면 뷰를 그릴 수 있다.
+                
                 StampButtonView(skyColor: environmentViewModel.recordedEnvironmentViewData.colorOfSky, skyImage: environmentViewModel.recordedEnvironmentViewData.stampSmallSkyImage, isSmiling: characterViewModel.recordedCharacterViewData.isSmiling, isBlinkingLeft: characterViewModel.recordedCharacterViewData.isBlinkingLeft, isBlinkingRight: characterViewModel.recordedCharacterViewData.isBlinkingRight, lookAtPoint: characterViewModel.recordedCharacterViewData.lookAtPoint, faceOrientation: characterViewModel.recordedCharacterViewData.faceOrientation, bodyColor: characterViewModel.recordedCharacterViewData.bodyColor, eyeColor: characterViewModel.recordedCharacterViewData.eyeColor, cheekColor: characterViewModel.recordedCharacterViewData.cheekColor, borderColor: environmentViewModel.recordedEnvironmentViewData.stampBorderColor)
             }
         }

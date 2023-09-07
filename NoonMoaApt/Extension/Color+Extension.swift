@@ -16,7 +16,8 @@ extension Color {
         self.init(red: red, green: green, blue: blue, opacity: alpha)
     }
     
-    static let systemGray = Color(hex: 0x787678)
+    static let buttonGray = Color(hex: 0x9B9B9B)
+    static let backgroundGray = Color(hex: 0xF0F0F0)
     static let warmBlack = Color(hex: 0x333333)
     static let userPink = Color(hex: 0xDC7E7E)
     static let userYellow = Color(hex: 0xD4DA97)
@@ -155,6 +156,9 @@ extension Image {
     
     struct symbol {
         static let moon = Image(systemName: "moon.fill")
+        static let edit = Image("Symbol_edit")
+        static let logout = Image("Symbol_logout")
+        static let notification = Image("Symbol_notification")
     }
     
     struct assets {
@@ -165,6 +169,9 @@ extension Image {
             static let calendarUnSelected = Image("Button_CalendarUnselected")
             static let settingSelected = Image("Button_SettingSelected")
             static let settingUnSelected = Image("Button_SettingUnselected")
+        }
+        struct apt {
+            static let aptGate = Image("Apt_gate")
         }
         
         struct room {
@@ -179,8 +186,6 @@ extension Image {
             static let sleepIcon1 = Image("Room_sleepIcon1")
             static let sleepIcon2 = Image("Room_sleepIcon2")
             static let sleepIcon3 = Image("Room_sleepIcon3")
-
-
         }
         
         struct stampLarge {
@@ -439,5 +444,3 @@ extension String {
                                "아,아 관리사무소에서 안내말씀 드리겠습니다.\n청결한 눈모아 아파트를 위해 각 세대에서는\n방청소에 신경 써주시길 바랍니다"]
     }
 }
-
-    
