@@ -19,8 +19,7 @@ struct SettingView: View {
             Color.backgroundGray
                 .ignoresSafeArea()
             VStack(alignment: .center) {
-                
-                Spacer().frame(height: 64)
+                Spacer().frame(height: 32)
                 VStack(alignment: .leading) {
                     HStack {
                         //TODO: nickname대신에 서버에서 받아온 나의 닉네임으로 대체한다

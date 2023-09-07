@@ -254,6 +254,17 @@ extension Image {
             static let thunder = Image("StampSmall_thunder")
         }
     }
+    
+    struct tutorial {
+        static let eye = Image("Tutorial_eye")
+        static let closedEye = Image("Tutorial_closedEye")
+        static let cheek = Image("Tutorial_cheek")
+        static let apt1 = Image("Tutorial_apt1")
+        static let apt2 = Image("Tutorial_apt2")
+        static let apt3 = Image("Tutorial_apt3")
+        static let apt4 = Image("Tutorial_apt4")
+
+    }
 }
 
 struct Lottie {
@@ -442,5 +453,9 @@ extension String {
                                "아,아 관리사무소에서 안내말씀 드리겠습니다.\n건강한 눈모아 입주민이 되기 위해\n창문을 활짝 열어 방을 환기 시켜주시기 바랍니다",
                                "아,아 관리사무소에서 안내말씀 드리겠습니다.\n아파트 내 활발한 교류를 위해 이웃집을\n마구마구 두드려주시길 바랍니다",
                                "아,아 관리사무소에서 안내말씀 드리겠습니다.\n청결한 눈모아 아파트를 위해 각 세대에서는\n방청소에 신경 써주시길 바랍니다"]
+    }
+    
+    struct font {
+        static let yeondeokSea = "Yeongdeok Sea"
     }
 }
