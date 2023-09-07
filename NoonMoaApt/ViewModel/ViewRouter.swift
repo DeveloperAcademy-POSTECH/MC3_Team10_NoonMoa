@@ -12,6 +12,7 @@ enum ViewState {
     case launchScreen
     case onBoarding
     case login
+    case nickname
     case attendance
     case attendanceCompleted
     case apt
