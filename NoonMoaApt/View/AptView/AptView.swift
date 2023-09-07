@@ -1,31 +1,31 @@
+//////
+//////  ApartView.swift
+//////  MC3
+//////
+//////  Created by 최민규 on 2023/07/14.
+//////
 ////
-////  ApartView.swift
-////  MC3
+////import SwiftUI
+////import Firebase
+////import FirebaseFirestore
+////import FirebaseAuth
+////import AVFoundation
 ////
-////  Created by 최민규 on 2023/07/14.
+////struct AptView: View {
+////    @EnvironmentObject var viewRouter: ViewRouter
+////    @EnvironmentObject var aptModel: AptModel
+////    @EnvironmentObject var attendanceViewModel: AttendanceViewModel
+////    @EnvironmentObject var characterViewModel: CharacterViewModel
+////    @EnvironmentObject var environmentViewModel: EnvironmentViewModel
+////    @EnvironmentObject var locationManager: LocationManager
+////    
+////    @State private var users: [[User]] = User.UTData
+////    @State private var isCalendarOpen: Bool = false
+////    @State private var isSettingOpen: Bool = false
+////    @State private var announcement: Bool = false
+////    
+////    @State var player: AVAudioPlayer!
 ////
-//
-//import SwiftUI
-//import Firebase
-//import FirebaseFirestore
-//import FirebaseAuth
-//import AVFoundation
-//
-//struct AptView: View {
-//    @EnvironmentObject var viewRouter: ViewRouter
-//    @EnvironmentObject var aptModel: AptModel
-//    @EnvironmentObject var attendanceViewModel: AttendanceViewModel
-//    @EnvironmentObject var characterViewModel: CharacterViewModel
-//    @EnvironmentObject var environmentViewModel: EnvironmentViewModel
-//    @EnvironmentObject var locationManager: LocationManager
-//    
-//    @State private var users: [[User]] = User.UTData
-//    @State private var isCalendarOpen: Bool = false
-//    @State private var isSettingOpen: Bool = false
-//    @State private var announcement: Bool = false
-//    
-//    @State var player: AVAudioPlayer!
-//
 //
 //import SwiftUI
 //import Firebase

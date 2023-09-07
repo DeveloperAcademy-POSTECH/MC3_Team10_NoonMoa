@@ -254,7 +254,7 @@ struct SceneButtons_Previews: PreviewProvider {
             rawSunsetTime: Date()
         )
         
-        FixAptView(nickname: $nickname)
+        FixAptView(nickname: $nickname, isTutorialOn: .constant(false))
             .environmentObject(ViewRouter())
             .environmentObject(AptModel())
             .environmentObject(AttendanceViewModel())

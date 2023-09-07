@@ -16,9 +16,10 @@ struct MainView: View {
     @StateObject var loginViewModel: LoginViewModel
     @StateObject var locationManager: LocationManager
     @State private var nickname: String = ""
+    @State private var isTutorialOn: Bool = true
     
     var body: some View {
-        
+        ZStack {
         switch viewRouter.currentView {
         case .launchScreen:
             launchScreenView()
@@ -36,12 +37,12 @@ struct MainView: View {
                 .environmentObject(viewRouter)
         case .attendance:
             
-//            WeatherTestView()
-//                .environmentObject(locationManager)
-//                .environmentObject(environmentViewModel)
-
-////            let record = attendanceViewModel.ensureCurrentRecord()
-            AttendanceView(eyeViewController: EyeViewController())
+            //            WeatherTestView()
+            //                .environmentObject(locationManager)
+            //                .environmentObject(environmentViewModel)
+            
+            ////            let record = attendanceViewModel.ensureCurrentRecord()
+            AttendanceView(eyeViewController: EyeViewController(), isTutorialOn: $isTutorialOn)
                 .environmentObject(viewRouter)
                 .environmentObject(attendanceViewModel)
                 .environmentObject(environmentViewModel)
@@ -50,14 +51,14 @@ struct MainView: View {
                 .task(priority: .userInitiated) {
                     await environmentViewModel.getWeather(latitude: locationManager.latitude, longitude: locationManager.longitude)
                 }
-                
+            
         case .apt:
-//            WeatherTestView()
-//            NicknameView(nickname: $nickname)
-//                .environmentObject(viewRouter)
-//                SettingView(nickname: $nickname)
-//
-            FixAptView(nickname: $nickname)
+            //            WeatherTestView()
+            //            NicknameView(nickname: $nickname)
+            //                .environmentObject(viewRouter)
+            //                SettingView(nickname: $nickname)
+            //
+            FixAptView(nickname: $nickname, isTutorialOn: $isTutorialOn)
                 .environmentObject(viewRouter)
                 .environmentObject(aptModel)
                 .environmentObject(attendanceViewModel)
@@ -68,10 +69,14 @@ struct MainView: View {
                 .task(priority: .userInitiated) {
                     await environmentViewModel.getWeather(latitude: locationManager.latitude, longitude: locationManager.longitude)
                 }
-                
+            
         default:
             LoginView()
                 .environmentObject(LoginViewModel(viewRouter: ViewRouter()))
         }
+    }
+            .onAppear {
+                isTutorialOn = UserDefaults.standard.value(forKey: "tutorial") as? Bool ?? true
+            }
     }
 }

@@ -30,6 +30,10 @@ struct AttendanceView: View {
     @State private var isStartButtonActive: Bool = false
     
     @State private var isSettingOpen: Bool = false
+    @Binding var isTutorialOn: Bool
+    @State private var tutorialFirstToggle: Bool = false
+    @State private var tutorialSecondToggle: Bool = false
+
 
     @State var player: AVAudioPlayer!
 
@@ -122,7 +126,7 @@ struct AttendanceView: View {
                         Button (action: {
                             //사용자 색상 최초 지정(default값)
                             self.playSound(soundName: String.sounds.shutter)
-                         
+                            
                             DispatchQueue.main.async {
                                 UIImpactFeedbackGenerator(style: .soft).impactOccurred()
                                 withAnimation(.easeInOut(duration: 0.2).repeatCount(1, autoreverses: true)) {
@@ -165,7 +169,7 @@ struct AttendanceView: View {
                                     isStartButtonActive = true
                                 }
                             }
-                
+                            
                         }) {
                             RoundedRectangle(cornerRadius: 16)
                                 .fill(Color.warmBlack)
@@ -201,13 +205,13 @@ struct AttendanceView: View {
                             }
                             // 시작하기 버튼
                             Button (action: {
-                                    characterViewModel.convertCharacterToRawData()
+                                characterViewModel.convertCharacterToRawData()
                                 print(">>>" + String(describing: characterViewModel.character))
                                 print(">>>" + String(describing: characterViewModel.characterViewData))
                                 print(">>>" + String(describing: environmentViewModel.environment))
                                 print(">>>" + String(describing: environmentViewModel.environmentViewData))
                                 attendanceViewModel.newAttendanceRecord = AttendanceRecord(userId: "", date: Date(), rawIsSmiling: characterViewModel.character?.rawIsSmiling, rawIsBlinkingLeft: characterViewModel.character?.rawIsBlinkingLeft, rawIsBlinkingRight: characterViewModel.character?.rawIsBlinkingRight, rawLookAtPoint: characterViewModel.character?.rawLookAtPoint, rawFaceOrientation: characterViewModel.character?.rawFaceOrientation, rawCharacterColor: characterViewModel.character?.rawCharacterColor, rawWeather: environmentViewModel.environment.rawWeather, rawTime: environmentViewModel.environment.rawTime, rawSunriseTime: environmentViewModel.environment.rawSunriseTime, rawSunsetTime: environmentViewModel.environment.rawSunsetTime)
-                               
+                                
                                 attendanceViewModel.uploadAttendanceRecord()
                                 print(">>>" + String(describing: attendanceViewModel.newAttendanceRecord))
                                 
@@ -232,6 +236,35 @@ struct AttendanceView: View {
                 }//VStack
             }//GeometryReader
             .padding(24)
+            
+            AttendanceTutorialViewFirst(isTutorialOn: $isTutorialOn, tutorialToggle: $tutorialFirstToggle)
+                .opacity(isTutorialOn ? 1 : 0)
+                .opacity(tutorialFirstToggle ? 1 : 0)
+                .onAppear {
+                    if isTutorialOn {
+                        DispatchQueue.main.async {
+                            withAnimation(.easeInOut(duration: 0.5)) {
+                                tutorialFirstToggle = true
+                            }
+                        }
+                    }
+                }
+            
+            AttendanceTutorialViewSecond(isTutorialOn: $isTutorialOn, tutorialToggle: $tutorialSecondToggle)
+                .opacity(isTutorialOn ? 1 : 0)
+                .opacity(tutorialSecondToggle ? 1 : 0)
+                .onChange(of: isStamped) { _ in
+                    if isStamped {
+                        DispatchQueue.main.async {
+                            withAnimation(.easeInOut(duration: 0.5).delay(1.3)) {
+                                tutorialSecondToggle = true
+                            }
+                        }
+                    }
+                }
+                .environmentObject(environmentViewModel)
+                .environmentObject(characterViewModel)
+            
         }//ZStack
              
     }
@@ -252,12 +285,199 @@ struct AttendanceView: View {
                 rawSunriseTime: Date(),
                 rawSunsetTime: Date()
             )
-            AttendanceView(eyeViewController: EyeViewController())
-                .environmentObject(ViewRouter())
-                .environmentObject(AttendanceViewModel())
-                .environmentObject(CharacterViewModel())
-                .environmentObject(EnvironmentViewModel())
-                .environmentObject(EyeViewController())
+            AttendanceView(eyeViewController: EyeViewController(), isTutorialOn: .constant(true))
+                    .environmentObject(ViewRouter())
+                    .environmentObject(AttendanceViewModel())
+                    .environmentObject(CharacterViewModel())
+                    .environmentObject(EnvironmentViewModel())
+                    .environmentObject(EyeViewController())
+        }
+    }
+}
+
+struct AttendanceTutorialViewFirst: View {
+    @Binding var isTutorialOn: Bool
+    @Binding var tutorialToggle: Bool
+
+    var body: some View {
+        ZStack {
+            Color.black
+                .opacity(0.7)
+                .ignoresSafeArea()
+            
+            GeometryReader { geo in
+                VStack(alignment: .leading) {
+                    Spacer().frame(height: geo.size.height * 0.06)
+                    HStack {
+                        VStack(alignment: .leading) {
+                            Text("")
+                                .foregroundColor(.clear)
+                                .font(.title)
+                                .fontWeight(.black)
+                                .padding(.bottom, 4)
+                            Text("")
+                                .foregroundColor(.clear)
+                                .font(.title3)
+                                .fontWeight(.semibold)
+                            Spacer()
+                        }
+                    }
+                    .frame(height: geo.size.height * 0.16)
+                    .offset(x: 8)
+                    
+                    StampLargeView(skyColor: LinearGradient.gradationGray, skyImage: Image(""), isSmiling: true,
+                                   isBlinkingLeft: false,
+                                   isBlinkingRight: true,
+                                   lookAtPoint: SIMD3(1,0,0),
+                                   faceOrientation: SIMD3(-1,-0.5,0),
+                                   bodyColor: LinearGradient.unStampedWhite,
+                                   eyeColor: LinearGradient.unStampedWhite, cheekColor: LinearGradient.cheekRed)
+                    .frame(width: geo.size.width, height: geo.size.width)
+                }//VStack
+            }//GeometryReader
+            .padding(24)
+            
+            VStack(alignment: .center){
+                
+                Text("얼굴과 눈을 움직여서\n오늘의 눈도장을 찍어주세요")
+                    .foregroundColor(.white)
+                    .font(.custom(.font.yeondeokSea, size: 24))
+                    .padding(.vertical, 96)
+                
+                Spacer()
+                
+                Text("윙크하거나 웃어보세요\n눈몽이가 따라할거에요~")
+                    .foregroundColor(.white)
+                    .font(.custom(.font.yeondeokSea, size: 24))
+                    .padding(.vertical, 32)
+                Button(action: {
+                    DispatchQueue.main.async {
+                        withAnimation(.easeInOut(duration: 0.5)) {
+                            tutorialToggle = false
+                        }
+                    }
+                }) {
+                    HStack {
+                        Spacer()
+                        Text("NEXT")
+                            .foregroundColor(.white)
+                            .font(.custom(.font.yeondeokSea, size: 24))
+                    }
+                    .padding()
+                }
+            }
+        }
+    }
+}
+
+
+struct AttendanceTutorialViewSecond: View {
+    @Binding var isTutorialOn: Bool
+    @Binding var tutorialToggle: Bool
+    
+    @EnvironmentObject var environmentViewModel: EnvironmentViewModel
+    @EnvironmentObject var characterViewModel: CharacterViewModel
+    
+    var body: some View {
+        ZStack {
+            Color.black
+                .opacity(0.7)
+                .ignoresSafeArea()
+            
+            GeometryReader { geo in
+                VStack(alignment: .leading) {
+                    Spacer().frame(height: geo.size.height * 0.06)
+                    HStack {
+                        VStack(alignment: .leading) {
+                          
+                                Text("")
+                                .foregroundColor(.clear)
+                                    .font(.title)
+                                    .fontWeight(.black)
+                                    .padding(.bottom, 4)
+                                Text(" \n ")
+                                .foregroundColor(.clear)
+                                    .font(.title3)
+                                    .fontWeight(.semibold)
+
+                            Spacer()
+                        }
+                    }
+                    .frame(height: geo.size.height * 0.16)
+                    .offset(x: 8)
+                    
+                        //출석체크 후 저장된 날씨와, 캐릭터의 움직임 좌표값으로 표현된 뷰
+                        StampLargeView(skyColor: environmentViewModel.environmentViewData.colorOfSky, skyImage: environmentViewModel.environmentViewData.stampLargeSkyImage, isSmiling: characterViewModel.characterViewData.isSmiling, isBlinkingLeft: characterViewModel.characterViewData.isBlinkingLeft, isBlinkingRight: characterViewModel.characterViewData.isBlinkingRight, lookAtPoint: characterViewModel.characterViewData.lookAtPoint, faceOrientation: characterViewModel.characterViewData.faceOrientation, bodyColor: characterViewModel.characterViewData.bodyColor, eyeColor: characterViewModel.characterViewData.eyeColor, cheekColor: characterViewModel.characterViewData.cheekColor)
+                            .frame(width: geo.size.width, height: geo.size.width)
+                            .scaleEffect(0.9)
+                
+                }//VStack
+                
+                VStack(alignment: .leading) {
+                    
+                    Spacer()
+                    
+                    //컬러피커
+                    CharacterColorPickerView()
+                        .frame(height: 50)
+                        .scaleEffect(0.9)
+                        .opacity(1)
+                        .padding(.bottom, 64)
+                    
+                   
+                        HStack {
+                          
+                            Button (action: {
+                            }) {
+                                RoundedRectangle(cornerRadius: 16)
+                                    .fill(.clear)
+                                    .frame(height: 56)
+                            }
+                         
+                            Button (action: {
+                        
+                            }) {
+                                RoundedRectangle(cornerRadius: 16)
+                                    .fill(.clear)
+                                    .frame(height: 56)
+                            }
+                            .disabled(true)
+                        }//HStack
+                }//VStack
+            }//GeometryReader
+            .padding(24)
+            
+            VStack(alignment: .center){
+                
+                Text("오늘의 날씨에 따라 배경이 바뀌어요!")
+                    .foregroundColor(.white)
+                    .font(.custom(.font.yeondeokSea, size: 24))
+                    .padding(.vertical, 96)
+                    .offset(y: 24)
+                
+                Spacer()
+                
+                Text("오늘의 나는 무슨 색인가요?")
+                    .foregroundColor(.white)
+                    .font(.custom(.font.yeondeokSea, size: 24))
+                    .offset(y: -24)
+                
+                Button(action: {
+                    DispatchQueue.main.async {
+                        withAnimation(.easeInOut(duration: 0.5)) {
+                            tutorialToggle = false
+                        }
+                    }
+                }) {
+                    HStack {
+                        Spacer()
+                        Text("NEXT")
+                            .foregroundColor(.white)
+                        .font(.custom(.font.yeondeokSea, size: 24))
+                    }
+                    .padding()
+                }
+            }
         }
     }
 }

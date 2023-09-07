@@ -38,6 +38,7 @@
 		8AB9919A2AA9AABE009411AA /* NicknameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB991992AA9AABE009411AA /* NicknameView.swift */; };
 		8AB9919C2AA9B363009411AA /* NicknameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB9919B2AA9B363009411AA /* NicknameViewModel.swift */; };
 		8AB991A02AA9C9D5009411AA /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB9919F2AA9C9D5009411AA /* SettingView.swift */; };
+		8AB991A42AA9EFAD009411AA /* Yeongdeok Sea.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8AB991A32AA9EFAD009411AA /* Yeongdeok Sea.otf */; };
 		8AD2303D2A699F4C00C967B5 /* SceneButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD230352A699F4C00C967B5 /* SceneButtons.swift */; };
 		8AD2303E2A699F4C00C967B5 /* SceneApt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD230362A699F4C00C967B5 /* SceneApt.swift */; };
 		8AD2303F2A699F4C00C967B5 /* FunctionTestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD230372A699F4C00C967B5 /* FunctionTestView.swift */; };
@@ -137,6 +138,7 @@
 		8AB991992AA9AABE009411AA /* NicknameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicknameView.swift; sourceTree = "<group>"; };
 		8AB9919B2AA9B363009411AA /* NicknameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicknameViewModel.swift; sourceTree = "<group>"; };
 		8AB9919F2AA9C9D5009411AA /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
+		8AB991A32AA9EFAD009411AA /* Yeongdeok Sea.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Yeongdeok Sea.otf"; sourceTree = "<group>"; };
 		8AD230352A699F4C00C967B5 /* SceneButtons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneButtons.swift; sourceTree = "<group>"; };
 		8AD230362A699F4C00C967B5 /* SceneApt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneApt.swift; sourceTree = "<group>"; };
 		8AD230372A699F4C00C967B5 /* FunctionTestView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FunctionTestView.swift; sourceTree = "<group>"; };
@@ -287,6 +289,14 @@
 			path = SettingView;
 			sourceTree = "<group>";
 		};
+		8AB991A52AA9EFB0009411AA /* Font */ = {
+			isa = PBXGroup;
+			children = (
+				8AB991A32AA9EFAD009411AA /* Yeongdeok Sea.otf */,
+			);
+			path = Font;
+			sourceTree = "<group>";
+		};
 		8AD230342A699F4C00C967B5 /* AptScene */ = {
 			isa = PBXGroup;
 			children = (
@@ -414,6 +424,7 @@
 		E3CBB3E52A69730700195326 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				8AB991A52AA9EFB0009411AA /* Font */,
 				8A87D24D2A7B0DC2009D8220 /* Sound */,
 				DAEE7E0D2A719E5E00D7FACA /* Lottie */,
 				E3F739332A6A552300E5F291 /* Color+Extension.swift */,
@@ -549,6 +560,7 @@
 				8A87D24A2A7B0BFD009D8220 /* Splash.json in Resources */,
 				E3F739392A6A575F00E5F291 /* Assets.xcassets in Resources */,
 				8A2724E72A7905E100A8D970 /* rainyD.json in Resources */,
+				8AB991A42AA9EFAD009411AA /* Yeongdeok Sea.otf in Resources */,
 				8ADF14512A79780E00A09057 /* (null) in Resources */,
 				8A2724ED2A7905E100A8D970 /* cloudyN.json in Resources */,
 				E32E3E1F2A6951B700B865E8 /* Preview Assets.xcassets in Resources */,
