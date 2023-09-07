@@ -35,6 +35,8 @@ struct FixAptView: View {
     @State private var isCalendarDayOpen: Bool = false
     
     @Binding var nickname: String
+    @Binding var isTutorialOn: Bool
+    @State private var tutorialToggle: Bool = false
     
     private var firestoreManager: FirestoreManager {
         FirestoreManager.shared
@@ -42,14 +44,14 @@ struct FixAptView: View {
     private var db: Firestore {
         firestoreManager.db
     }
-    //
-    //        func playSound(soundName: String) {
-    //            let url = Bundle.main.url(forResource: soundName, withExtension: "mp3")
-    //            player = try! AVAudioPlayer(contentsOf: url!)
-    //            //player.numberOfLoops = 1
-    //            player.play()
-    //        }
-    
+//
+//            func playSound(soundName: String) {
+//                let url = Bundle.main.url(forResource: soundName, withExtension: "mp3")
+//                player = try! AVAudioPlayer(contentsOf: url!)
+//                //player.numberOfLoops = 1
+//                player.play()
+//            }
+//
     var body: some View {
         NavigationStack {
             ZStack{
@@ -203,6 +205,20 @@ struct FixAptView: View {
                     }
                     .padding(.horizontal, proxy.size.width * 0.06)
                 }
+                
+                AptViewTutorial(isTutorialOn: $isTutorialOn, tutorialToggle: $tutorialToggle)
+                    .opacity(isTutorialOn ? 1 : 0)
+                    .opacity(tutorialToggle ? 1 : 0)
+                    .onAppear {
+                        if isTutorialOn {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                                withAnimation(.easeInOut(duration: 0.5)) {
+                                    tutorialToggle = true
+                                }
+                            }
+                        }
+                    }
+
             }//ZStack
             .onAppear {
                 
@@ -247,12 +263,96 @@ struct FixAptView: View {
 struct FixAptView_Previews: PreviewProvider {
     @State static var nickname: String = "행복한 고양이"
     static var previews: some View {
-        FixAptView(nickname: $nickname)
+        FixAptView(nickname: $nickname, isTutorialOn: .constant(true))
             .environmentObject(ViewRouter())
             .environmentObject(AptModel())
             .environmentObject(AttendanceViewModel())
             .environmentObject(CharacterViewModel())
             .environmentObject(EnvironmentViewModel())
             .environmentObject(LocationManager())
+    }
+}
+
+struct AptViewTutorial: View {
+    @State private var index = 0
+    @Binding var isTutorialOn: Bool
+    @Binding var tutorialToggle: Bool
+    
+    var body: some View {
+        ZStack {
+            switch index {
+            case 0: Color.clear
+                    .overlay(
+                        Image.tutorial.apt1
+                            .resizable()
+                            .scaledToFill()
+                        )
+                    .ignoresSafeArea()
+            case 1:Color.clear
+                    .overlay(
+                        Image.tutorial.apt2
+                            .resizable()
+                            .scaledToFill()
+                        )
+                    .ignoresSafeArea()
+            case 2: Color.clear
+                    .overlay(
+                        Image.tutorial.apt3
+                            .resizable()
+                            .scaledToFill()
+                        )
+                    .ignoresSafeArea()
+            case 3: Color.clear
+                    .overlay(
+                        Image.tutorial.apt4
+                            .resizable()
+                            .scaledToFill()
+                        )
+                    .ignoresSafeArea()
+            default: EmptyView()
+            }
+            
+            VStack {
+                Spacer()
+                
+                HStack {
+                    Button(action: {
+                        if index > 0 {
+                            index -= 1
+                        }
+                    }) {
+                        Text("Back")
+                            .foregroundColor(.white)
+                            .font(.custom(.font.yeondeokSea, size: 24))
+                            .padding()
+                    }
+                    .opacity(index > 0 ? 1 : 0)
+                    Spacer()
+                    Button(action: {
+                        if index == 3 {
+                            DispatchQueue.main.async {
+                                withAnimation(.easeInOut(duration: 0.5)) {
+                                    tutorialToggle = false
+                                }
+                            }
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                index = 0
+                                isTutorialOn = false
+                                UserDefaults.standard.set(isTutorialOn, forKey: "tutorial")
+                            }
+                            
+                        } else {
+                            index += 1
+                        }
+                    }) {
+                        Text("NEXT")
+                            .foregroundColor(.white)
+                            .font(.custom(.font.yeondeokSea, size: 24))
+                            .padding()
+                    }
+                }
+            }
+        }
+        
     }
 }
