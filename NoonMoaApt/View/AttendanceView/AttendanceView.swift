@@ -261,3 +261,25 @@ struct AttendanceView: View {
         }
     }
 }
+
+struct AttendanceTutorialView: View {
+    var body: some View {
+        ZStack {
+            Color.black
+                .opacity(0.7)
+                .ignoresSafeArea()
+            
+            VStack(alignment: .center) {
+                Text("나의 눈을 인식시켜\n오늘의 눈도장을 찍어주세요")
+                    .foregroundColor(.white)
+                    .font(.body)
+                
+                Spacer()
+                
+                HStack {
+                    
+                }
+            }
+        }
+    }
+}
