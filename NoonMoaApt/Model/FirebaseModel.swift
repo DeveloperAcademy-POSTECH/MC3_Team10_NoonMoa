@@ -14,7 +14,7 @@ struct User: Codable, Identifiable, Equatable {
     @DocumentID var id: String?
     var roomId: String?
     var aptId: String?
-    var nickName: String?
+    var nickname: String?
     var userState: String
     var lastActiveDate: Date?
     var characterColor: [Float]?
@@ -40,7 +40,7 @@ extension User {
         self.id = dictionary["id"] as? String
         self.roomId = dictionary["roomId"] as? String
         self.aptId = dictionary["aptId"] as? String
-        self.nickName = dictionary["nickname"] as? String
+        self.nickname = dictionary["nickname"] as? String
         self.userState = userState
         self.lastActiveDate = dictionary["lastActiveDate"] as? Date
         self.characterColor = dictionary["characterColor"] as? [Float] ?? Color.userBlue.toArray

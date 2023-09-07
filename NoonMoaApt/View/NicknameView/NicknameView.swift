@@ -6,6 +6,9 @@
 //
 
 import SwiftUI
+import Firebase
+import FirebaseAuth
+import FirebaseFirestore
 
 struct NicknameView: View {
     @Environment(\.dismiss) private var dismiss
@@ -14,6 +17,18 @@ struct NicknameView: View {
     @Binding var isFromSettingView: Bool
     @Binding var nickname: String
     @State private var newNickname: String = ""
+    @State private var tmpNickname: String = ""
+    
+    @StateObject private var nicknameViewModel = NicknameViewModel()
+
+    // firebase 싱글톤
+    private var firestoreManager: FirestoreManager {
+        FirestoreManager.shared
+    }
+    private var db: Firestore {
+        firestoreManager.db
+    }
+    
     var body: some View {
         ZStack {
             Color.backgroundGray
@@ -32,7 +47,22 @@ struct NicknameView: View {
                         Spacer()
                         Button(action: {
                             //TODO: 누를 때 마다 서버에서 닉네임 중복 확인 필요
-                            newNickname = randomNick()
+                            // 랜덤 닉네임 할당
+                            tmpNickname = nicknameViewModel.randomNick()
+                            print("tmpNickname: \(tmpNickname)")
+                            // 재귀적으로 중복체크
+                            func checkNicknameAvailability() {
+                                nicknameViewModel.isNicknameAvailable(tmpNickname) { isAvailable in
+                                    if isAvailable {
+                                        newNickname = tmpNickname
+                                        print("newNickname: \(newNickname)")
+                                    } else {
+                                        tmpNickname = nicknameViewModel.randomNick()
+                                        checkNicknameAvailability()
+                                    }
+                                }
+                            }
+                            checkNicknameAvailability()
                         }) {
                             Text("새로 뽑기")
                                 .foregroundColor(.white)
@@ -50,8 +80,7 @@ struct NicknameView: View {
                         RoundedRectangle(cornerRadius: 16)
                         .foregroundColor(.white)
                     }
-                }
-                
+                }                
                 Spacer()
                 Button(action: {
                     showAlert = true
@@ -71,15 +100,29 @@ struct NicknameView: View {
             .padding()
             .onAppear {
                 //TODO: 닉네임 중복확인하기
-                newNickname = randomNick()
+                // 랜덤 닉네임 할당
+                tmpNickname = nicknameViewModel.randomNick()
+                
+                // 재귀적으로 중복체크
+                func checkNicknameAvailability() {
+                    nicknameViewModel.isNicknameAvailable(tmpNickname) { isAvailable in
+                        if isAvailable {
+                            newNickname = tmpNickname
+                        } else {
+                            tmpNickname = nicknameViewModel.randomNick()
+                            checkNicknameAvailability()
+                        }
+                    }
+                }
+                checkNicknameAvailability()
             }
             .alert(isPresented: $showAlert) {
                 Alert(
-                       title: Text(newNickname),
+                    title: Text(newNickname),
                        message: Text("이 닉네임으로 설정할까요?"),
                        primaryButton: .default(Text("네")) {
-                           nickname = newNickname
                            //TODO: 닉네임 서버에 업로드
+                           nicknameViewModel.uploadNickname(newNickname: newNickname)
                            if isFromSettingView {
                                isFromSettingView = false
                                dismiss()
