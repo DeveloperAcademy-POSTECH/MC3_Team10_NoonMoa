@@ -53,19 +53,19 @@ struct MainView: View {
                 
         case .apt:
 //            WeatherTestView()
-            NicknameView(nickname: $nickname)
-                .environmentObject(viewRouter)
-
-//            FixAptView()
+//            NicknameView(nickname: $nickname)
 //                .environmentObject(viewRouter)
-//                .environmentObject(aptModel)
-//                .environmentObject(attendanceViewModel)
-//                .environmentObject(environmentViewModel)
-//                .environmentObject(characterViewModel)
-//                .environmentObject(locationManager)
-//                .task(priority: .userInitiated) {
-//                    await environmentViewModel.getWeather(latitude: locationManager.latitude, longitude: locationManager.longitude)
-//                }
+            
+            FixAptView()
+                .environmentObject(viewRouter)
+                .environmentObject(aptModel)
+                .environmentObject(attendanceViewModel)
+                .environmentObject(environmentViewModel)
+                .environmentObject(characterViewModel)
+                .environmentObject(locationManager)
+                .task(priority: .userInitiated) {
+                    await environmentViewModel.getWeather(latitude: locationManager.latitude, longitude: locationManager.longitude)
+                }
                 
         default:
             LoginView()
